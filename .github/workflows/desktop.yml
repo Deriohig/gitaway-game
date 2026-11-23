@@ -1,0 +1,131 @@
+# Build the Windows desktop installers (Tauri 2, NSIS) and keep them as artifacts.
+#
+# The desktop app is the same web build wrapped in a native window, plus a Rust
+# crate that reads the player's own commit counts from a local Git repository.
+# The build runs on a throwaway runner and uploads only the installers; nothing
+# is signed, published or sent anywhere.
+#
+# Two installers come out of one run:
+#   - gitaway-windows-installer: the game, with no dev tools in it at all.
+#   - gitaway-windows-dev-installer: "Gitaway Dev", the same game with the Dev
+#     panel and time skips (`npm run build:devtools`). It installs beside the
+#     normal app and keeps its own farm (src-tauri/tauri.devtools.conf.json).
+#
+# Actions are pinned by full commit SHA (the same releases as ci.yml).
+
+name: desktop
+
+on:
+  # Windows runner minutes cost twice Linux ones, so the installers are built
+  # by themselves only when the native side changes (`src-tauri/**` covers
+  # both Tauri configs). For an installer of anything else, run this by hand:
+  # Actions, desktop, Run workflow, and pick the branch. The web side is
+  # checked on Linux by ci.yml, including that an ordinary build has no dev
+  # tools and a dev-tools build has them (src/devtools-build.test.ts).
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - src-tauri/**
+      - .github/workflows/desktop.yml
+  push:
+    branches: [main]
+    paths:
+      - src-tauri/**
+      - .github/workflows/desktop.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  windows-installer:
+    name: windows installer
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node (.nvmrc)
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install npm packages
+        timeout-minutes: 5
+        run: npm ci --no-audit --no-fund
+
+      - name: Restore the cargo cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            src-tauri/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('src-tauri/Cargo.toml', 'src-tauri/Cargo.lock', 'src-tauri/crates/*/Cargo.toml') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-
+
+      # The cache keeps src-tauri/target, installers included. Start from none,
+      # so an old one can't end up in either artifact below.
+      - name: Clear installers left in the cache
+        shell: bash
+        run: rm -rf src-tauri/target/release/bundle
+
+      - name: Show the Rust and Git versions
+        run: |
+          rustc --version
+          cargo --version
+          git --version
+
+      # The git-activity tests also run on Windows, where the Git calls use
+      # CREATE_NO_WINDOW and Windows paths.
+      - name: Test the git-activity crate
+        timeout-minutes: 15
+        run: cargo test --manifest-path src-tauri/Cargo.toml -p git-activity
+
+      - name: Build the Windows installer
+        timeout-minutes: 40
+        run: npx tauri build --bundles nsis
+
+      # `dist` is what the build just embedded in the app: no Dev panel, and
+      # none of the game clock's time skips, or the build fails before upload.
+      - name: Check the installer has no dev tools
+        run: node scripts/check-dev-tools.mjs dist without
+
+      - name: Upload the installer
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gitaway-windows-installer
+          path: src-tauri/target/release/bundle/nsis/*.exe
+          retention-days: 7
+          if-no-files-found: error
+
+      # Built in this job, after the first, rather than in a matrix: the Rust
+      # dependencies the first build compiled are reused, so only the app
+      # itself is built again. The override changes the name ("Gitaway Dev"),
+      # identifier (its own data, so its own farm), window title and the
+      # command that builds the web files (with the dev tools on).
+      - name: Build the dev-tools installer (Gitaway Dev)
+        timeout-minutes: 40
+        run: npx tauri build --bundles nsis --config src-tauri/tauri.devtools.conf.json
+
+      - name: Check the dev-tools installer has the dev tools
+        run: node scripts/check-dev-tools.mjs dist with
+
+      # "Gitaway Dev_<version>_x64-setup.exe". The other installer is in the
+      # same folder, so the pattern names this one.
+      - name: Upload the dev-tools installer
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gitaway-windows-dev-installer
+          path: src-tauri/target/release/bundle/nsis/*Dev*.exe
+          retention-days: 7
+          if-no-files-found: error

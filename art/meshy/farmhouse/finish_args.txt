@@ -1,0 +1,1 @@
+--height 2.7 --centre -0.21,0.35 --tex 1024 --q 85 --glow --smoke --porch --porchY 0.8 --porchOut 0.4 --porchLamp --compact --roof roof_tiles.jpg --roofTile 1.82,1.62 --roofPx 512 --roofQ 90

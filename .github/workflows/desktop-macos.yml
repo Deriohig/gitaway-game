@@ -1,0 +1,176 @@
+# Build the Mac apps (Tauri 2, disk images) and keep them as artifacts.
+#
+# Cost: this repository is private, and GitHub bills a macOS runner minute at
+# ten times a Linux one. A full run builds four apps on two macOS runners, so
+# it runs only when started by hand (Actions, "desktop (macOS)", Run workflow,
+# then pick the branch), never by itself: not even when this file changes,
+# since on a pull request that changes it, that would be every push.
+#
+# Each job builds for one kind of Mac, both on an Apple Silicon runner (the
+# Intel build is cross-compiled), and makes two disk images, one after the
+# other:
+#   - gitaway-macos-arm64 / gitaway-macos-x64: the game, with no dev tools in
+#     it at all.
+#   - gitaway-macos-arm64-dev / gitaway-macos-x64-dev: "Gitaway Dev", the same
+#     game with the Dev panel and time skips (`npm run build:devtools`). It is
+#     a separate app with its own bundle ID, so it keeps its own farm
+#     (src-tauri/tauri.devtools.conf.json).
+#
+# The apps are signed ad hoc ("signingIdentity": "-" in tauri.conf.json), not
+# with an Apple Developer ID, and not notarized, so macOS asks the player to
+# allow them the first time (see the README). Nothing is published or sent
+# anywhere: the runner only uploads the disk images.
+#
+# Actions are pinned by full commit SHA (the same releases as desktop.yml).
+
+name: desktop (macOS)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer run for the same branch makes the older one pointless, and it is
+# billed by the minute, so the older one is stopped (on main too).
+concurrency:
+  group: desktop-macos-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  macos-app:
+    name: macOS app (${{ matrix.mac }})
+    runs-on: macos-latest
+    timeout-minutes: 60
+    strategy:
+      # One Mac's build failing doesn't hide whether the other's works.
+      fail-fast: false
+      matrix:
+        include:
+          - target: aarch64-apple-darwin
+            mac: Apple Silicon
+            arch: arm64
+            artifact: gitaway-macos-arm64
+            dev-artifact: gitaway-macos-arm64-dev
+          - target: x86_64-apple-darwin
+            mac: Intel
+            arch: x86_64
+            artifact: gitaway-macos-x64
+            dev-artifact: gitaway-macos-x64-dev
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node (.nvmrc)
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install npm packages
+        timeout-minutes: 5
+        run: npm ci --no-audit --no-fund
+
+      # The runner is an Apple Silicon Mac. Its Rust can build for Intel Macs
+      # once it has the standard library for that target.
+      - name: Add the Rust target (${{ matrix.target }})
+        timeout-minutes: 5
+        run: rustup target add ${{ matrix.target }}
+
+      # One cache per target: each job reuses its own compiled dependencies.
+      - name: Restore the cargo cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            src-tauri/target
+          key: cargo-${{ runner.os }}-${{ matrix.target }}-${{ hashFiles('src-tauri/Cargo.toml', 'src-tauri/Cargo.lock', 'src-tauri/crates/*/Cargo.toml') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ matrix.target }}-
+
+      # The cache keeps src-tauri/target, apps and disk images included. Start
+      # from none, so an old one can't end up in either artifact below.
+      - name: Clear apps left in the cache
+        run: rm -rf src-tauri/target/${{ matrix.target }}/release/bundle
+
+      - name: Show the macOS, Xcode, Rust and Git versions
+        run: |
+          sw_vers
+          xcodebuild -version
+          rustc --version
+          cargo --version
+          git --version
+
+      # Once, in the Apple Silicon job: the crate is the same for both Macs,
+      # and this proves its Git calls and paths on macOS.
+      - name: Test the git-activity crate
+        if: matrix.target == 'aarch64-apple-darwin'
+        timeout-minutes: 10
+        run: cargo test --manifest-path src-tauri/Cargo.toml -p git-activity
+
+      # Signed ad hoc for now. With an Apple Developer account, the Developer
+      # ID certificate and notarization would come in here and in the Gitaway
+      # Dev build below, from repository secrets (Tauri reads them from the
+      # environment), and check-macos-app.sh would look for that signature:
+      #   env:
+      #     APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}  # the .p12, base64
+      #     APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      #     APPLE_SIGNING_IDENTITY: "Developer ID Application: <name> (<team ID>)"
+      #     APPLE_ID: ${{ secrets.APPLE_ID }}  # notarization
+      #     APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}  # an app-specific password
+      #     APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      - name: Build the app (Gitaway)
+        timeout-minutes: 30
+        run: npx tauri build --target ${{ matrix.target }} --bundles dmg
+
+      # `dist` is what the build just embedded in the app: no Dev panel, and
+      # none of the game clock's time skips, or the build fails before upload.
+      - name: Check the app has no dev tools
+        run: node scripts/check-dev-tools.mjs dist without
+
+      - name: Check the app's bundle ID, processor, macOS version and signature
+        run: bash scripts/check-macos-app.sh "src-tauri/target/${{ matrix.target }}/release/bundle/macos/Gitaway.app" dev.gitaway.desktop gitaway ${{ matrix.arch }}
+
+      # "Gitaway_<version>_<aarch64|x64>.dmg"
+      - name: Upload the disk image
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ matrix.artifact }}
+          path: src-tauri/target/${{ matrix.target }}/release/bundle/dmg/Gitaway_*.dmg
+          retention-days: 14
+          if-no-files-found: error
+
+      # Gitaway Dev's app and disk image have names of their own, but start
+      # from an empty folder anyway, so nothing of the first build can leak
+      # into the second artifact.
+      - name: Clear the first build's app and disk image
+        run: rm -rf src-tauri/target/${{ matrix.target }}/release/bundle
+
+      # Built in this job, after the first, rather than in a matrix of its own:
+      # the Rust dependencies the first build compiled for this target are
+      # reused, so only the app itself is built again. The override changes the
+      # name ("Gitaway Dev"), program, bundle ID (its own WebKit storage, so its
+      # own farm), window title and the command that builds the web files (with
+      # the dev tools on).
+      - name: Build the dev-tools app (Gitaway Dev)
+        timeout-minutes: 30
+        run: npx tauri build --target ${{ matrix.target }} --bundles dmg --config src-tauri/tauri.devtools.conf.json
+
+      - name: Check the dev-tools app has the dev tools
+        run: node scripts/check-dev-tools.mjs dist with
+
+      - name: Check the dev-tools app's bundle ID, processor, macOS version and signature
+        run: bash scripts/check-macos-app.sh "src-tauri/target/${{ matrix.target }}/release/bundle/macos/Gitaway Dev.app" dev.gitaway.desktop.devtools gitaway-dev ${{ matrix.arch }}
+
+      # "Gitaway Dev_<version>_<aarch64|x64>.dmg"
+      - name: Upload the dev-tools disk image
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ matrix.dev-artifact }}
+          path: src-tauri/target/${{ matrix.target }}/release/bundle/dmg/Gitaway Dev_*.dmg
+          retention-days: 14
+          if-no-files-found: error

@@ -1,0 +1,11 @@
+[package]
+name = "git-activity"
+version = "0.1.0"
+description = "Counts the player's own Git commits in a local repository. Std only, no network."
+edition = "2021"
+rust-version = "1.77.2"
+publish = false
+
+# Deliberately no dependencies: this crate shells out to the `git` the player
+# already has installed and only ever returns counts and timestamps.
+[dependencies]

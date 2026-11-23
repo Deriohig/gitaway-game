@@ -1,0 +1,1 @@
+--id visitor_hare --height 0.45 --lift 0.75 --terra 1 --tex 512 --q 85 --compact --pad --maxKB 200

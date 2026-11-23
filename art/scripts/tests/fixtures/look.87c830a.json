@@ -1,0 +1,241 @@
+{
+ "source": "87c830a: art/config/world.config.mjs (archipelago.lighting/sea/look.water, top-level fog) + look.config.mjs (lighting, ambient) + literals in art/scripts/lib/arch-scene.js; default ?light=game at hour 13 (skyPalette.ts KEYS @ 01449a29)",
+ "renderer": {
+  "toneMapping": "None",
+  "exposure": 1,
+  "exposureNote": "arch-scene.js never set toneMappingExposure (three default 1); look.config lighting.exposure 1.05 was legacy-only"
+ },
+ "sun": {
+  "color": "#FFF5E4",
+  "intensity": 1.9,
+  "dir": [
+   0.3263274207236813,
+   0.9044121893788258,
+   0.27486179470204347
+  ],
+  "distance": 40,
+  "castShadow": true
+ },
+ "hemisphere": {
+  "sky": "#E2EDF0",
+  "ground": "#80705A",
+  "intensity": 1.1
+ },
+ "ambient": {
+  "color": "#FFFFFF",
+  "intensity": 0,
+  "note": "arch-scene.js:54 AmbientLight(0xffffff, 0); :63 amb.intensity = 0 under game light"
+ },
+ "shadows": {
+  "type": "PCFSoft",
+  "mapSize": 2048,
+  "bias": -0.0004,
+  "normalBias": 0.035,
+  "radius": 6,
+  "frustum": {
+   "main": 12,
+   "all": 31
+  },
+  "near": 1,
+  "farPad": 0,
+  "note": "type :36, bias/normalBias literals :56, far = sunDistance + 2*frustum :77",
+  "contact": {
+   "color": "#372A1C",
+   "innerAlpha": 0.46
+  }
+ },
+ "sky": {
+  "zenith": "#9CC1D3",
+  "horizon": "#C9DFE3",
+  "below": "#F5F0E6",
+  "stops": {
+   "below": 0,
+   "horizon": 0.5,
+   "zenith": 1
+  },
+  "note": "screen-space gradient arch-scene.js:82-86 (raw sRGB)"
+ },
+ "fog": {
+  "type": "linear",
+  "color": "#DDE7E4",
+  "nearOffset": 40,
+  "farOffset": 230,
+  "anchor": "cameraTarget"
+ },
+ "clouds": {
+  "color": "#FBF5EA",
+  "colorScale": 1,
+  "emissive": "#6A6478",
+  "emissiveIntensity": 0.22,
+  "deck": {
+   "color": "#FBF5EA",
+   "fogMix": 0.35,
+   "opacity": 0.62
+  },
+  "note": "deck fogMix literal arch-scene.js:114"
+ },
+ "water": {
+  "shallow": "#91B7C8",
+  "deep": "#6E9AB0",
+  "foam": "#E8F1F0"
+ },
+ "wind": {
+  "grassSway": {
+   "ampX": 0.05,
+   "ampZ": 0.035,
+   "speedX": 1.4,
+   "speedZ": 1.1
+  },
+  "seaSpin": 0.0012000000000000001,
+  "driftAmp": 0.2,
+  "driftSpeed": 0.015,
+  "note": "sea/drift literals arch-scene.js:444"
+ },
+ "dayCycle": {
+  "sunDistance": 40,
+  "night": {
+   "top": "#252E48",
+   "mid": "#3B4463",
+   "bottom": "#5B5E7E",
+   "fog": "#4A5070",
+   "sun": "#9DB0D8",
+   "sunI": 0.45,
+   "hemiSky": "#7C88AE",
+   "hemiGround": "#3A3944",
+   "hemiI": 0.6
+  },
+  "keys": [
+   [
+    0,
+    "night"
+   ],
+   [
+    4.6,
+    "night"
+   ],
+   [
+    6.1,
+    {
+     "top": "#7C91B4",
+     "mid": "#CBB3B6",
+     "bottom": "#F2C9A6",
+     "fog": "#D8BFB3",
+     "sun": "#F7C08F",
+     "sunI": 1,
+     "hemiSky": "#C9C6D6",
+     "hemiGround": "#6B5E52",
+     "hemiI": 0.85
+    }
+   ],
+   [
+    8.5,
+    {
+     "top": "#A1C2D3",
+     "mid": "#CEE0E2",
+     "bottom": "#F3EEE2",
+     "fog": "#DAE5E2",
+     "sun": "#FFF0D8",
+     "sunI": 1.75,
+     "hemiSky": "#DDE9EE",
+     "hemiGround": "#7A6A55",
+     "hemiI": 1.05
+    }
+   ],
+   [
+    13,
+    {
+     "top": "#9CC1D3",
+     "mid": "#C9DFE3",
+     "bottom": "#F5F0E6",
+     "fog": "#DDE7E4",
+     "sun": "#FFF5E4",
+     "sunI": 1.9,
+     "hemiSky": "#E2EDF0",
+     "hemiGround": "#80705A",
+     "hemiI": 1.1
+    }
+   ],
+   [
+    16.6,
+    {
+     "top": "#A6BED0",
+     "mid": "#E1D6C7",
+     "bottom": "#F4DDB8",
+     "fog": "#E6DAC7",
+     "sun": "#FFE3B5",
+     "sunI": 1.75,
+     "hemiSky": "#E6E2DA",
+     "hemiGround": "#806A55",
+     "hemiI": 1
+    }
+   ],
+   [
+    18.6,
+    {
+     "top": "#9A92B3",
+     "mid": "#E0B4A6",
+     "bottom": "#F2C08A",
+     "fog": "#E1BDA3",
+     "sun": "#FFC27F",
+     "sunI": 1.95,
+     "hemiSky": "#E6CFC6",
+     "hemiGround": "#8A6E5C",
+     "hemiI": 1
+    }
+   ],
+   [
+    20.1,
+    {
+     "top": "#5B6189",
+     "mid": "#A3849A",
+     "bottom": "#DC9E80",
+     "fog": "#A48A93",
+     "sun": "#F2A47A",
+     "sunI": 1.15,
+     "hemiSky": "#ABA0BE",
+     "hemiGround": "#5E5052",
+     "hemiI": 0.85
+    }
+   ],
+   [
+    21.6,
+    "night"
+   ],
+   [
+    24,
+    "night"
+   ]
+  ]
+ },
+ "proofLight": {
+  "sun": {
+   "color": "#FFD58A",
+   "intensity": 2.3,
+   "azimuthDeg": 54.2,
+   "elevationDeg": 44.4
+  },
+  "hemisphere": {
+   "sky": "#BCDCEA",
+   "ground": "#A98A5E",
+   "intensity": 0.9
+  },
+  "ambient": {
+   "color": "#EFDCB2",
+   "intensity": 0.34
+  },
+  "sky": {
+   "zenith": "#83C5F0",
+   "horizon": "#C7D7D9",
+   "below": "#D5DCCB"
+  },
+  "fog": {
+   "color": "#C7D7D9"
+  },
+  "clouds": {
+   "color": "#FBF3E2",
+   "colorScale": 0.6,
+   "emissive": "#FBF3E2",
+   "emissiveIntensity": 0.5
+  }
+ }
+}

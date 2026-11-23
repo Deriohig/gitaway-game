@@ -1,0 +1,10 @@
+image-to-image 01a173fa-3a21-75b6-8be0-372588cc4e5d
+[image-to-image] IN_PROGRESS 30%
+[image-to-image] SUCCEEDED 100%
+      ok in 34s
+Status: SUCCESS
+Task Id: 01a173fa-3a21-75b6-8be0-372588cc4e5d
+Generated image-to-image
+Saved to:
+- /home/me/Projects/gitaway-art-shelterhare/art/meshy/visitor_hare/concepts/dl_a/image_0.png
+Metadata path: /home/me/Projects/gitaway-art-shelterhare/art/meshy/visitor_hare/concepts/dl_a/meta.json

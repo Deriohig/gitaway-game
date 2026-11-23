@@ -1,0 +1,16 @@
+image-to-3d 01a17428-7a08-767d-89a6-458c6cc49479
+[image-to-3d] IN_PROGRESS 1%
+[image-to-3d] IN_PROGRESS 33%
+[image-to-3d] IN_PROGRESS 67%
+[image-to-3d] IN_PROGRESS 74%
+[image-to-3d] IN_PROGRESS 84%
+[image-to-3d] SUCCEEDED 100%
+      ok in 28s
+Status: SUCCESS
+Task Id: 01a17428-7a08-767d-89a6-458c6cc49479
+Generated image-to-3d
+Saved to:
+- /home/me/Projects/gitaway-art-shelterhare/art/meshy/visitor_hare/dl_model/model.glb
+- /home/me/Projects/gitaway-art-shelterhare/art/meshy/visitor_hare/dl_model/thumbnail.png
+- /home/me/Projects/gitaway-art-shelterhare/art/meshy/visitor_hare/dl_model/texture_0_base_color.png
+Metadata path: /home/me/Projects/gitaway-art-shelterhare/art/meshy/visitor_hare/dl_model/meta.json

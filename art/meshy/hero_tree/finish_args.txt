@@ -1,0 +1,1 @@
+--height 3.4 --tex 1024 --q 85 --compact --canopy --leafMinY 0.2

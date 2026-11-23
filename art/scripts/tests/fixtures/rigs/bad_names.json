@@ -1,0 +1,48 @@
+{
+  "bones": [
+    "root",
+    "hips",
+    "neck",
+    "head",
+    "lid_L",
+    "lid_R",
+    "leg_L_1",
+    "leg_L_2",
+    "leg_R_1",
+    "leg_R_2",
+    "ear.L"
+  ],
+  "clips": {
+    "Idle": {
+      "duration": 1.0,
+      "type": "loop"
+    },
+    "Sit": {
+      "duration": 0.5,
+      "type": "hold"
+    },
+    "Walk": {
+      "duration": 0.5,
+      "stride": 0.1371,
+      "type": "loop"
+    },
+    "Wave": {
+      "duration": 0.8,
+      "type": "once"
+    }
+  },
+  "facing": "+Z",
+  "file": "bad_names.glb",
+  "lids": [
+    "lid_L",
+    "lid_R"
+  ],
+  "live": [
+    "head",
+    "neck",
+    "lid_L",
+    "lid_R"
+  ],
+  "restChanged": [],
+  "source": "source.glb"
+}

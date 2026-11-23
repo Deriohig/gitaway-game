@@ -1,0 +1,1 @@
+--height 3.75 --axis 0.1,0.6 --glow --glowY 0.66,0.9 --empty Beam:glow --tex 512 --q 72 --compact

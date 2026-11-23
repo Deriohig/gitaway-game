@@ -1,0 +1,1 @@
+--fit 0.5x0.73x0.5 --tex 512 --compact

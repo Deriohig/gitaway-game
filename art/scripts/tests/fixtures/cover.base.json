@@ -1,0 +1,262 @@
+{
+  "default": {
+    "main": {
+      "n": 362,
+      "kinds": {
+        "clover_patch": 98,
+        "flower_buttercup": 4,
+        "flower_daisy": 6,
+        "grass_short": 254
+      }
+    },
+    "meadow": {
+      "n": 1412,
+      "kinds": {
+        "clover_patch": 171,
+        "fern_clump": 120,
+        "flower_buttercup": 37,
+        "flower_cornflower": 208,
+        "flower_daisy": 55,
+        "flower_poppy": 113,
+        "grass_seedhead": 69,
+        "grass_short": 257,
+        "grass_tall": 348,
+        "perennial_foxglove": 7,
+        "perennial_lavender": 14,
+        "perennial_oxeye": 13
+      }
+    },
+    "wetland": {
+      "n": 1191,
+      "kinds": {
+        "clover_patch": 120,
+        "fern_clump": 179,
+        "flower_buttercup": 78,
+        "flower_cornflower": 49,
+        "flower_daisy": 109,
+        "flower_poppy": 47,
+        "grass_seedhead": 40,
+        "grass_short": 182,
+        "grass_tall": 357,
+        "perennial_foxglove": 5,
+        "perennial_lavender": 12,
+        "perennial_oxeye": 13
+      }
+    },
+    "cottage": {
+      "n": 609,
+      "kinds": {
+        "clover_patch": 21,
+        "fern_clump": 103,
+        "flower_buttercup": 13,
+        "flower_cornflower": 30,
+        "flower_daisy": 51,
+        "flower_poppy": 12,
+        "grass_seedhead": 43,
+        "grass_short": 91,
+        "grass_tall": 230,
+        "perennial_foxglove": 3,
+        "perennial_lavender": 8,
+        "perennial_oxeye": 4
+      }
+    },
+    "highland": {
+      "n": 1617,
+      "kinds": {
+        "clover_patch": 129,
+        "fern_clump": 260,
+        "flower_buttercup": 116,
+        "flower_cornflower": 116,
+        "flower_daisy": 141,
+        "flower_poppy": 98,
+        "grass_seedhead": 65,
+        "grass_short": 274,
+        "grass_tall": 356,
+        "perennial_foxglove": 16,
+        "perennial_lavender": 26,
+        "perennial_oxeye": 20
+      }
+    },
+    "orchard": {
+      "n": 567,
+      "kinds": {
+        "clover_patch": 35,
+        "fern_clump": 109,
+        "flower_buttercup": 29,
+        "flower_cornflower": 32,
+        "flower_daisy": 45,
+        "flower_poppy": 32,
+        "grass_seedhead": 25,
+        "grass_short": 108,
+        "grass_tall": 142,
+        "perennial_foxglove": 2,
+        "perennial_lavender": 6,
+        "perennial_oxeye": 2
+      }
+    },
+    "grove": {
+      "n": 628,
+      "kinds": {
+        "clover_patch": 36,
+        "fern_clump": 112,
+        "flower_buttercup": 35,
+        "flower_cornflower": 23,
+        "flower_daisy": 44,
+        "flower_poppy": 49,
+        "grass_seedhead": 40,
+        "grass_short": 109,
+        "grass_tall": 160,
+        "perennial_foxglove": 4,
+        "perennial_lavender": 9,
+        "perennial_oxeye": 7
+      }
+    },
+    "islet": {
+      "n": 634,
+      "kinds": {
+        "clover_patch": 33,
+        "fern_clump": 51,
+        "flower_buttercup": 17,
+        "flower_cornflower": 59,
+        "flower_daisy": 20,
+        "flower_poppy": 35,
+        "grass_seedhead": 35,
+        "grass_short": 90,
+        "grass_tall": 261,
+        "perennial_foxglove": 8,
+        "perennial_lavender": 15,
+        "perennial_oxeye": 10
+      }
+    }
+  },
+  "alt": {
+    "main": {
+      "n": 337,
+      "kinds": {
+        "clover_patch": 61,
+        "flower_buttercup": 2,
+        "flower_daisy": 4,
+        "grass_short": 270
+      }
+    },
+    "meadow": {
+      "n": 1390,
+      "kinds": {
+        "clover_patch": 124,
+        "fern_clump": 119,
+        "flower_buttercup": 76,
+        "flower_cornflower": 94,
+        "flower_daisy": 92,
+        "flower_poppy": 86,
+        "grass_seedhead": 93,
+        "grass_short": 241,
+        "grass_tall": 430,
+        "perennial_foxglove": 4,
+        "perennial_lavender": 11,
+        "perennial_oxeye": 20
+      }
+    },
+    "wetland": {
+      "n": 1061,
+      "kinds": {
+        "clover_patch": 117,
+        "fern_clump": 169,
+        "flower_buttercup": 28,
+        "flower_cornflower": 43,
+        "flower_daisy": 44,
+        "flower_poppy": 26,
+        "grass_seedhead": 44,
+        "grass_short": 171,
+        "grass_tall": 386,
+        "perennial_foxglove": 4,
+        "perennial_lavender": 18,
+        "perennial_oxeye": 11
+      }
+    },
+    "cottage": {
+      "n": 623,
+      "kinds": {
+        "clover_patch": 49,
+        "fern_clump": 127,
+        "flower_buttercup": 28,
+        "flower_cornflower": 46,
+        "flower_daisy": 13,
+        "flower_poppy": 24,
+        "grass_seedhead": 40,
+        "grass_short": 89,
+        "grass_tall": 192,
+        "perennial_foxglove": 1,
+        "perennial_lavender": 10,
+        "perennial_oxeye": 4
+      }
+    },
+    "highland": {
+      "n": 1567,
+      "kinds": {
+        "clover_patch": 145,
+        "fern_clump": 258,
+        "flower_buttercup": 67,
+        "flower_cornflower": 111,
+        "flower_daisy": 88,
+        "flower_poppy": 84,
+        "grass_seedhead": 88,
+        "grass_short": 251,
+        "grass_tall": 415,
+        "perennial_foxglove": 14,
+        "perennial_lavender": 26,
+        "perennial_oxeye": 20
+      }
+    },
+    "orchard": {
+      "n": 585,
+      "kinds": {
+        "clover_patch": 61,
+        "fern_clump": 112,
+        "flower_buttercup": 41,
+        "flower_cornflower": 51,
+        "flower_daisy": 46,
+        "flower_poppy": 61,
+        "grass_seedhead": 18,
+        "grass_short": 102,
+        "grass_tall": 79,
+        "perennial_foxglove": 5,
+        "perennial_lavender": 6,
+        "perennial_oxeye": 3
+      }
+    },
+    "grove": {
+      "n": 669,
+      "kinds": {
+        "clover_patch": 55,
+        "fern_clump": 114,
+        "flower_buttercup": 32,
+        "flower_cornflower": 43,
+        "flower_daisy": 71,
+        "flower_poppy": 15,
+        "grass_seedhead": 27,
+        "grass_short": 128,
+        "grass_tall": 163,
+        "perennial_foxglove": 4,
+        "perennial_lavender": 7,
+        "perennial_oxeye": 10
+      }
+    },
+    "islet": {
+      "n": 540,
+      "kinds": {
+        "clover_patch": 31,
+        "fern_clump": 40,
+        "flower_buttercup": 20,
+        "flower_cornflower": 45,
+        "flower_daisy": 36,
+        "flower_poppy": 38,
+        "grass_seedhead": 37,
+        "grass_short": 115,
+        "grass_tall": 144,
+        "perennial_foxglove": 9,
+        "perennial_lavender": 12,
+        "perennial_oxeye": 13
+      }
+    }
+  }
+}

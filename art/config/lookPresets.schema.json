@@ -1,0 +1,446 @@
+{
+ "version": 1,
+ "about": "Schema of art/config/lookPresets.json (LOOK-BRIEF phases 0-5). Every look parameter: type, range, the phase that introduces it, whether the proof scene consumes it yet ('wired') and whether it updates live in the panel without a reload ('live'). The panel (lib/look-panel.js) is generated from this file; tests/lookpresets.test.mjs validates every active preset against it. Leaf types: color (#RRGGBB, sRGB), number, int, bool, enum; 'group' nests params. A param that is not wired yet is shown disabled in the panel and ignored by the scene.",
+ "preset": {
+  "hour": { "type": "number", "min": 0, "max": 24, "step": 0.25, "phase": 1, "wired": false, "live": true, "desc": "Optional top-level key: the day-cycle hour this preset is the keyframe for (Phase 1 moods: Soft morning ~8.5, Golden afternoon ~16.5, Dusk ~19.5; Game (current) = the skyPalette.ts table at 13). The game's day cycle blends between neighbouring keyframes; every mood uses the same parameter set, so any two can be lerped (colours in linear, angles / numbers linearly)." }
+ },
+ "sections": {
+  "renderer": { "label": "Renderer", "phase": 0, "params": {
+   "toneMapping": { "type": "enum", "options": ["None", "Linear", "Reinhard", "Cineon", "ACESFilmic", "AgX", "Neutral"], "phase": 0, "wired": true, "live": true, "desc": "renderer.toneMapping. None = the game's <Canvas flat>. Phase 1 tries AgX / Neutral at exposure ~1.0 (avoid ACES)." },
+   "exposure": { "type": "number", "min": 0.05, "max": 4, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "renderer.toneMappingExposure (inert under None)." },
+   "outputColorSpace": { "type": "enum", "options": ["srgb", "srgb-linear"], "phase": 0, "wired": true, "live": true, "desc": "renderer.outputColorSpace; srgb = the sRGB conversion happens exactly once, on output." },
+   "maxPixelRatio": { "type": "number", "min": 0.5, "max": 3, "step": 0.25, "phase": 0, "wired": true, "live": true, "desc": "renderer.setPixelRatio(min(devicePixelRatio, this)). The game uses dpr [1, 1.75]." }
+  } },
+  "sun": { "label": "Sun (key light)", "phase": 0, "params": {
+   "color": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "DirectionalLight colour. Phase 1 target: warm cream-gold ~#FFD8A8." },
+   "intensity": { "type": "number", "min": 0, "max": 10, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "DirectionalLight intensity (physical lights, three r155+)." },
+   "elevationDeg": { "type": "number", "min": -10, "max": 90, "step": 0.1, "phase": 0, "wired": true, "live": true, "desc": "Sun height above the horizon. Phase 1 target 25-35 deg." },
+   "azimuthDeg": { "type": "number", "min": -180, "max": 180, "step": 0.5, "phase": 0, "wired": true, "live": true, "desc": "Sun bearing RELATIVE TO THE `full` VIEW camera (world.config archipelago.views.full.az): 0 = from behind the camera (front light), +90 = from camera-right, -90 = camera-left, +/-180 = from behind the island (backlight). Back-left of the full view = about -135." },
+   "distance": { "type": "number", "min": 10, "max": 200, "step": 1, "phase": 0, "wired": true, "live": true, "desc": "Light distance from the target (origin); also sets the shadow camera far plane (DayCycle.tsx: 40)." },
+   "castShadow": { "type": "bool", "phase": 0, "wired": true, "live": true, "desc": "The one shadow-casting light." }
+  } },
+  "hemisphere": { "label": "Hemisphere fill", "phase": 0, "params": {
+   "sky": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "HemisphereLight sky colour. Phase 1: cool blue ~#A9C8F0." },
+   "ground": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "HemisphereLight ground colour. Phase 1: warm earth ~#7A6A45." },
+   "intensity": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "HemisphereLight intensity." }
+  } },
+  "ambient": { "label": "Ambient", "phase": 0, "params": {
+   "color": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "AmbientLight colour (flat fill; the brief wants it removed or drastically reduced)." },
+   "intensity": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "AmbientLight intensity (the game has none)." }
+  } },
+  "shadows": { "label": "Shadows", "phase": 0, "params": {
+   "type": { "type": "enum", "options": ["Basic", "PCF", "PCFSoft", "VSM"], "phase": 0, "wired": true, "live": true, "desc": "renderer.shadowMap.type. three r180+ removed PCFSoft (it falls back to PCF: 5-tap Vogel disk, radius-scaled, per-pixel noise rotation)." },
+   "mapSize": { "type": "enum", "options": [512, 1024, 2048, 4096], "phase": 0, "wired": true, "live": true, "desc": "Shadow map resolution." },
+   "bias": { "type": "number", "min": -0.01, "max": 0.01, "step": 0.00001, "phase": 0, "wired": true, "live": true, "desc": "shadow.bias (acne vs peter-panning)." },
+   "normalBias": { "type": "number", "min": 0, "max": 0.2, "step": 0.001, "phase": 0, "wired": true, "live": true, "desc": "shadow.normalBias." },
+   "radius": { "type": "number", "min": 0, "max": 25, "step": 0.1, "phase": 0, "wired": true, "live": true, "desc": "shadow.radius (PCF filter radius in texels; ignored by PCFSoft on r160)." },
+   "fit": { "type": "enum", "options": ["fixed", "bounds", "tight"], "phase": 0, "wired": true, "live": true, "desc": "fixed = the half-sizes below (main alone / any piece docked, like the game); bounds = the visible pieces' bounding sphere + fitMargin; tight (Phase 1) = LIGHT-SPACE bounds: the world boxes of every visible mesh on the visible pieces (terrain + underside, trees, props, rocks, paths) seen from the sun -> left / right / top / bottom / near / far + fitMargin, so long low-sun shadows stay inside at the best texel density. Re-fitted on unlock / dock / look changes." },
+   "frustum": { "type": "group", "label": "fixed half-size", "phase": 0, "params": {
+    "main": { "type": "number", "min": 1, "max": 120, "step": 0.5, "phase": 0, "wired": true, "live": true, "desc": "Shadow box half-size with MAIN alone." },
+    "all": { "type": "number", "min": 1, "max": 120, "step": 0.5, "phase": 0, "wired": true, "live": true, "desc": "Shadow box half-size once any piece is unlocked." }
+   } },
+   "fitMargin": { "type": "number", "min": 0, "max": 20, "step": 0.1, "phase": 0, "wired": true, "live": true, "desc": "Extra half-size (u) in fit = bounds." },
+   "near": { "type": "number", "min": 0.1, "max": 50, "step": 0.1, "phase": 0, "wired": true, "live": true, "desc": "Shadow camera near plane." },
+   "farPad": { "type": "number", "min": 0, "max": 200, "step": 1, "phase": 0, "wired": true, "live": true, "desc": "Shadow camera far = sun.distance + 2 x half-size + farPad." },
+   "contact": { "type": "group", "label": "contact blobs", "phase": 0, "params": {
+    "color": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Soft fake-AO blob colour under trees / rocks / the farmhouse." },
+    "innerAlpha": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Blob centre opacity." }
+   } }
+  } },
+  "sky": { "label": "Sky", "phase": 0, "params": {
+   "mode": { "type": "enum", "options": ["screen", "dome", "painted"], "phase": 0, "wired": true, "live": true, "desc": "screen = screen-space vertical gradient (the game's CSS backdrop, written raw in sRGB); dome (Phase 1) = world-space gradient dome around the camera: per-pixel view-ray elevation + azimuth to the sun (sun-side warmth near the horizon, pale haze below), also raw sRGB (not tone mapped, like three's fog colour); painted (look core) = the same camera-centred sphere drawing a painted sky + cloud sea (sky.paint): zenith / mid / horizon gradient + warm sun glow, procedural overhead cumulus, horizon towers and a cloud sea below; replaces the icosphere puffs and the deck disc. Procedural, texture-free." },
+   "zenith": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Top of the gradient (skyPalette 'top'). Phase 1: deeper clear blue." },
+   "horizon": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Middle of the gradient (skyPalette 'mid'); dome: the horizon AWAY from the sun (cooler); also the water's sky tint." },
+   "sunSideHorizon": { "type": "color", "phase": 1, "wired": true, "live": true, "desc": "Dome: the horizon colour toward the sun (warm cream / peach), blended in within sunSideSpreadDeg of the sun's azimuth." },
+   "below": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Bottom of the gradient (skyPalette 'bottom'): the haze below the island (dome: reached belowDepthDeg below the horizon)." },
+   "stops": { "type": "group", "label": "gradient stops", "phase": 0, "params": {
+    "below": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Screen v (0 = bottom) where the 'below' colour is full." },
+    "horizon": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Screen v of the 'horizon' colour (CSS: 50%)." },
+    "zenith": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Screen v (1 = top) where the 'zenith' colour is full." }
+   } },
+   "sunSideSpreadDeg": { "type": "number", "min": 1, "max": 180, "step": 1, "phase": 1, "wired": true, "live": true, "desc": "Dome: azimuth half-width (deg) of the sun-side warmth (smoothstep from the sun's azimuth); also the 'view' fog colour." },
+   "dither": { "type": "bool", "phase": 1, "wired": true, "live": true, "desc": "+/-0.5 / 255 monochrome screen-space hash dither (interleaved gradient noise) on the sky gradient (screen or dome): kills banding on 8-bit surfaces." },
+   "dome": { "type": "group", "label": "dome shape", "phase": 1, "params": {
+    "zenithElevDeg": { "type": "number", "min": 5, "max": 90, "step": 0.5, "phase": 1, "wired": true, "live": true, "desc": "Elevation (deg) at which the zenith colour is fully reached." },
+    "exponent": { "type": "number", "min": 0.2, "max": 4, "step": 0.01, "phase": 1, "wired": true, "live": true, "desc": "Curve of horizon -> zenith: t = (elevation / zenithElevDeg)^exponent; < 1 = the blue climbs fast, the pale band hugs the horizon." },
+    "belowDepthDeg": { "type": "number", "min": 1, "max": 90, "step": 0.5, "phase": 1, "wired": true, "live": true, "desc": "Depression (deg below the horizon) at which the 'below' haze is fully reached (smoothstep)." },
+    "sunWarmthElevDeg": { "type": "number", "min": 1, "max": 90, "step": 0.5, "phase": 1, "wired": true, "live": true, "desc": "Elevation (deg, above and below the horizon) over which the sun-side warmth fades out (it hugs the horizon)." }
+   } },
+   "screenTint": { "type": "group", "label": "gameplay screen tint", "phase": 2, "params": {
+    "enabled": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "The clamped gameplay camera never sees the dome's zenith (the top of its frame looks below the horizon), so its sky read as pale haze: blend a screen-space vertical tint toward sky.zenith into the dome (and thin the cloud deck there), so the TOP of the screen is always the zenith blue, like the game's CSS sky." },
+    "strength": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Tint amount at screen v >= `to`." },
+    "from": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Screen v (0 = bottom, 1 = top) where the tint starts." },
+    "to": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Screen v where the tint is full (> from)." },
+    "gameplayOnly": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Only in gameplay-camera views (the default + __saveShot gameplay presets); photo / free-orbit views (the 7 fixed views) keep the true dome." }
+   } },
+   "paint": { "type": "group", "label": "painted sky + cloud sea (mode 'painted')", "phase": 3, "params": {
+    "mid": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Middle stop of the vertical gradient (zenith / MID / horizon), reached at midElevDeg." },
+    "midElevDeg": { "type": "number", "min": 1, "max": 80, "step": 0.5, "phase": 3, "wired": true, "live": true, "desc": "Elevation (deg) of the mid colour." },
+    "midWeight": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "0 = the plain dome curve (horizon -> zenith), 1 = the three-stop gradient." },
+    "glowColor": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Warm horizon glow band toward the sun (added)." },
+    "glow": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Glow strength." },
+    "glowElevDeg": { "type": "number", "min": 0.5, "max": 40, "step": 0.5, "phase": 3, "wired": true, "live": true, "desc": "Glow falloff above / below the horizon (deg, exponential)." },
+    "glowAzDeg": { "type": "number", "min": 5, "max": 180, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "Glow half-width in azimuth around the sun (deg)." },
+    "drift": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Cloud drift speed (u/s) on the shared clock (frozen in captures)." },
+    "driftDirDeg": { "type": "number", "min": -180, "max": 180, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "Drift direction (deg, atan2(z, x))." },
+    "lowDetail": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Low-detail mode: one puff octave, no cast shadows on the sea, no towers (also forced by ?quality=low)." },
+    "bands": { "type": "group", "label": "cloud bands (crisp ramp)", "phase": 3, "params": {
+     "shadeMid": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "N.L where the shade colour turns to mid (puff-gradient normals)." },
+     "midLit": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "N.L where mid turns to lit." },
+     "rim": { "type": "number", "min": 0, "max": 0.5, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "Width (puff height) of the narrow sunlit rim on the overhead cumulus." },
+     "soft": { "type": "number", "min": 0, "max": 0.3, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "Band softness on top of the fwidth antialiasing." }
+    } },
+    "cumulus": { "type": "group", "label": "overhead cumulus", "phase": 3, "params": {
+     "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Puff-union clouds on a plane above the camera (two octaves)." },
+     "cell": { "type": "number", "min": 2, "max": 300, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "Cell size (u) of the jittered puff grid." },
+     "height": { "type": "number", "min": 5, "max": 1000, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "Height of the cloud plane above the camera (u)." },
+     "coverage": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Share of cells holding a puff." },
+     "shade": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Shade band (also the towers)." },
+     "mid": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Mid band." },
+     "lit": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Lit band." },
+     "rim": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Sunlit rim." }
+    } },
+    "towers": { "type": "group", "label": "horizon towers", "phase": 3, "params": {
+     "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "A ring of towering cumulus stacks standing on the horizon." },
+     "heightDeg": { "type": "number", "min": 1, "max": 40, "step": 0.5, "phase": 3, "wired": true, "live": true, "desc": "Tallest stack (deg above the horizon)." },
+     "cells": { "type": "int", "min": 4, "max": 96, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "Stack cells around the horizon." },
+     "coverage": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Share of cells holding a stack." }
+    } },
+    "sea": { "type": "group", "label": "cloud sea (below the horizon)", "phase": 3, "params": {
+     "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "The puff field on the world plane y = sea.y, seen from above (the island floats over it)." },
+     "cell": { "type": "number", "min": 2, "max": 200, "step": 0.5, "phase": 3, "wired": true, "live": true, "desc": "Cell size (u) of the big puffs (octave 2 = cell / 2.4)." },
+     "y": { "type": "number", "min": -400, "max": -5, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "World height of the sea plane (the island underside reaches ~-25)." },
+     "coverage": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Share of cells holding a puff (gaps show the deep colour)." },
+     "deep": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Gaps between the puffs (periwinkle)." },
+     "shade": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Shade band + cast shadows (periwinkle)." },
+     "mid": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Mid band." },
+     "cap": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Sunlit caps (cream)." },
+     "radius": { "type": "number", "min": 0.3, "max": 1.15, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Largest puff radius (cells; the smallest is 0.55 x): ~0.9 = an almost continuous sheet with holes." },
+     "flat": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Flat-topped puffs: share of the radius over which the rim falls off (0 = hemispheres; ~0.3 = cream caps with shaded walls, bigger puffs standing higher)." },
+     "shadeMid": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Sea band shade -> mid on N.L RELATIVE to a flat top (0 = a cap; negative = walls turned away from the sun), so the caps stay lit at every sun height." },
+     "midLit": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Sea band mid -> cap (relative N.L, < 0 so the flat caps are lit)." },
+     "relief": { "type": "number", "min": 0, "max": 6, "step": 0.05, "phase": 3, "wired": true, "live": true, "desc": "How strongly the puff gradient tilts the normals (rounder / flatter puffs)." },
+     "shadow": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Cast-shadow reach toward the sun (cells)." },
+     "octave2": { "type": "number", "min": 0, "max": 1.5, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Amount of the small-puff octave on the big puffs (cauliflower tops)." },
+     "haze": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Horizon haze the sea fades into with distance." },
+     "fadeStart": { "type": "number", "min": 10, "max": 5000, "step": 10, "phase": 3, "wired": true, "live": true, "desc": "Distance along the plane (u) where the haze starts." },
+     "fadeEnd": { "type": "number", "min": 20, "max": 10000, "step": 10, "phase": 3, "wired": true, "live": true, "desc": "Distance where the sea is all haze." }
+    } }
+   } }
+  } },
+  "fog": { "label": "Fog / atmosphere", "phase": 0, "params": {
+   "type": { "type": "enum", "options": ["linear", "exp2", "none"], "phase": 0, "wired": true, "live": true, "desc": "THREE.Fog (linear) | FogExp2 | none." },
+   "color": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Fog colour (skyPalette 'fog'), used when skyMatch = none." },
+   "skyMatch": { "type": "enum", "options": ["none", "horizon", "view"], "phase": 1, "wired": true, "live": true, "desc": "none = fog.color; horizon = sky.horizon; view (Phase 1) = the sky dome's horizon colour along the camera's view azimuth (warmer toward the sun), re-evaluated as the camera moves, so the cloud sea melts into the sky behind it. three applies the fog colour after tone mapping, raw like the dome, so they meet exactly." },
+   "anchor": { "type": "enum", "options": ["cameraTarget", "world"], "phase": 0, "wired": true, "live": true, "desc": "cameraTarget = near/far measured from the camera->target distance every frame (DayCycle.tsx: camDist + 40 / + 230); world = absolute near/far." },
+   "nearOffset": { "type": "number", "min": -500, "max": 1000, "step": 1, "phase": 0, "wired": true, "live": true, "desc": "Linear fog near (offset from the camera distance when anchored)." },
+   "farOffset": { "type": "number", "min": 0, "max": 2000, "step": 1, "phase": 0, "wired": true, "live": true, "desc": "Linear fog far (offset from the camera distance when anchored)." },
+   "density": { "type": "number", "min": 0, "max": 0.05, "step": 0.0001, "phase": 0, "wired": true, "live": true, "desc": "FogExp2 density." },
+   "height": { "type": "group", "label": "height / aerial perspective", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": false, "live": true, "desc": "Phase 3 atmospheric perspective: light distance + height fog tinted toward the horizon; the farm stays crisp." },
+    "color": { "type": "color", "phase": 3, "wired": false, "live": true, "desc": "Haze tint (when matchSkyHorizon is off)." },
+    "matchSkyHorizon": { "type": "bool", "phase": 3, "wired": false, "live": true, "desc": "Tint the haze with the sky's horizon colour." },
+    "top": { "type": "number", "min": -50, "max": 50, "step": 0.1, "phase": 3, "wired": false, "live": true, "desc": "Height (u) above which there is no height haze." },
+    "bottom": { "type": "number", "min": -100, "max": 50, "step": 0.1, "phase": 3, "wired": false, "live": true, "desc": "Height (u) of full height haze (the underside)." },
+    "strength": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": false, "live": true, "desc": "Max haze amount." }
+   } }
+  } },
+  "grass": { "label": "Grass variation", "phase": 2, "params": {
+   "enabled": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Phase 2: broad world-space colour variation of the terrain grass, painted per VERTEX from world position by the three-free core (GT.paintBlueprint in lib/terrain.mjs), so neighbouring triangles agree (no per-triangle noise). Albedo, not light: keep it the same in every mood (vertex colours are not blended per frame)." },
+   "patchSize": { "type": "number", "min": 4, "max": 60, "step": 0.5, "phase": 2, "wired": true, "live": true, "desc": "Feature size (u) of the low-frequency fBm that blends the three greens (domain-warped; the island is ~55 u across: 8-20 u patches)." },
+   "warm": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Warm sunlit yellow-green (the noise's high end)." },
+   "mid": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Mid green." },
+   "cool": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Cooler deep green (the noise's low end; also the thin grassy lip on the walls)." },
+   "contrast": { "type": "number", "min": 0, "max": 3, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "How hard the noise separates the greens: t = clamp(0.5 + contrast x fbm + 0.5 x balance); cool -> mid -> warm over t 0 -> 0.5 -> 1." },
+   "balance": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Shifts the blend toward warm (+) or cool (-)." },
+   "lush": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Lusher, cooler green near water." },
+   "waterLush": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Amount of `lush` at the water's edge (lake, river, outflow, pond, stream, tarn, hot spring = the exported water shapes), fading out over waterRadius." },
+   "waterRadius": { "type": "number", "min": 0, "max": 15, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "Reach (u) of the near-water shift." },
+   "dry": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Warmer, drier green for high ground and plateau tops." },
+   "highDry": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Amount of `dry` reached at highTo." },
+   "highFrom": { "type": "number", "min": -5, "max": 10, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "World y where the high-ground shift starts (MAIN ~0, mesa ledge 1.5, plateau top 3.0)." },
+   "highTo": { "type": "number", "min": -5, "max": 10, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "World y where the high-ground shift is full." },
+   "cliffBaseAO": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Darker band at the foot of risers (fake AO): ground rising above the vertex within cliffReach darkens it (max darkening)." },
+   "cliffReach": { "type": "number", "min": 0.2, "max": 6, "step": 0.05, "phase": 2, "wired": true, "live": true, "desc": "Width (u) of the cliff-base band (smooth falloff)." },
+   "forestEdgeAO": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Darker band under and around woods (fake AO) from the tree density within forestReach (max darkening)." },
+   "forestReach": { "type": "number", "min": 0.2, "max": 6, "step": 0.05, "phase": 2, "wired": true, "live": true, "desc": "Reach (u) of each tree in the density (smooth bump)." },
+   "seamMatch": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Look core seam fix: the hairlines across the meadow at piece borders are the pieces' seam / inner walls and MAIN's cone showing through sub-pixel cracks between neighbouring top surfaces; their RIM vertices take the parent top surface's colour (this paint) and normal (GT.seamLipNormals) so a crack pixel shades like the grass. Geometry positions / heights / the export are untouched." }
+  } },
+  "canopy": { "label": "Tree canopies", "phase": 2, "params": {
+   "gradient": { "type": "group", "label": "vertical gradient", "phase": 2, "params": {
+    "enabled": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Darker / cooler at the bottom, lighter / warmer at the top, by height WITHIN THE TREE (per-vertex attribute aTreeH from the model's own canopy parts; shader on the instanced canopy material)." },
+    "bottom": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Multiplier at the canopy bottom, around #808080 = no change (channel / 128): below 80 darkens, more blue than red cools." },
+    "top": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Multiplier at the canopy top (#808080 = no change): above 80 lightens, more red than blue warms." },
+    "strength": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Blend of the gradient (0 = off)." },
+    "low": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Height within the tree (0..1) where the bottom multiplier is full." },
+    "high": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Height within the tree (0..1) where the top multiplier is full (> low)." }
+   } },
+   "instanceTint": { "type": "group", "label": "per-instance tint", "phase": 2, "params": {
+    "enabled": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Deterministic per-instance hue / value jitter (instanceColor), seeded by the tree's world position + seed." },
+    "hue": { "type": "number", "min": 0, "max": 0.06, "step": 0.0025, "phase": 2, "wired": true, "live": true, "desc": "+/- hue shift (fraction of the wheel; brief: 4-6 %)." },
+    "value": { "type": "number", "min": 0, "max": 0.06, "step": 0.0025, "phase": 2, "wired": true, "live": true, "desc": "+/- value (relative)." },
+    "seed": { "type": "int", "min": 0, "max": 99999, "step": 1, "phase": 2, "wired": true, "live": true, "desc": "Jitter seed." }
+   } },
+   "backlight": { "type": "group", "label": "backlit glow", "phase": 2, "params": {
+    "enabled": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Optional warm translucency when the sun is behind a canopy (stronger at the rim). Kept only if it clearly helps." },
+    "color": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Glow colour (light colour; multiplied by the leaf colour)." },
+    "strength": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Glow strength." },
+    "power": { "type": "number", "min": 0.5, "max": 8, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "Falloff of the glow away from looking straight into the sun." }
+   } },
+   "saturation": { "type": "number", "min": 0, "max": 1.5, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Canopy albedo saturation (mix toward its luma; 1 = the GLB / palette colours). Worldseed-style moderate foliage (frame foliage sat ~0.22)." },
+   "shadowLift": { "type": "number", "min": 0, "max": 3, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Leaf translucency: + shadowLift x the NEUTRAL mean hemisphere fill (sky + ground) on every canopy, stronger on facets turned toward the sun, so shadowed foliage stays green with facet detail instead of sinking into Neutral's toe (or going teal under the blue sky fill alone)." },
+   "coniferLift": { "type": "number", "min": 0, "max": 3, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Extra translucency on the pines (on top of shadowLift): conifers stay deep green, never black." },
+   "coniferTint": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Pine foliage albedo multiplier (#808080 = no change): a touch warmer / lighter keeps their shadow green instead of teal under the blue sky fill." }
+  } },
+  "stone": { "label": "Cliffs / stone", "phase": 2, "params": {
+   "enabled": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Phase 2: warm taupe / ochre stone on risers, coast walls, seams and the underside (vertex colours by the core, GT.paintBlueprint). Albedo: keep it the same in every mood." },
+   "top": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Light warm stone toward a riser's top and under a wall's grassy lip." },
+   "face": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "The main cliff-face stone (warm taupe)." },
+   "dark": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Darker stone: strata bands (half strength) and the base of risers / walls." },
+   "under": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Underside stone just below the coast wall." },
+   "deep": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Underside stone deep down (lighter and greyer: it reads into the haze)." },
+   "hazeColor": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Haze colour mixed into the deep underside's vertex colour (undersideHaze), and the fade colour when fade.matchSkyBelow is off." },
+   "topLight": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Amount of `top` at a riser's top edge / right under a wall's lip." },
+   "baseDark": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Amount of `dark` at a riser's foot / toward a wall's base." },
+   "facet": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Per-face value variation on the rock (it should read faceted)." },
+   "underFrom": { "type": "number", "min": 0, "max": 30, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "Depth below the top (u) where the underside starts shading from `under` toward `deep`." },
+   "underTo": { "type": "number", "min": 0, "max": 40, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "Depth below the top (u) where the underside is `deep` (+ undersideHaze)." },
+   "undersideHaze": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Share of hazeColor in the deep underside's vertex colour (the underside lightens into the haze instead of a hard dark mass)." },
+   "bounce": { "type": "number", "min": 0, "max": 3, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Warm bounce on steep faces (risers, walls): + bounce x the hemisphere ground colour, weighted by steepness^2 (island material shader), so shadowed stone reads warm taupe rather than the cool grey of the blue sky fill. Light, not albedo: may differ per mood." },
+   "fade": { "type": "group", "label": "underside haze fade", "phase": 2, "params": {
+    "strength": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Height fade of the island toward the haze colour AFTER lighting + fog (display-referred, like the sky dome): reached at `bottom`; 0 = off." },
+    "top": { "type": "number", "min": -40, "max": 5, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "World y above which there is no fade (the island top is at ~0..3)." },
+    "bottom": { "type": "number", "min": -60, "max": 0, "step": 0.1, "phase": 2, "wired": true, "live": true, "desc": "World y of the full fade (< top; the underside tip is near -25)." },
+    "matchSkyBelow": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Fade toward sky.below (the dome's haze below the island) instead of hazeColor." }
+   } },
+   "strata": { "type": "group", "label": "cliff strata", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Horizontal rock strata on steep faces (risers, coast walls, underside crags), in the fragment shader: geometry / heights / seams / export untouched." },
+    "band": { "type": "number", "min": 0.1, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Bed height (u, world y)." },
+    "warp": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Undulation of the beds (tilted strata), in beds." },
+    "tone": { "type": "number", "min": 0, "max": 0.4, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "+/- value per bed." },
+    "warm": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Warm bed multiplier around #808080 (red-brown)." },
+    "cool": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Cool bed multiplier around #808080 (violet-grey)." },
+    "joint": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Darkening of the joints (under each bed, and the vertical block joints)." },
+    "jointWidth": { "type": "number", "min": 0.01, "max": 0.3, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "Joint width (share of a bed)." },
+    "ledge": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Lit ledge on the top edge of each bed (reads as a chamfer / outset)." },
+    "blocks": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Strength of the staggered vertical block joints." }
+   } }
+  } },
+  "cel": { "label": "Cel-banded lighting", "phase": 3, "params": {
+   "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Look core: bands N.L of every opaque Lambert material (terrain, paths, stairs, trees, bushes, GLBs) via a guarded patch of three r186's lights_lambert_pars_fragment (each anchor must match exactly once, else plain Lambert + a console warning). The cast shadow is multiplied in AFTER the band as a smooth factor (no combs on PCF edges). Off = neutral uniforms = plain Lambert." },
+   "amount": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Blend of the banded N.L over the smooth one (1 = fully banded)." },
+   "terminator": { "type": "number", "min": -0.5, "max": 1, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "N.L of the shade / lit terminator (~0.26)." },
+   "shade": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Direct-light level of the shade band (0 = only the indirect fill)." },
+   "lit": { "type": "number", "min": 0, "max": 1.5, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Direct-light level of the lit band (flat ground under a 30 deg sun has N.L 0.5)." },
+   "highlight": { "type": "group", "label": "highlight band", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Optional third band for faces turned right at the sun." },
+    "threshold": { "type": "number", "min": 0, "max": 1, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "N.L where the highlight band starts." },
+    "level": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Direct-light level of the highlight band." }
+   } },
+   "softness": { "type": "group", "label": "band softness per material", "phase": 3, "params": {
+    "terrain": { "type": "number", "min": 0.001, "max": 0.5, "step": 0.001, "phase": 3, "wired": true, "live": true, "desc": "Half-width (N.L) of the terminator on terrain + paths (softer)." },
+    "foliage": { "type": "number", "min": 0.001, "max": 0.5, "step": 0.001, "phase": 3, "wired": true, "live": true, "desc": "On trees, bushes, grass tufts, flowers (medium)." },
+    "building": { "type": "number", "min": 0.001, "max": 0.5, "step": 0.001, "phase": 3, "wired": true, "live": true, "desc": "On the farmhouse, fences, plots, rocks, stairs, sheep (crisper)." }
+   } },
+   "shadeTint": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Cool violet the indirect / hemisphere light is tinted toward (luminance kept)." },
+   "shadeAmount": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Amount of the shade tint." },
+   "rim": { "type": "group", "label": "warm rim", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Warm sun rim on grazing, non-upward-facing faces (shadowed faces get none)." },
+    "color": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Rim colour (multiplies the sun colour and the albedo)." },
+    "strength": { "type": "number", "min": 0, "max": 3, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Rim strength." },
+    "power": { "type": "number", "min": 0.5, "max": 8, "step": 0.1, "phase": 3, "wired": true, "live": true, "desc": "Fresnel power (higher = thinner)." },
+    "upCutoff": { "type": "number", "min": 0.05, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Faces whose up-component exceeds this get no rim." },
+    "wrap": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Light wrap of the rim (0 = only sun-facing faces)." }
+   } }
+  } },
+  "materials": { "label": "Materials", "phase": 3, "params": {
+   "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Look core: lift near-black GLB albedos (the sheep's painted-black faces) toward minAlbedo at load time; GLB files untouched." },
+   "minAlbedo": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Coloured dark floor (~#2E2633): albedos with a lower luma move toward it in proportion." }
+  } },
+  "clouds": { "label": "Clouds", "phase": 0, "params": {
+   "material": { "type": "enum", "options": ["lambert"], "phase": 0, "wired": true, "live": true, "desc": "Cloud puff material (Backdrop.tsx: MeshLambertMaterial)." },
+   "color": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Puff colour." },
+   "colorScale": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Multiplies the puff colour (linear). 1 = Backdrop.tsx." },
+   "emissive": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Puff emissive colour." },
+   "emissiveIntensity": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Puff emissive intensity." },
+   "deck": { "type": "group", "label": "cloud deck", "phase": 0, "params": {
+    "color": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Base colour of the soft disc under the puffs." },
+    "fogMix": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Mix of the fog colour into the deck colour." },
+    "opacity": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Deck opacity." }
+   } },
+   "lit": { "type": "group", "label": "sun-lit shading", "phase": 2, "params": {
+    "enabled": { "type": "bool", "phase": 2, "wired": true, "live": true, "desc": "Phase 2: warm cream tops, cool lavender-blue undersides (gradient by the puff's local height, shader on the cloud material), softer sun terminator, soft silhouettes." },
+    "top": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Multiplier on the puff colour at its top (warm cream)." },
+    "under": { "type": "color", "phase": 2, "wired": true, "live": true, "desc": "Multiplier on the puff colour at its underside (cool lavender-blue)." },
+    "strength": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Blend of the top / underside gradient." },
+    "wrap": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Wrapped sun lighting (dotNL + wrap) / (1 + wrap): a softer terminator, less 'plastic'." },
+    "rim": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Silhouette fade toward the fog colour (soft edges that melt into the haze)." }
+   } },
+   "layout": { "type": "group", "label": "layout (fewer, away from the farm)", "phase": 2, "params": {
+    "keep": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Share of the cloud clusters kept (deterministic per cluster; 1 = all)." },
+    "innerClear": { "type": "number", "min": 0, "max": 80, "step": 0.5, "phase": 2, "wired": true, "live": true, "desc": "No clusters within this radius (u) of the island centre (the underside reads; 0 = off)." },
+    "clearAzDeg": { "type": "number", "min": -180, "max": 180, "step": 1, "phase": 2, "wired": true, "live": true, "desc": "Centre (deg, atan2(z, x)) of the cleared camera-side sector: 45 = the gameplay camera's side (the full view looks from ~58)." },
+    "clearArcDeg": { "type": "number", "min": 0, "max": 180, "step": 1, "phase": 2, "wired": true, "live": true, "desc": "Half-width (deg) of the cleared sector: no puffs between the gameplay camera and the farm, none crowding the full view's foreground (0 = off)." },
+    "clearDist": { "type": "number", "min": 0, "max": 200, "step": 1, "phase": 2, "wired": true, "live": true, "desc": "Radius (u) out to which the sector is cleared." },
+    "fade": { "type": "number", "min": 0, "max": 30, "step": 0.5, "phase": 2, "wired": true, "live": true, "desc": "Soft edge (u) of the cleared zones: clusters shrink away as the sea's spin drifts them in (world space)." },
+    "scale": { "type": "number", "min": 0.3, "max": 2, "step": 0.01, "phase": 2, "wired": true, "live": true, "desc": "Scale of every kept cluster (puff size and spread)." }
+   } }
+  } },
+  "post": { "label": "Post-processing", "phase": 3, "params": {
+   "composite": { "type": "group", "label": "composite pass (quality tier)", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "HIGH tier: the scene renders into an MSAA HalfFloat target with a DepthTexture and ONE fullscreen pass does ink, Neutral tone mapping (once, scene pixels only; the sky is display-referred), bloom, grade, vignette and the sRGB encoding (once). Off = LOW tier: the renderer tone-maps and encodes directly; no ink / bloom / grade / vignette. ?quality=low|high overrides." },
+    "samples": { "type": "enum", "options": [0, 2, 4], "phase": 3, "wired": true, "live": true, "desc": "MSAA samples of the scene target (4 = the brief; 0 = no MSAA, the cheapest)." },
+    "dither": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "+/-0.5 / 255 dither on the composite output (no banding in the HalfFloat -> 8-bit step)." }
+   } },
+   "ink": { "type": "group", "label": "depth ink outline", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Thin outline from the linearised depth: 8 neighbour taps, second difference = a relative depth jump; strongest on silhouettes (the sky counts as far), never on the sky / cloud sea." },
+    "color": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Ink colour (dark plum ~#2F2233)." },
+    "strength": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Line opacity (~0.85)." },
+    "jumpStart": { "type": "number", "min": 0.001, "max": 0.5, "step": 0.001, "phase": 3, "wired": true, "live": true, "desc": "Relative depth jump where the line starts (~0.03)." },
+    "jumpFull": { "type": "number", "min": 0.002, "max": 1, "step": 0.001, "phase": 3, "wired": true, "live": true, "desc": "Relative depth jump of a full-strength line (~0.08)." },
+    "surfaceMix": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Share of the outlined surface's colour x violet in the line (~0.55): lines take the hue of what they outline." },
+    "violet": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Multiplier on the surface colour inside the line (linear)." },
+    "fadeStart": { "type": "number", "min": 1, "max": 2000, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "Camera distance (u) where lines start to fade." },
+    "fadeEnd": { "type": "number", "min": 2, "max": 4000, "step": 1, "phase": 3, "wired": true, "live": true, "desc": "Camera distance (u) where lines are gone." }
+   } },
+   "ao": { "type": "group", "label": "ambient occlusion", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": false, "live": true, "desc": "Contact grounding only, low intensity." },
+    "kind": { "type": "enum", "options": ["N8AO", "GTAO", "SAO"], "phase": 3, "wired": false, "live": false, "desc": "N8AO on WebGL (pmndrs/n8ao), GTAO on WebGPU / three addons GTAOPass." },
+    "intensity": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 3, "wired": false, "live": true, "desc": "AO intensity." },
+    "radius": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 3, "wired": false, "live": true, "desc": "AO radius (u)." },
+    "distanceFalloff": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 3, "wired": false, "live": true, "desc": "AO distance falloff." }
+   } },
+   "bloom": { "type": "group", "label": "bloom", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Selective bloom (composite only): sparkles, glows and the brightest highlights. Prefilter on the tone-mapped display luma (sky excluded) at half resolution, then a dual-filter down / tent up chain (4 levels). Exactly 0 below the knee, so grass / walls / landscape are untouched." },
+    "threshold": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Display luma (sRGB, 0..1) where bloom is full." },
+    "knee": { "type": "number", "min": 0, "max": 1, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "Soft knee below the threshold: bloom starts at threshold - knee (smoothstep)." },
+    "strength": { "type": "number", "min": 0, "max": 3, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Bloom strength (0.3-0.5)." },
+    "radius": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Tent radius of the upsample chain (0 = tight, 1 = wide)." }
+   } },
+   "grade": { "type": "group", "label": "colour grade", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Split-tone grade on scene pixels (composite only): shadows toward shadowTint, highlights toward highlightTint (unit-luma multipliers), then saturation / contrast around the pivot." },
+    "shadowTint": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Shadow tint (teal / violet)." },
+    "highlightTint": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Highlight tint (warm)." },
+    "amount": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Tint amount." },
+    "saturation": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Saturation offset (saturation = 1 + this; brief 1.05-1.12)." },
+    "contrast": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Contrast offset around the pivot." },
+    "pivot": { "type": "number", "min": 0.05, "max": 0.95, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Display-linear luma splitting shadows from highlights (and the contrast pivot)." },
+    "shadowSaturation": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Saturation below the pivot (blended toward 1 + saturation above it): < 1 = muted shadows (dark greens do not go heavy), like the reference." }
+   } },
+   "vignette": { "type": "group", "label": "vignette", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Subtle vignette (composite only)." },
+    "offset": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Radius (0 = centre, 1 = the corners) where the darkening starts; full at the corners." },
+    "darkness": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Darkening at the corners (0.1-0.25 = subtle)." }
+   } },
+   "dof": { "type": "group", "label": "tilt-shift DOF", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": false, "live": true, "desc": "Optional, only if it helps the full view." },
+    "focus": { "type": "enum", "options": ["orbitTarget"], "phase": 3, "wired": false, "live": true, "desc": "Focus point." },
+    "focusRange": { "type": "number", "min": 0, "max": 200, "step": 0.5, "phase": 3, "wired": false, "live": true, "desc": "In-focus depth range (u)." },
+    "bokehScale": { "type": "number", "min": 0, "max": 10, "step": 0.1, "phase": 3, "wired": false, "live": true, "desc": "Blur size." }
+   } },
+   "cloudShadows": { "type": "group", "label": "cloud shadows", "phase": 3, "params": {
+    "enabled": { "type": "bool", "phase": 3, "wired": false, "live": true, "desc": "Scrolling low-frequency noise multiplied into the sun term on the ground." },
+    "scale": { "type": "number", "min": 5, "max": 300, "step": 1, "phase": 3, "wired": false, "live": true, "desc": "Noise scale (u)." },
+    "speed": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 3, "wired": false, "live": true, "desc": "Drift speed (u/s), linked to the cloud drift." },
+    "strength": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": false, "live": true, "desc": "Shadow strength." },
+    "directionDeg": { "type": "number", "min": -180, "max": 180, "step": 1, "phase": 3, "wired": false, "live": true, "desc": "Drift direction (bearing)." }
+   } }
+  } },
+  "plants": { "label": "Plants (trees / shrubs / flowers)", "phase": 3, "params": {
+   "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "WORLDSEED plants & shapes: draw the procedural tree variants (oak / ovate / spread / sapling + fir / pine, lib/plants.mjs) at the composition's tree positions instead of tree_round_a + the cone pine. Off = the old trees exactly (Game (current))." },
+   "shrubs": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "The woodland-edge shrub belt (composition shrubs: forest edges + clearing rims; meadow -> shrubs -> small trees -> forest)." },
+   "flowers": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Composed flower drifts (composition flowerPatches: colour schemes per place) instead of the uniform speckle." },
+   "contacts": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Extra contact shadows under fences, bushes, shrubs and sheep." },
+   "ramp": { "type": "group", "label": "broadleaf crown ramp", "phase": 3, "params": {
+    "shade": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Broadleaf crown ramp stop 1: the shade side / crown bottom (Worldseed ~#1D362C). Albedo (linear-mixed in the shader), lit by the cel bands after." },
+    "mid": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Broadleaf crown ramp stop 2 (Worldseed ~#3E6340); also the per-tree tint reference." },
+    "lit": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Broadleaf crown ramp stop 3: the sun-facing top (Worldseed ~#77984C). Keep it a mid green: tops must never render yellow or pastel." },
+    "accent": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Broadleaf crown ramp stop 4 (Worldseed ~#D9B24C, warm gold): mixed in on the most lit tips only (accentAmount)." },
+    "accentAmount": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Share of the accent on the most lit tips (ramp t 0.8 -> 1)." },
+    "light": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp weight of light-facing: t = light x (N.L x 0.5 + 0.5) + height x aTreeH + bias (world normal . sun, live with the time of day)." },
+    "height": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp weight of the height within the crown (aTreeH 0 bottom .. 1 top)." },
+    "bias": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp offset (negative = more shade)." },
+    "midStop": { "type": "number", "min": 0.05, "max": 0.95, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp position of the mid colour (shade -> mid below it, mid -> lit above)." }
+   } },
+   "conifer": { "type": "group", "label": "conifer ramp", "phase": 3, "params": {
+    "shade": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Conifer ramp stop 1: the shade side / crown bottom (Worldseed ~#1D362C). Albedo (linear-mixed in the shader), lit by the cel bands after." },
+    "mid": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Conifer ramp stop 2 (Worldseed ~#3E6340); also the per-tree tint reference." },
+    "lit": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Conifer ramp stop 3: the sun-facing top (Worldseed ~#77984C). Keep it a mid green: tops must never render yellow or pastel." },
+    "accent": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Conifer ramp stop 4 (Worldseed ~#D9B24C, warm gold): mixed in on the most lit tips only (accentAmount)." },
+    "accentAmount": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Share of the accent on the most lit tips (ramp t 0.8 -> 1)." },
+    "light": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp weight of light-facing: t = light x (N.L x 0.5 + 0.5) + height x aTreeH + bias (world normal . sun, live with the time of day)." },
+    "height": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp weight of the height within the crown (aTreeH 0 bottom .. 1 top)." },
+    "bias": { "type": "number", "min": -1, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp offset (negative = more shade)." },
+    "midStop": { "type": "number", "min": 0.05, "max": 0.95, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Ramp position of the mid colour (shade -> mid below it, mid -> lit above)." }
+   } },
+   "gradient": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Share of the canopy.gradient (bottom / top multipliers) applied on top of the ramp (the ramp already darkens the bottom)." },
+   "lift": { "type": "number", "min": 0, "max": 4, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Leaf translucency of the broadleaf variants (as canopy.shadowLift): + lift x the mean hemisphere fill, so shaded crowns stay green, not black." },
+   "coniferLift": { "type": "number", "min": 0, "max": 4, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Leaf translucency of the conifer variants (deep green, never black)." }
+  } },
+  "farm": { "label": "Farm (windows / porch / garden)", "phase": 3, "params": {
+   "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "The farmhouse as the welcoming heart: window glow, porch light, garden bushes. Off = the GLB emissive, no light, no bushes." },
+   "windowColor": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Window emissive colour (warm lamp light)." },
+   "windowGlow": { "type": "number", "min": 0, "max": 6, "step": 0.01, "phase": 3, "wired": true, "live": true, "desc": "Window emissive intensity: subtle by day (no bloom on walls), rising at dusk through the time-of-day blend." },
+   "porchColor": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Porch point-light colour." },
+   "porchLight": { "type": "number", "min": 0, "max": 30, "step": 0.1, "phase": 3, "wired": true, "live": true, "desc": "Porch point-light intensity (candela). 0 = the light is not added at all (no cost by day); dusk only." },
+   "porchDistance": { "type": "number", "min": 0.5, "max": 15, "step": 0.1, "phase": 3, "wired": true, "live": true, "desc": "Porch light range (u; decay 2)." },
+   "garden": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Two flowering bushes flanking the porch (existing bush_flowering asset) + their contact shadows." }
+  } },
+  "paths": { "label": "Paths (colour)", "phase": 3, "params": {
+   "enabled": { "type": "bool", "phase": 3, "wired": true, "live": true, "desc": "Path ribbon colour from this section (muted warm tan, compacted earth) instead of the palette Path token. Geometry is a later stage." },
+   "color": { "type": "color", "phase": 3, "wired": true, "live": true, "desc": "Path albedo (Worldseed paths read muted tan: hue ~35 deg, saturation ~0.3)." },
+   "variation": { "type": "number", "min": 0, "max": 0.4, "step": 0.005, "phase": 3, "wired": true, "live": true, "desc": "Subtle +/- value variation (two-octave world-space value noise), lit by the scene like the rest." },
+   "scale": { "type": "number", "min": 0.05, "max": 5, "step": 0.05, "phase": 3, "wired": true, "live": true, "desc": "Noise frequency (1 / u)." }
+  } },
+  "water": { "label": "Water", "phase": 0, "params": {
+   "shallow": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Water.tsx uShallow (game palette 'water')." },
+   "deep": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Water.tsx uDeep (game palette 'waterDeep')." },
+   "foam": { "type": "color", "phase": 0, "wired": true, "live": true, "desc": "Water.tsx uFoam (game palette 'foam')." },
+   "light": { "type": "enum", "options": ["game"], "phase": 0, "wired": true, "live": true, "desc": "game = WaterDriver brightness min(1, 0.32 + 0.4 hemisphere + 0.2 sun)." },
+   "skyMix": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Revamp (?water=v2): Fresnel scale (L5): F = (0.1 + 0.6 (1 - N.V)^2) x skyMix / 0.25, capped at 0.6, toward the sky gradient. Legacy: the 0.25 inside the verbatim Water.tsx GLSL." },
+   "bakedDepth": { "type": "bool", "phase": 4, "wired": true, "live": false, "desc": "true = the baked water maps + the new Lambert water material (bake-water.mjs; proof ?water=v2); false = today's Water.tsx shaders (the revert; Game (current))." },
+   "bands": { "type": "group", "label": "bands (depth split, u)", "phase": 4, "params": { "shallow": { "type": "number", "min": 0, "max": 1, "step": 0.005, "phase": 4, "wired": true, "live": true, "desc": "Depth (u) where the shallow band meets the mid band (L1)." }, "deep": { "type": "number", "min": 0, "max": 1, "step": 0.005, "phase": 4, "wired": true, "live": true, "desc": "Depth (u) where the mid band meets the deep core (L1)." } } },
+   "bandSoft": { "type": "number", "min": 0, "max": 0.2, "step": 0.001, "phase": 4, "wired": true, "live": true, "desc": "Band edge softness (u; at least 2 px on screen)." },
+   "shoreBand": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Width (u) of the wet band on the ground and the reach of the travelling foam." },
+   "foamLine": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Strength of the shore contact line (L3)." },
+   "normalSpeed": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Speed scale of the two world-space noise scrolls (L2)." },
+   "glint": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Sun glints (L6, mid tier): colour = the directional light x glint." },
+   "caustics": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Caustic web in the shallow band (L7, mid tier)." },
+   "riverFlowSpeed": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Ribbon flow multiplier (base 0.45 u/s along the arc-length u)." },
+   "fallStreakSpeed": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 4, "wired": true, "live": true, "desc": "Waterfall streak speed (u/s; the second layer runs phi x faster)." },
+   "fallMist": { "type": "bool", "phase": 4, "wired": true, "live": true, "desc": "Mist plumes over the falls' dissolve zone and the hot spring's steam." },
+   "bodies": { "type": "group", "label": "bodies (palettes, section 3.3)", "phase": 4, "params": { "pond": { "type": "group", "label": "pond: Farm pond (sunny green-teal; virtual basin)", "phase": 4, "params": { "shallow": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "shallow band (depth < bands.shallow)" }, "mid": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "mid band" }, "deep": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "deep core (darker than any grass)" }, "foam": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "foam (lit albedo)" }, "bed": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "bed / edge tint (virtual bodies: painted into the shallows; carved: the underwater ground tint)" } } }, "lake": { "type": "group", "label": "lake: Wetland lake (cooler, reedier)", "phase": 4, "params": { "shallow": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "shallow band (depth < bands.shallow)" }, "mid": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "mid band" }, "deep": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "deep core (darker than any grass)" }, "foam": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "foam (lit albedo)" }, "bed": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "bed / edge tint (virtual bodies: painted into the shallows; carved: the underwater ground tint)" } } }, "river": { "type": "group", "label": "river: Stream, river and outflow (lightest, most aerated)", "phase": 4, "params": { "shallow": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "shallow band (depth < bands.shallow)" }, "mid": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "mid band" }, "deep": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "deep core (darker than any grass)" }, "foam": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "foam (lit albedo)" }, "bed": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "bed / edge tint (virtual bodies: painted into the shallows; carved: the underwater ground tint)" } } }, "tarn": { "type": "group", "label": "tarn: Highland tarn (cold slate)", "phase": 4, "params": { "shallow": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "shallow band (depth < bands.shallow)" }, "mid": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "mid band" }, "deep": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "deep core (darker than any grass)" }, "foam": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "foam (lit albedo)" }, "bed": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "bed / edge tint (virtual bodies: painted into the shallows; carved: the underwater ground tint)" } } }, "spring": { "type": "group", "label": "spring: Hot spring (milky turquoise in a cream sinter rim)", "phase": 4, "params": { "shallow": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "shallow band (depth < bands.shallow)" }, "mid": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "mid band" }, "deep": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "deep core (darker than any grass)" }, "foam": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "foam (lit albedo)" }, "bed": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "bed / edge tint (virtual bodies: painted into the shallows; carved: the underwater ground tint)" } } }, "fall": { "type": "group", "label": "fall: Waterfalls: shallow = body, mid = streak, deep = shadowed body, foam = spray, bed = mist", "phase": 4, "params": { "shallow": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "shallow band (depth < bands.shallow)" }, "mid": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "mid band" }, "deep": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "deep core (darker than any grass)" }, "foam": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "foam (lit albedo)" }, "bed": { "type": "color", "phase": 4, "wired": true, "live": true, "desc": "bed / edge tint (virtual bodies: painted into the shallows; carved: the underwater ground tint)" } } } } }
+  } },
+  "wind": { "label": "Wind / life", "phase": 0, "params": {
+   "grassSway": { "type": "group", "label": "grass tuft sway", "phase": 0, "params": {
+    "ampX": { "type": "number", "min": 0, "max": 0.3, "step": 0.001, "phase": 0, "wired": true, "live": true, "desc": "Sway amplitude x." },
+    "ampZ": { "type": "number", "min": 0, "max": 0.3, "step": 0.001, "phase": 0, "wired": true, "live": true, "desc": "Sway amplitude z." },
+    "speedX": { "type": "number", "min": 0, "max": 10, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Sway speed x." },
+    "speedZ": { "type": "number", "min": 0, "max": 10, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Sway speed z." }
+   } },
+   "clouds": { "type": "group", "label": "cloud motion", "phase": 0, "params": {
+    "seaSpin": { "type": "number", "min": -0.05, "max": 0.05, "step": 0.0001, "phase": 0, "wired": true, "live": true, "desc": "Cloud sea rotation (rad/s)." },
+    "driftAmp": { "type": "number", "min": 0, "max": 1, "step": 0.01, "phase": 0, "wired": true, "live": true, "desc": "Far drift clouds swing amplitude (rad)." },
+    "driftSpeed": { "type": "number", "min": 0, "max": 0.2, "step": 0.001, "phase": 0, "wired": true, "live": true, "desc": "Far drift clouds swing speed." }
+   } },
+   "shared": { "type": "group", "label": "shared wind field", "phase": 5, "params": {
+    "enabled": { "type": "bool", "phase": 5, "wired": false, "live": true, "desc": "Phase 5: one wind uniform (two scrolling noise layers + gusts) for grass, flowers, bushes, canopies." },
+    "strength": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 5, "wired": false, "live": true, "desc": "Overall strength." },
+    "gustStrength": { "type": "number", "min": 0, "max": 2, "step": 0.01, "phase": 5, "wired": false, "live": true, "desc": "Gust strength." },
+    "gustInterval": { "type": "number", "min": 1, "max": 60, "step": 0.5, "phase": 5, "wired": false, "live": true, "desc": "Mean seconds between gusts." },
+    "scale1": { "type": "number", "min": 0, "max": 1, "step": 0.001, "phase": 5, "wired": false, "live": true, "desc": "Noise layer 1 frequency (1/u)." },
+    "speed1": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 5, "wired": false, "live": true, "desc": "Noise layer 1 speed." },
+    "scale2": { "type": "number", "min": 0, "max": 1, "step": 0.001, "phase": 5, "wired": false, "live": true, "desc": "Noise layer 2 frequency (1/u)." },
+    "speed2": { "type": "number", "min": 0, "max": 5, "step": 0.01, "phase": 5, "wired": false, "live": true, "desc": "Noise layer 2 speed." },
+    "canopySway": { "type": "number", "min": 0, "max": 0.2, "step": 0.001, "phase": 5, "wired": false, "live": true, "desc": "Canopy sway amplitude (trunks stay still)." }
+   } },
+   "life": { "type": "group", "label": "ambient life", "phase": 5, "params": {
+    "motes": { "type": "int", "min": 0, "max": 300, "step": 1, "phase": 5, "wired": false, "live": false, "desc": "Pollen / dust motes in sunlit areas (bounded)." },
+    "butterflies": { "type": "int", "min": 0, "max": 30, "step": 1, "phase": 5, "wired": false, "live": false, "desc": "Butterflies near flower patches." },
+    "birds": { "type": "bool", "phase": 5, "wired": false, "live": true, "desc": "Optional distant birds." },
+    "pauseHidden": { "type": "bool", "phase": 5, "wired": false, "live": true, "desc": "Pause when the tab is hidden." },
+    "reducedMotion": { "type": "bool", "phase": 5, "wired": false, "live": true, "desc": "Respect prefers-reduced-motion." }
+   } }
+  } }
+ }
+}

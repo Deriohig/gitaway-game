@@ -1,0 +1,1 @@
+--id crop_carrot_3 --fold 0.5 --rotY 45 --stretch 0.84x1.0x0.84 --lower 0.13 --terra 1 --tex 512 --q 85 --compact --pad --maxKB 200

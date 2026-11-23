@@ -1,0 +1,43 @@
+:root {
+  /* Brand palette */
+  --ivory: #f5f0e6;
+  --cream: #fff8ec;
+  --sage: #9caf88;
+  --meadow: #7d9b70;
+  --forest: #526e58;
+  --dusty: #91b7c8;
+  --sky: #bfd7de;
+  --terracotta: #c98268;
+  --wood: #a9825d;
+  --gold: #e8bd72;
+  --ink: #403d35;
+
+  /* Derived */
+  --ink-soft: #6b665a;
+  --ink-faint: #8e887a;
+  --line: rgba(64, 61, 53, 0.12);
+  --line-strong: rgba(64, 61, 53, 0.2);
+  --panel: rgba(255, 248, 236, 0.92);
+  --panel-solid: #fff8ec;
+  --panel-sunk: #f5ecdc;
+  --shadow: 0 10px 30px -12px rgba(64, 52, 36, 0.35), 0 2px 6px -2px rgba(64, 52, 36, 0.12);
+  --shadow-soft: 0 6px 18px -10px rgba(64, 52, 36, 0.3);
+  --focus: 0 0 0 3px rgba(82, 110, 88, 0.45);
+  --terracotta-deep: #a8624a;
+  --forest-deep: #435c49;
+
+  /* Sky gradient, driven by the time of day */
+  --sky-top: #9cc1d3;
+  --sky-mid: #c9dfe3;
+  --sky-bottom: #f5f0e6;
+  --night: 0;
+
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+
+  --font-ui: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+
+  --ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+}

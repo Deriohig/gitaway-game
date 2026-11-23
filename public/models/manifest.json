@@ -1,0 +1,851 @@
+{
+  "version": 1,
+  "assets": {
+    "farmhouse": {
+      "file": "farmhouse.glb",
+      "status": "ready",
+      "tris": 3646,
+      "notes": "Meshy remake (proof V20; polished: porch lamp; since the roof review the roof slopes carry their own tiling 512 px tile texture, material Roof, and the atlas is 1024 px q85). Nodes Smoke (chimney top), PorchLight (porch lamp spot) and PorchLamp (a hanging lantern there). Two materials are named Glow: the TEXTURED one = the painted walls + an emissive window mask (drive its emissive intensity, do not replace it); the UNTEXTURED one = the lamp glass (swap it for the glow material)."
+    },
+    "windmill": {
+      "file": "windmill.glb",
+      "status": "ready",
+      "tris": 3480,
+      "notes": "Meshy (V21; 1024 px q85 texture since the texture review). Blades spins on local Z (procedural sails, vertex colours). Material Glow = textured window band + emissive mask: drive its emissive intensity, do not replace it."
+    },
+    "well": {
+      "file": "well.glb",
+      "status": "ready",
+      "tris": 1547,
+      "notes": "Meshy (V21). No Tint material yet (the studio tint feature cannot repaint it)."
+    },
+    "bench": {
+      "file": "bench.glb",
+      "status": "ready",
+      "tris": 580,
+      "notes": "Meshy (V21). No Tint material yet."
+    },
+    "haystack": {
+      "file": "haystack.glb",
+      "status": "ready",
+      "tris": 536,
+      "notes": "Meshy (V21; polished to 0.9 wide x 0.84 tall, the brief radius 0.45). Meadow haystacks (the game draws Haystack procedurally today)."
+    },
+    "cart": {
+      "file": "cart.glb",
+      "status": "ready",
+      "tris": 1466,
+      "notes": "Meshy (V21). Meadow prop; no game slot yet."
+    },
+    "hero_tree": {
+      "file": "hero_tree.glb",
+      "status": "ready",
+      "tris": 5105,
+      "notes": "Meshy (V21; polished to 3.4 u tall; 1024 px q85 texture since the texture review). The big round tree at STATIC_TREES[0] in the proof; Canopy = the crown, pivoted near the trunk top. HOME_FENCE[0] runs through its trunk at that spot (art/meshy/README.md)."
+    },
+    "rock_a": {
+      "file": "rock_a.glb",
+      "status": "ready",
+      "tris": 612,
+      "notes": "Meshy boulder_a (V21 rocks)."
+    },
+    "rock_b": {
+      "file": "rock_b.glb",
+      "status": "ready",
+      "tris": 622,
+      "notes": "Meshy boulder_b (V21 rocks)."
+    },
+    "rock_c": {
+      "file": "rock_c.glb",
+      "status": "ready",
+      "tris": 628,
+      "notes": "Meshy boulder_c, a flat slab (V21 rocks)."
+    },
+    "outcrop_a": {
+      "file": "outcrop_a.glb",
+      "status": "ready",
+      "tris": 2075,
+      "notes": "Meshy (V21). Sandstone outcrop, 2.8 u tall; highland riser and islet coast in the proof."
+    },
+    "outcrop_b": {
+      "file": "outcrop_b.glb",
+      "status": "ready",
+      "tris": 2081,
+      "notes": "Meshy (V21). Mossy outcrop, 1.9 u tall; highland riser in the proof."
+    },
+    "sheep": {
+      "file": "sheep.glb",
+      "status": "ready",
+      "tris": 620,
+      "notes": "Procedural (flat palette materials), ~0.74 tall x 0.81 long (the brief size). Head = the grazing pivot at the neck."
+    },
+    "plot": {
+      "file": "plot.glb",
+      "status": "ready",
+      "tris": 240,
+      "notes": "Painted procedural (scripts/assets/plot.mjs + the painted atlas, lib/paintedAtlas.mjs: one textured material, baked shade in COLOR_0; ART-PLAN P0-1). A tilled soil bed of three furrow rows along X (the atlas soil cell: soil.bed #6E5444, shade #5B4538, dry #8A6B55), crests ~0.174 and troughs ~0.146 around the crops' y 0.16, inside weathered grey board edging. 1.02 x 1.02 outside, the soil top 0.94 x 0.94, 0.185 tall, origin at the base centre on y 0. Same footprint as the old flat plot: Garden.tsx needs no change."
+    },
+    "piece_main": {
+      "file": "piece_main.glb",
+      "status": "ready",
+      "tris": 7058,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [0, 0, 0] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top",
+      "height": {
+        "file": "piece_main.height.bin",
+        "origin": [
+          -9.25,
+          -8.75
+        ],
+        "spacing": 0.25,
+        "size": [
+          75,
+          73
+        ]
+      }
+    },
+    "piece_meadow": {
+      "file": "piece_meadow.glb",
+      "status": "ready",
+      "tris": 5024,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [10.9, 0, 11.7] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top; child nodes skirt_islet + skirt_wetland (open-seam cliff skirts: show skirt_<X> while X is not docked, hide it when X starts rising)",
+      "height": {
+        "file": "piece_meadow.height.bin",
+        "origin": [
+          -11,
+          -11.25
+        ],
+        "spacing": 0.25,
+        "size": [
+          101,
+          95
+        ]
+      }
+    },
+    "piece_wetland": {
+      "file": "piece_wetland.glb",
+      "status": "ready",
+      "tris": 4760,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [-12.6, 0, 11.4] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top; child nodes skirt_meadow + skirt_cottage (open-seam cliff skirts: show skirt_<X> while X is not docked, hide it when X starts rising)",
+      "height": {
+        "file": "piece_wetland.height.bin",
+        "origin": [
+          -11.5,
+          -8.5
+        ],
+        "spacing": 0.25,
+        "size": [
+          102,
+          86
+        ]
+      }
+    },
+    "piece_cottage": {
+      "file": "piece_cottage.glb",
+      "status": "ready",
+      "tris": 3724,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [-19.47, 0, 1.02] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top; child nodes skirt_wetland + skirt_highland (open-seam cliff skirts: show skirt_<X> while X is not docked, hide it when X starts rising)",
+      "height": {
+        "file": "piece_cottage.height.bin",
+        "origin": [
+          -6.25,
+          -7.5
+        ],
+        "spacing": 0.25,
+        "size": [
+          72,
+          59
+        ]
+      }
+    },
+    "piece_highland": {
+      "file": "piece_highland.glb",
+      "status": "ready",
+      "tris": 5088,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [-16.37, 3, -17.55] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top; child nodes skirt_cottage + skirt_orchard (open-seam cliff skirts: show skirt_<X> while X is not docked, hide it when X starts rising)",
+      "height": {
+        "file": "piece_highland.height.bin",
+        "origin": [
+          -9.25,
+          -9.75
+        ],
+        "spacing": 0.25,
+        "size": [
+          101,
+          101
+        ]
+      }
+    },
+    "piece_orchard": {
+      "file": "piece_orchard.glb",
+      "status": "ready",
+      "tris": 3436,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [2.8, 0, -15.8] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top; child nodes skirt_highland + skirt_grove (open-seam cliff skirts: show skirt_<X> while X is not docked, hide it when X starts rising)",
+      "height": {
+        "file": "piece_orchard.height.bin",
+        "origin": [
+          -4.75,
+          -11.5
+        ],
+        "spacing": 0.25,
+        "size": [
+          51,
+          78
+        ]
+      }
+    },
+    "piece_grove": {
+      "file": "piece_grove.glb",
+      "status": "ready",
+      "tris": 3888,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [11, 0, -12.3] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top; child nodes skirt_orchard + skirt_islet (open-seam cliff skirts: show skirt_<X> while X is not docked, hide it when X starts rising)",
+      "height": {
+        "file": "piece_grove.height.bin",
+        "origin": [
+          -7.25,
+          -11.75
+        ],
+        "spacing": 0.25,
+        "size": [
+          76,
+          78
+        ]
+      }
+    },
+    "piece_islet": {
+      "file": "piece_islet.glb",
+      "status": "ready",
+      "tris": 4548,
+      "notes": "baked blueprint piece (art/scripts/bake-pieces.mjs): piece-local, pivot = dockedPosition [18.8, 0, -4.2] in art/config/blueprint.pieces.json; COLOR_0 linear (Golden afternoon paint); top faces first (mesh extras.faceRanges); height grid Float32 LE, x fastest, NaN off the top; child nodes skirt_grove + skirt_meadow (open-seam cliff skirts: show skirt_<X> while X is not docked, hide it when X starts rising)",
+      "height": {
+        "file": "piece_islet.height.bin",
+        "origin": [
+          -10.75,
+          -7.5
+        ],
+        "spacing": 0.25,
+        "size": [
+          86,
+          60
+        ]
+      }
+    },
+    "tree_round_a": {
+      "file": "tree_round_a.glb",
+      "status": "ready",
+      "tris": 2792,
+      "notes": "painterly broadleaf: art/reskin/tree_round_a.glb (reskin.mjs): MegaKit CommonTree_1 (Quaternius, CC0) painted from the tree_oak concept, copied unchanged (art/reskin/SOURCES.md); bark (tree_round_a_bark, JPEG, opaque) on the root, leaves (tree_round_a_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_round_b": {
+      "file": "tree_round_b.glb",
+      "status": "ready",
+      "tris": 3392,
+      "notes": "painterly broadleaf: art/reskin/tree_round_b.glb (reskin.mjs): MegaKit CommonTree_2 (Quaternius, CC0) painted from the tree_beech concept, copied unchanged (art/reskin/SOURCES.md); bark (tree_round_b_bark, JPEG, opaque) on the root, leaves (tree_round_b_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_spread": {
+      "file": "tree_spread.glb",
+      "status": "ready",
+      "tris": 3460,
+      "notes": "painterly broadleaf: art/reskin/tree_spread.glb (reskin.mjs): MegaKit TwistedTree_3 (Quaternius, CC0) painted from the tree_maple concept, copied unchanged (art/reskin/SOURCES.md); bark (tree_spread_bark, JPEG, opaque) on the root, leaves (tree_spread_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_sapling": {
+      "file": "tree_sapling.glb",
+      "status": "ready",
+      "tris": 1138,
+      "notes": "painterly broadleaf: art/reskin/tree_sapling.glb (reskin.mjs): MegaKit CommonTree_5 (Quaternius, CC0) painted from the tree_sapling concept, copied unchanged (art/reskin/SOURCES.md); bark (tree_sapling_bark, JPEG, opaque) on the root, leaves (tree_sapling_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_pine_a": {
+      "file": "tree_pine_a.glb",
+      "status": "ready",
+      "tris": 1200,
+      "notes": "painterly conifer (rebuilt round a straight trunk, its fronds evenly round it: reskin.mjs step 3c): art/reskin/tree_pine_a.glb (reskin.mjs): MegaKit Pine_5 (Quaternius, CC0) painted from the tree_fir concept, copied unchanged (art/reskin/SOURCES.md); bark (tree_pine_a_bark, JPEG, opaque) on the root, leaves (tree_pine_a_leaves, PNG, alphaMode MASK) in node Crown > Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_pine_b": {
+      "file": "tree_pine_b.glb",
+      "status": "ready",
+      "tris": 1200,
+      "notes": "painterly conifer (rebuilt round a straight trunk, its fronds evenly round it: reskin.mjs step 3c): art/reskin/tree_pine_b.glb (reskin.mjs): MegaKit Pine_1 (Quaternius, CC0) painted from the tree_fir concept, copied unchanged (art/reskin/SOURCES.md); bark (tree_pine_b_bark, JPEG, opaque) on the root, leaves (tree_pine_b_leaves, PNG, alphaMode MASK) in node Crown > Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_fruit": {
+      "file": "tree_fruit.glb",
+      "status": "ready",
+      "tris": 2840,
+      "notes": "painterly broadleaf: art/reskin/tree_fruit.glb (reskin.mjs): MegaKit CommonTree_1 (Quaternius, CC0) painted from the tree_apple concept + painted apple cards (tree_fruit_overlay), copied unchanged (art/reskin/SOURCES.md); bark (tree_fruit_bark, JPEG, opaque) on the root, leaves (tree_fruit_leaves, PNG, alphaMode MASK) in node Canopy + the apples (tree_fruit_overlay, MASK); untinted; not placed by the composition (the game's fruit-tree slots)"
+    },
+    "shrub_mound": {
+      "file": "shrub_mound.glb",
+      "status": "ready",
+      "tris": 24,
+      "notes": "card shrub (woodland-edge belt), lib/plantkit.mjs SHRUBS: crossed and tilted cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up); untinted"
+    },
+    "shrub_low": {
+      "file": "shrub_low.glb",
+      "status": "ready",
+      "tris": 36,
+      "notes": "card shrub (woodland-edge belt), lib/plantkit.mjs SHRUBS: crossed and tilted cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up); untinted"
+    },
+    "bush_a": {
+      "file": "bush_a.glb",
+      "status": "ready",
+      "tris": 600,
+      "notes": "painterly bush: art/reskin/bush_a.glb (reskin.mjs): MegaKit Bush_Common (Quaternius, CC0) painted from the bush_leafy concept, copied unchanged (art/reskin/SOURCES.md); one node: leaves (PNG, alphaMode MASK); untinted"
+    },
+    "bush_flowering": {
+      "file": "bush_flowering.glb",
+      "status": "ready",
+      "tris": 599,
+      "notes": "painterly bush: art/reskin/bush_flowering.glb (reskin.mjs): MegaKit Bush_Common_Flowers (Quaternius, CC0) painted from the bush_flowering concept, copied unchanged (art/reskin/SOURCES.md); one node: leaves (PNG, alphaMode MASK); untinted"
+    },
+    "grass_tuft": {
+      "file": "grass_tuft.glb",
+      "status": "ready",
+      "tris": 60,
+      "notes": "assets/grass_tuft.mjs geometry, palette TerrainGrassDark (the proof's tuft colour) as COLOR_0; the proof sways it in a shader"
+    },
+    "flower_head": {
+      "file": "flower_head.glb",
+      "status": "ready",
+      "tris": 20,
+      "notes": "drift flower head: smooth 0.06 icosahedron, 0.8 y-squash baked, white COLOR_0 (colour per instance); yOffset 0.075"
+    },
+    "paths_main": {
+      "file": "paths_main.glb",
+      "status": "ready",
+      "tris": 1308,
+      "notes": "path ribbons for piece main (to_meadow, to_highland, to_islet, to_cottage, to_wetland, to_orchard, to_grove): piece-local, on the baked top of piece_main.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "paths_meadow": {
+      "file": "paths_meadow.glb",
+      "status": "ready",
+      "tris": 1524,
+      "notes": "path ribbons for piece meadow (to_meadow, meadow_hut, meadow_lake, rim_walk): piece-local, on the baked top of piece_meadow.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "paths_wetland": {
+      "file": "paths_wetland.glb",
+      "status": "ready",
+      "tris": 672,
+      "notes": "path ribbons for piece wetland (to_wetland, meadow_lake): piece-local, on the baked top of piece_wetland.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "paths_cottage": {
+      "file": "paths_cottage.glb",
+      "status": "ready",
+      "tris": 444,
+      "notes": "path ribbons for piece cottage (to_cottage, to_wetland): piece-local, on the baked top of piece_cottage.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "paths_highland": {
+      "file": "paths_highland.glb",
+      "status": "ready",
+      "tris": 1404,
+      "notes": "path ribbons for piece highland (to_highland, base_to_orchard, plateau_walk): piece-local, on the baked top of piece_highland.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "paths_orchard": {
+      "file": "paths_orchard.glb",
+      "status": "ready",
+      "tris": 600,
+      "notes": "path ribbons for piece orchard (to_orchard, base_to_orchard, orchard_to_grove): piece-local, on the baked top of piece_orchard.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "paths_grove": {
+      "file": "paths_grove.glb",
+      "status": "ready",
+      "tris": 348,
+      "notes": "path ribbons for piece grove (to_grove, orchard_to_grove): piece-local, on the baked top of piece_grove.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "paths_islet": {
+      "file": "paths_islet.glb",
+      "status": "ready",
+      "tris": 1152,
+      "notes": "path ribbons for piece islet (to_islet, to_grove, rim_walk): piece-local, on the baked top of piece_islet.glb + 0.035 u, COLOR_0 rgba = the V21 path tone with soft edges in alpha, one alphaMode BLEND material; add to the piece group"
+    },
+    "chicken": {
+      "file": "chicken.glb",
+      "status": "ready",
+      "tris": 1158,
+      "notes": "Meshy (batch 2). 0.45 tall (brief), faces +Z. Head = cut off by a plane from the nape to the throat, pivot at the nape (0, 0.31, 0.04): a forward peck dips it into the chest. Flat caps on both sides of the cut. Cream coat (the game tints instances)."
+    },
+    "duck": {
+      "file": "duck.glb",
+      "status": "ready",
+      "tris": 1048,
+      "notes": "Meshy (batch 2). 0.30 tall, faces +Z. y 0 = the waterline: the hull dips to y -0.05 (the game puts the origin ~0.02 above the water, so ~0.03 of hull sits under it)."
+    },
+    "dog": {
+      "file": "dog.glb",
+      "status": "ready",
+      "tris": 1918,
+      "notes": "Meshy (batch 2). 0.55 tall x 0.72 long, faces +Z (head turned a little to +X, as in its concept). Head cut by a nape-to-throat plane, pivot at the nape (0, 0.45, 0.14); Tail cut across its base, pivot (0, 0.33, -0.2), wags on Y. 1,918 tris with the clean cuts: 28 % over the 1,500 animal budget."
+    },
+    "cat_sleeping": {
+      "file": "cat_sleeping.glb",
+      "status": "ready",
+      "tris": 1394,
+      "notes": "Meshy (batch 2). Curled ginger tabby, 0.23 tall x 0.52 x 0.45. Its sleeping face looks along +X (the game yaws the cat -0.4 so +X points at the farmhouse door and the camera sees the face). Head = the whole head (both ears, the full face), cut under the chin and behind the head; pivot at the back-top of the head (0, 0.16, 0.13), so a chin-up tilt (rotation.z ~0.3) hides the cut far better than a +y lift, which shows the flat cut surfaces."
+    },
+    "goat": {
+      "file": "goat.glb",
+      "status": "ready",
+      "tris": 1364,
+      "notes": "Meshy (batch 2). 0.68 tall x 0.75 long, faces +Z. Ivory with warm-brown patches. Head (with both horns and the beard) cut by a nape-to-throat plane, pivot at the nape (0, 0.5, 0.08): grazing dips it into the chest."
+    },
+    "lighthouse": {
+      "file": "lighthouse.glb",
+      "status": "ready",
+      "tris": 3028,
+      "notes": "Meshy (batch 2). 3.75 tall, door on +Z, plinth r ~0.83. Material Glow = textured lamp-room glass + emissive mask (drive its intensity, do not replace it). Beam = an empty at the scene root in the lamp room centre (0, 2.67, 0.06), lower than the stand-in lamp (y 3.05)."
+    },
+    "greenhouse": {
+      "file": "greenhouse.glb",
+      "status": "ready",
+      "tris": 2822,
+      "notes": "Meshy (batch 2, greenhouse v2): frosted glass on a stone base with a terracotta ridge, a climbing vine and pots by the door. 2.05 (ridge along X) x 1.50 tall x 1.21 deep, door on +X. The frosted panes are painted and opaque (plant silhouettes on them): no Glass material, so the game draws them solid."
+    },
+    "beehive": {
+      "file": "beehive.glb",
+      "status": "ready",
+      "tris": 572,
+      "notes": "Meshy (batch 2). 0.42 x 0.73 x 0.42 with its tiled roof, entrance and landing board on +Z. No bees modelled (the game flies its own)."
+    },
+    "lantern": {
+      "file": "lantern.glb",
+      "status": "ready",
+      "tris": 558,
+      "notes": "Meshy (batch 2). Post on the origin, 0.9 tall, the lantern hangs from an arm on +X (glass x 0.17-0.28, y 0.49-0.65). Material Glow = textured glass + emissive mask (drive its intensity, do not replace it). The moth perch (0.18, 0.885) is on the arm."
+    },
+    "scarecrow": {
+      "file": "scarecrow.glb",
+      "status": "ready",
+      "tris": 731,
+      "notes": "Meshy (batch 2). 1.45 tall, faces +Z; the concept arms are 1.25 across (brief 0.85), above the crops."
+    },
+    "grass_short": {
+      "file": "grass_short.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "ground cover (grass), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "grass_tall": {
+      "file": "grass_tall.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "ground cover (grass), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "grass_seedhead": {
+      "file": "grass_seedhead.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "ground cover (grass), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "clover_patch": {
+      "file": "clover_patch.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "ground cover (grass), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "flower_daisy": {
+      "file": "flower_daisy.glb",
+      "status": "ready",
+      "tris": 8,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "flower_buttercup": {
+      "file": "flower_buttercup.glb",
+      "status": "ready",
+      "tris": 8,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "flower_poppy": {
+      "file": "flower_poppy.glb",
+      "status": "ready",
+      "tris": 8,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "flower_cornflower": {
+      "file": "flower_cornflower.glb",
+      "status": "ready",
+      "tris": 8,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "perennial_lavender": {
+      "file": "perennial_lavender.glb",
+      "status": "ready",
+      "tris": 16,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "perennial_foxglove": {
+      "file": "perennial_foxglove.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "perennial_oxeye": {
+      "file": "perennial_oxeye.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "fern_clump": {
+      "file": "fern_clump.glb",
+      "status": "ready",
+      "tris": 36,
+      "notes": "ground cover (flowers), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    },
+    "crop_sunflower_1": {
+      "file": "crop_sunflower_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): three sunflowers (stage 1: a seedling cluster), stage 1 (sprout): a cluster of seven seedlings across the plot, ~0.22 tall. The whole plot's contents (0.94 x 0.94), y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_sunflower_2": {
+      "file": "crop_sunflower_2.glb",
+      "status": "ready",
+      "tris": 24,
+      "notes": "Painterly kit (lib/plantkit.mjs): three sunflowers (stage 1: a seedling cluster), stage 2 (growing): three leafy stems with green buds, ~0.64 tall. The whole plot's contents (0.94 x 0.94), y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_sunflower_3": {
+      "file": "crop_sunflower_3.glb",
+      "status": "ready",
+      "tris": 36,
+      "notes": "Painterly kit (lib/plantkit.mjs): three sunflowers (stage 1: a seedling cluster), stage 3 (ready): three gold heads, each its own card facing the default camera (azimuth 45 deg, tilted up toward it, a green back behind it), up to 1.17 tall, a 0.84 footprint. The whole plot's contents (0.94 x 0.94), y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_lavender_1": {
+      "file": "crop_lavender_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): three lavender bushes (stage 1: a tuft cluster), stage 1 (sprout): a cluster of seven grey-green tufts across the plot, ~0.21 tall. The whole plot's contents (0.94 x 0.94), y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_lavender_2": {
+      "file": "crop_lavender_2.glb",
+      "status": "ready",
+      "tris": 36,
+      "notes": "Painterly kit (lib/plantkit.mjs): three lavender bushes (stage 1: a tuft cluster), stage 2 (growing): three bushy mounds with pale buds, ~0.30 tall. The whole plot's contents (0.94 x 0.94), y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_lavender_3": {
+      "file": "crop_lavender_3.glb",
+      "status": "ready",
+      "tris": 36,
+      "notes": "Painterly kit (lib/plantkit.mjs): three lavender bushes (stage 1: a tuft cluster), stage 3 (ready): three full bushes of purple spikes, ~0.52 tall, a 0.86 footprint. The whole plot's contents (0.94 x 0.94), y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "flowerbed": {
+      "file": "flowerbed.glb",
+      "status": "ready",
+      "tris": 545,
+      "notes": "Painterly kit (lib/plantkit.mjs): the raised wildflower bed (~1.1 x 0.8, 0.44 tall, inside the 0.6 u disc the layout keeps clear): a stone-edged soil mound (vertex colours) planted with the kit's daisies, buttercups, poppies, cornflowers, lavender and ox-eyes on a leaf carpet (cut-out cards, MASK alpha). For FlowerBed (Nature.tsx) to load as <Asset id=\"flowerbed\">, today's bed as the fallback."
+    },
+    "water_main": {
+      "file": "water_main.glb",
+      "status": "ready",
+      "tris": 349,
+      "notes": "water revamp (art/scripts/bake-water.mjs): piece-local water surfaces / ribbons / falls of piece_main, one placeholder material 'Water' the game replaces; map + bodies in water.json"
+    },
+    "water_wetland": {
+      "file": "water_wetland.glb",
+      "status": "ready",
+      "tris": 328,
+      "notes": "water revamp (art/scripts/bake-water.mjs): piece-local water surfaces / ribbons / falls of piece_wetland, one placeholder material 'Water' the game replaces; map + bodies in water.json"
+    },
+    "water_highland": {
+      "file": "water_highland.glb",
+      "status": "ready",
+      "tris": 104,
+      "notes": "water revamp (art/scripts/bake-water.mjs): piece-local water surfaces / ribbons / falls of piece_highland, one placeholder material 'Water' the game replaces; map + bodies in water.json"
+    },
+    "tree_birch": {
+      "file": "tree_birch.glb",
+      "status": "ready",
+      "tris": 2648,
+      "notes": "painterly broadleaf: art/reskin/tree_birch.glb (reskin.mjs): MegaKit CommonTree_3 (Quaternius, CC0) painted from the tree_birch concept, copied unchanged (art/reskin/SOURCES.md); bark (tree_birch_bark, JPEG, opaque) on the root, leaves (tree_birch_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "bush_berry": {
+      "file": "bush_berry.glb",
+      "status": "ready",
+      "tris": 600,
+      "notes": "painterly bush: art/reskin/bush_berry.glb (reskin.mjs): MegaKit Bush_Common (Quaternius, CC0) painted from the bush_leafy concept + painted berry cards (bush_berry_overlay), copied unchanged (art/reskin/SOURCES.md); one node: leaves (PNG, alphaMode MASK) + the berries (bush_berry_overlay, MASK); untinted"
+    },
+    "tree_oak_autumn": {
+      "file": "tree_oak_autumn.glb",
+      "status": "ready",
+      "tris": 2792,
+      "notes": "autumn accent (tree_round_a recoloured): art/reskin/tree_oak_autumn.glb (reskin.mjs): MegaKit CommonTree_1 (Quaternius, CC0) as tree_round_a, its foliage on an autumn ramp at 22 deg, copied unchanged (art/reskin/SOURCES.md); bark (tree_oak_autumn_bark, JPEG, opaque) on the root, leaves (tree_oak_autumn_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_beech_autumn": {
+      "file": "tree_beech_autumn.glb",
+      "status": "ready",
+      "tris": 3392,
+      "notes": "autumn accent (tree_round_b recoloured): art/reskin/tree_beech_autumn.glb (reskin.mjs): MegaKit CommonTree_2 (Quaternius, CC0) as tree_round_b, its foliage on an autumn ramp at 36 deg, copied unchanged (art/reskin/SOURCES.md); bark (tree_beech_autumn_bark, JPEG, opaque) on the root, leaves (tree_beech_autumn_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "tree_birch_autumn": {
+      "file": "tree_birch_autumn.glb",
+      "status": "ready",
+      "tris": 2648,
+      "notes": "autumn accent (tree_birch recoloured): art/reskin/tree_birch_autumn.glb (reskin.mjs): MegaKit CommonTree_3 (Quaternius, CC0) as tree_birch, its foliage on an autumn ramp at 48 deg, copied unchanged (art/reskin/SOURCES.md); bark (tree_birch_autumn_bark, JPEG, opaque) on the root, leaves (tree_birch_autumn_leaves, PNG, alphaMode MASK) in node Canopy; per-instance near-white crown tint in composition.pieces.json"
+    },
+    "shrub_heather": {
+      "file": "shrub_heather.glb",
+      "status": "ready",
+      "tris": 36,
+      "notes": "card shrub (woodland-edge belt), lib/plantkit.mjs SHRUBS: crossed and tilted cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up); untinted"
+    },
+    "tree_pine_a_far": {
+      "file": "tree_pine_a_far.glb",
+      "status": "ready",
+      "tris": 493,
+      "notes": "far version of tree_pine_a for distant / low-power draws (assets.tree_pine_a.far): art/reskin/tree_pine_a_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk a six-sided tube along the straight near trunk; every frond kept, each simplified (none below 6 triangles); the same material names, alpha modes and samplers as tree_pine_a.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_pine_a_far > Crown > Canopy)"
+    },
+    "tree_pine_b_far": {
+      "file": "tree_pine_b_far.glb",
+      "status": "ready",
+      "tris": 494,
+      "notes": "far version of tree_pine_b for distant / low-power draws (assets.tree_pine_b.far): art/reskin/tree_pine_b_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk a six-sided tube along the straight near trunk; every frond kept, each simplified (none below 6 triangles); the same material names, alpha modes and samplers as tree_pine_b.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_pine_b_far > Crown > Canopy)"
+    },
+    "tree_round_a_far": {
+      "file": "tree_round_a_far.glb",
+      "status": "ready",
+      "tris": 971,
+      "notes": "far version of tree_round_a for distant / low-power draws (assets.tree_round_a.far): art/reskin/tree_round_a_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_round_a.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_round_a_far > Canopy)"
+    },
+    "tree_round_b_far": {
+      "file": "tree_round_b_far.glb",
+      "status": "ready",
+      "tris": 720,
+      "notes": "far version of tree_round_b for distant / low-power draws (assets.tree_round_b.far): art/reskin/tree_round_b_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_round_b.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_round_b_far > Canopy)"
+    },
+    "tree_spread_far": {
+      "file": "tree_spread_far.glb",
+      "status": "ready",
+      "tris": 980,
+      "notes": "far version of tree_spread for distant / low-power draws (assets.tree_spread.far): art/reskin/tree_spread_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_spread.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_spread_far > Canopy)"
+    },
+    "tree_sapling_far": {
+      "file": "tree_sapling_far.glb",
+      "status": "ready",
+      "tris": 359,
+      "notes": "far version of tree_sapling for distant / low-power draws (assets.tree_sapling.far): art/reskin/tree_sapling_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_sapling.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_sapling_far > Canopy)"
+    },
+    "tree_birch_far": {
+      "file": "tree_birch_far.glb",
+      "status": "ready",
+      "tris": 931,
+      "notes": "far version of tree_birch for distant / low-power draws (assets.tree_birch.far): art/reskin/tree_birch_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_birch.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_birch_far > Canopy)"
+    },
+    "tree_fruit_far": {
+      "file": "tree_fruit_far.glb",
+      "status": "ready",
+      "tris": 995,
+      "notes": "far version of tree_fruit for distant / low-power draws (assets.tree_fruit.far): art/reskin/tree_fruit_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown, 6 apples; the same material names, alpha modes and samplers as tree_fruit.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_fruit_far > Canopy)"
+    },
+    "tree_oak_autumn_far": {
+      "file": "tree_oak_autumn_far.glb",
+      "status": "ready",
+      "tris": 971,
+      "notes": "far version of tree_oak_autumn for distant / low-power draws (assets.tree_oak_autumn.far): art/reskin/tree_oak_autumn_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_oak_autumn.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_oak_autumn_far > Canopy)"
+    },
+    "tree_beech_autumn_far": {
+      "file": "tree_beech_autumn_far.glb",
+      "status": "ready",
+      "tris": 720,
+      "notes": "far version of tree_beech_autumn for distant / low-power draws (assets.tree_beech_autumn.far): art/reskin/tree_beech_autumn_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_beech_autumn.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_beech_autumn_far > Canopy)"
+    },
+    "tree_birch_autumn_far": {
+      "file": "tree_birch_autumn_far.glb",
+      "status": "ready",
+      "tris": 931,
+      "notes": "far version of tree_birch_autumn for distant / low-power draws (assets.tree_birch_autumn.far): art/reskin/tree_birch_autumn_far.glb (reskin.mjs, from the same build), copied unchanged; the trunk alone, simplified; the leaf cards thinned (the least seen first) and grown into the crown; the same material names, alpha modes and samplers as tree_birch_autumn.glb (bind by name), its own textures downsampled to 256 px; the same node structure and Canopy pivot (root tree_birch_autumn_far > Canopy)"
+    },
+    "woodshed": {
+      "file": "woodshed.glb",
+      "status": "ready",
+      "tris": 1196,
+      "notes": "Painted procedural (scripts/assets/woodshed.mjs + the painted atlas, lib/paintedAtlas.mjs: one textured material, one 512 px sRGB JPEG albedo, baked shade in COLOR_0). Lean-to, origin at the base centre on y 0, open front +Z: posts 1.0 x 0.6, the terracotta roof (tile courses, darker trim) ~0.84 over the back posts and ~0.65 over the front, overhanging to 1.16 x 0.76 (1.16 x 0.79 overall: the axe head pokes 2 cm past the front edge of the roof), 0.89 tall; stone footing, back wall of boards, 22 logs (rows 6/5/6/5) with painted ring ends on +Z, an axe on the front-left post. For <Asset id=\"woodshed\" fallback={<WoodshedShell/>}>."
+    },
+    "wetland_jetty": {
+      "file": "wetland_jetty.glb",
+      "status": "ready",
+      "tris": 450,
+      "notes": "Painted procedural (scripts/assets/wetland_jetty.mjs + the painted atlas, one textured material). y 0 = the waterline (set it on the lake level). Runs along Z centred on the origin, 0.7 x 1.7: the SHORE end at -Z (z -0.85, a sill log under it at y 0.11-0.16 for the bank), the far end at +Z. Deck top y 0.2 on four piles down to y -0.3 (wet below the waterline); mooring post to 0.45 with a rope loop at (0.3, 0.74), a bucket and a stool on the far end."
+    },
+    "barnaby": {
+      "file": "barnaby.glb",
+      "status": "ready",
+      "tris": 1073,
+      "notes": "Painted procedural (scripts/assets/barnaby.mjs + the painted atlas, one textured material). Barnaby Wick, the wizard: ONE rigid mesh on the single root node \"barnaby\" (rotate that node to rock him). Origin at his feet on y 0, facing +Z, 1.06 tall, every vertex within 0.26 u of the y axis (his robe hem is the widest part, 0.256). A tall pointed hat (its tip flops to his left, +X) with a brass band, a slate-teal robe, a rust scarf, hands clasped in front, a brass lantern at his left hip, a satchel of papers at his right hip. For <Asset id=\"barnaby\" fallback={<BarnabyShell/>}>."
+    },
+    "tower_ruin": {
+      "file": "tower_ruin.glb",
+      "status": "ready",
+      "tris": 1380,
+      "notes": "Painted procedural (scripts/assets/tower_ruin.mjs + the painted atlas, one textured material). The broken base of a round dry-stone tower, centred on the origin (the ring centre), base on y 0, ~2.0 across, 1.28 tall at the back (-Z), knee height at the sides, open front +Z. Back wall inner face 0.73 from the centre; Barnaby stands at model (0, -0.40). The game turns it so +Z points along piece-local (0.41, 0.91): rotation.y = atan2(0.41, 0.91) = 0.423 rad."
+    },
+    "barnaby_camp": {
+      "file": "barnaby_camp.glb",
+      "status": "ready",
+      "tris": 711,
+      "notes": "Painted procedural (scripts/assets/barnaby_camp.mjs + the painted atlas, one textured material). Lean-to over a bedroll, origin at the footprint centre on y 0, open front +Z (rotation.y pi/4 to face the default camera, like the woodshed); 1.0 x 0.7, 0.70 tall. Forked poles and a ridge pole, a patched canvas tarp sloping to the back, guy lines and pegs; a bedroll with a check blanket and a rolled pillow; books with a candle stub and a kettle on three stones out front."
+    },
+    "crop_radish_1": {
+      "file": "crop_radish_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the radish sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_radish_2": {
+      "file": "crop_radish_2.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing radish, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_radish_3": {
+      "file": "crop_radish_3.glb",
+      "status": "ready",
+      "tris": 2470,
+      "notes": "Meshy (the garden batch): a ready radish: a rosette of spoon leaves over a round red root, the root's lower part sunk into the soil (min y -0.12); 0.82 u above the soil, a 0.92 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "crop_carrot_1": {
+      "file": "crop_carrot_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the carrot sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_carrot_2": {
+      "file": "crop_carrot_2.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing carrot, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_carrot_3": {
+      "file": "crop_carrot_3.glb",
+      "status": "ready",
+      "tris": 1899,
+      "notes": "Meshy (the garden batch): a ready carrot: a fan of feathery fronds over a fat orange shoulder (the fronds a shallow V facing the default camera; the root's tip sunk into the soil, min y -0.13); 0.87 u above the soil, a 0.84 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "crop_wheat_1": {
+      "file": "crop_wheat_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the wheat sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_wheat_2": {
+      "file": "crop_wheat_2.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing wheat, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_wheat_3": {
+      "file": "crop_wheat_3.glb",
+      "status": "ready",
+      "tris": 1436,
+      "notes": "Meshy (the garden batch): a ripe clump of wheat: golden ears on straw stalks (a shallow V facing the default camera); 1.20 u above the soil, a 0.88 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "crop_lettuce_1": {
+      "file": "crop_lettuce_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the lettuce sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_lettuce_2": {
+      "file": "crop_lettuce_2.glb",
+      "status": "ready",
+      "tris": 32,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing lettuce, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_lettuce_3": {
+      "file": "crop_lettuce_3.glb",
+      "status": "ready",
+      "tris": 1638,
+      "notes": "Meshy (the garden batch): a loose-leaf lettuce: an open rosette of frilled leaves; 0.43 u above the soil, a 0.92 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "crop_tomato_1": {
+      "file": "crop_tomato_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the tomato sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_tomato_2": {
+      "file": "crop_tomato_2.glb",
+      "status": "ready",
+      "tris": 8,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing tomato, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_tomato_3": {
+      "file": "crop_tomato_3.glb",
+      "status": "ready",
+      "tris": 2186,
+      "notes": "Meshy (the garden batch): a staked tomato plant with ripe tomatoes all round; 1.20 u above the soil, a 0.76 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "crop_pumpkin_1": {
+      "file": "crop_pumpkin_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the pumpkin sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_pumpkin_2": {
+      "file": "crop_pumpkin_2.glb",
+      "status": "ready",
+      "tris": 24,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing pumpkin, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_pumpkin_3": {
+      "file": "crop_pumpkin_3.glb",
+      "status": "ready",
+      "tris": 2476,
+      "notes": "Meshy (the garden batch): a ripe pumpkin among low lobed leaves and a curly vine; 0.34 u above the soil, a 0.92 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "crop_blueberry_1": {
+      "file": "crop_blueberry_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the blueberry sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_blueberry_2": {
+      "file": "crop_blueberry_2.glb",
+      "status": "ready",
+      "tris": 12,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing blueberry, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_blueberry_3": {
+      "file": "crop_blueberry_3.glb",
+      "status": "ready",
+      "tris": 2101,
+      "notes": "Meshy (the garden batch): a rounded blueberry bush with dusty blue berries; 0.67 u above the soil, a 0.76 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "crop_cranberry_1": {
+      "file": "crop_cranberry_1.glb",
+      "status": "ready",
+      "tris": 56,
+      "notes": "Painterly kit (lib/plantkit.mjs): the cranberry sprouts, a cluster of seven seedlings across the plot (stage 1). y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_cranberry_2": {
+      "file": "crop_cranberry_2.glb",
+      "status": "ready",
+      "tris": 36,
+      "notes": "Painterly kit (lib/plantkit.mjs): the growing cranberry, one young plant in the middle of the plot about half the ready size (stage 2), in the ready model's greens. y 0 = the soil; cut-out cards (MASK alpha)."
+    },
+    "crop_cranberry_3": {
+      "file": "crop_cranberry_3.glb",
+      "status": "ready",
+      "tris": 2010,
+      "notes": "Meshy (the garden batch): a low mounded cranberry mat with red berries (its Meshy leaves were painted brown: hue-shifted to green in the finish, the berries kept); 0.37 u above the soil, a 0.92 u footprint filling the 0.94 soil, front +Z (turned so its best side faces the default camera). One painted atlas, 512 px JPEG. Stage 3 (ready)."
+    },
+    "shelter": {
+      "file": "shelter.glb",
+      "status": "ready",
+      "tris": 590,
+      "notes": "Painted procedural (scripts/assets/shelter.mjs + the painted atlas, lib/paintedAtlas.mjs: one textured material, one 512 px sRGB JPEG albedo, baked shade in COLOR_0). The meadow's open sheep lean-to; the SAME FILE as sheep_shelter.glb (identical bytes, root node \"shelter\"). Origin at the base centre on y 0, open front +Z: keep the game's rotation 0.7 at MEADOW.shelter and the open side and the hay face the default camera. 1.40 x 1.10, 1.35 tall: a terracotta tile roof high at the open front (~1.35) and low at the back (eave ~0.74), plank sheathing on three rafters under it, a stone footing under the back and the sides, a plank back wall, low plank side walls (~0.56), two front posts at x +-0.58, z 0.40 (the opening between them is 1.08 wide); inside, a hay bale tied with twine against the back wall and a little loose hay. For <Asset id=\"shelter\" fallback={today's Shelter mesh}>."
+    },
+    "sheep_shelter": {
+      "file": "sheep_shelter.glb",
+      "status": "ready",
+      "tris": 590,
+      "notes": "The identical file to shelter.glb (the same bytes: built from scripts/assets/shelter.mjs, root node \"shelter\"; ASSETS.md sheep_shelter: \"ship the identical file under this id too\"). See the shelter entry for the model."
+    },
+    "visitor_hare": {
+      "file": "visitor_hare.glb",
+      "status": "ready",
+      "tris": 1470,
+      "notes": "Meshy (the owner's concept B: sitting up, one ear turned out as if listening). The meadow's brown hare, 0.21 wide (the turned ear) x 0.45 tall x 0.27 long, base on y 0, facing +Z; warm golden-brown coat, cream chest, ink ear tips. ONE mesh, one 512 px albedo, no bones or named nodes yet (no Head: the rig task on art/animal-rigs re-skins it as hare_rig with Head, ears, lids and Idle / Look / EarTwitch / Groom / Hop / Alert clips). The game's <Asset id=\"visitor_hare\"> draws it unscaled (the Visitors.tsx `scale` applies to the stand-in only)."
+    },
+    "pebbles": {
+      "file": "pebbles.glb",
+      "status": "ready",
+      "tris": 16,
+      "notes": "ground cover (rocks), the painterly kit: crossed cards with a painted cut-out PNG (alphaMode MASK, two-sided by duplicated faces, normals leaning up), lib/plantkit.mjs"
+    }
+  }
+}

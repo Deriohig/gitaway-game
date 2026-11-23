@@ -1,0 +1,15 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Permissions for the main window. The folder picker runs from the Rust side, so no dialog permission is granted to the web view. The window permissions let Settings → Attention give the window its Normal, Strip and Corner layouts and keep it on top (src/ui/windowLayout.ts).",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-maximize",
+    "core:window:allow-set-always-on-top",
+    "core:window:allow-set-min-size",
+    "core:window:allow-set-position",
+    "core:window:allow-set-size",
+    "core:window:allow-unmaximize"
+  ]
+}

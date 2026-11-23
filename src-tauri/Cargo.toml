@@ -1,0 +1,30 @@
+[workspace]
+members = [".", "crates/git-activity"]
+resolver = "2"
+
+[package]
+name = "gitaway"
+version = "0.1.0"
+description = "Commit code. Escape to the countryside. An ambient farming game that grows with your work."
+edition = "2021"
+rust-version = "1.77.2"
+publish = false
+
+[lib]
+# The `_lib` suffix keeps the library name from clashing with the binary on
+# Windows (https://github.com/rust-lang/cargo/issues/8519).
+name = "gitaway_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+git-activity = { path = "crates/git-activity" }
+
+[profile.release]
+strip = true

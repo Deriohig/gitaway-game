@@ -1,0 +1,189 @@
+/* Journal (A1): the day-by-day list in Journal → Journal. */
+
+.journal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* The chips wrap, so every kind is in sight without scrolling sideways. */
+.journal__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.filter-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-solid);
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.filter-chip:hover {
+  border-color: var(--sage);
+}
+.filter-chip.is-active {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--cream);
+}
+.filter-chip.is-active svg {
+  filter: brightness(1.15);
+}
+/* Days out of sight skip styling and layout: with thousands of lines open, the
+   sky's colours changing on the page root would otherwise restyle every one.
+   That clips painting to the day, so it gets room for a line's focus ring. */
+.journal__day {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 240px;
+  padding: 3px;
+  margin: -3px;
+}
+.journal__date {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+.journal__entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.journal__entry {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  padding: 8px 6px 8px 10px;
+  border-radius: 12px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+}
+.journal__entry--story {
+  background: transparent;
+  border-style: dashed;
+}
+.journal__entry--story .journal__text strong {
+  font-style: italic;
+  font-weight: 500;
+}
+.journal__icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--panel-sunk);
+}
+.journal__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.journal__text strong {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.journal__text span {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.journal__note {
+  margin-top: 3px;
+  padding: 3px 8px;
+  border-left: 2px solid var(--sage);
+  border-radius: 0 6px 6px 0;
+  background: rgba(156, 175, 136, 0.14);
+  font-size: 12.5px;
+  font-family: var(--font-display);
+  color: var(--forest);
+}
+.journal__note-input {
+  margin-top: 4px;
+  width: 100%;
+  padding: 5px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--sage);
+  background: var(--cream);
+  font-size: 12.5px;
+}
+.journal__side {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.journal__time {
+  flex: none;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+}
+.journal__note-btn {
+  width: 26px;
+  height: 26px;
+  color: var(--ink-faint);
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+.journal__entry:hover .journal__note-btn,
+.journal__note-btn:focus-visible {
+  opacity: 1;
+}
+/* While the note is being written the button keeps its place, so the time doesn't move. */
+.journal__note-btn.is-editing {
+  visibility: hidden;
+}
+.journal__older {
+  align-self: center;
+}
+
+/* Fair counting (A7): the soft line near or at a day's cap, and Settings → What counts. */
+
+.field-note strong {
+  display: block;
+  font-weight: 650;
+}
+.field-note--nearly {
+  background: rgba(156, 175, 136, 0.18);
+  color: var(--forest);
+}
+.today-hint {
+  margin-top: 8px;
+  display: block;
+}
+.what-counts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.what-counts > p {
+  margin: 0;
+}
+.what-counts__rule h4 {
+  margin: 0 0 4px;
+  font-size: 13.5px;
+  font-weight: 650;
+}
+.what-counts__rule ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+}

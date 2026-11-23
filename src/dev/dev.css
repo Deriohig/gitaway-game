@@ -1,0 +1,89 @@
+/* The Dev tools: a small tab on the right edge, out of the HUD's way. Only
+   development and dev-tools builds load this file (see DevPanel.tsx). */
+
+.dev {
+  position: fixed;
+  right: 0;
+  top: 46%;
+  z-index: 40;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  pointer-events: none;
+}
+.dev > * {
+  pointer-events: auto;
+}
+
+.dev__toggle {
+  writing-mode: vertical-rl;
+  padding: 8px 2px;
+  width: 16px;
+  border: 1px solid var(--line-strong);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  background: rgba(255, 248, 236, 0.6);
+  color: var(--ink-faint);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.dev__toggle:hover,
+.dev__toggle.is-active {
+  opacity: 1;
+  color: var(--ink);
+}
+
+.dev__panel {
+  width: 236px;
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12px;
+  transform: translateY(-40%);
+}
+.dev__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.dev__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.dev__row .btn--small {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.dev__label {
+  width: 38px;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.dev__note {
+  color: var(--ink-faint);
+  font-size: 11px;
+}
+.dev__clock {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 10px;
+  margin: 4px 0 0;
+  padding-top: 7px;
+  border-top: 1px solid var(--line);
+}
+.dev__clock dt {
+  color: var(--ink-soft);
+}
+.dev__clock dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}

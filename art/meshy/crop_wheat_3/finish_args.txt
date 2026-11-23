@@ -1,0 +1,1 @@
+--id crop_wheat_3 --fold 0.5 --rotY 45 --fit 0.92x1.2x0.92 --terra 1 --tex 512 --q 85 --compact --pad --maxKB 200

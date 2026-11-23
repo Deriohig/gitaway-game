@@ -1,0 +1,1 @@
+--stretch 1.955x3.7x2.18 --axis 0.25,0.6 --windmill --glow --glassHue 18,48 --glassSat 0.5 --glassVal 0.55 --glowY 0.2,0.55 --tex 1024 --q 85 --compact

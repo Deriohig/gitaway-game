@@ -1,0 +1,1005 @@
+{
+ "about": "What the V21 proof draws per piece and category (composition-check.mjs --extract, from the live proof's instance matrices): drawn, game-placed (layout.ts / MainIsland.tsx items the game places itself), count = drawn - game-placed, per-asset counts and placement moments (sums of x, z, scale, cos / sin yaw, piece-local) of the counted items; paths = its path ribbons (drawn, centreline points, and per ribbon [points, first x, z, last x, z]).",
+ "extracted": "2026-10-26",
+ "proof": {
+  "three": "186",
+  "seed": 11,
+  "url": "/proof/index.html?unlocked=all (look default = Golden afternoon)"
+ },
+ "pieces": {
+  "main": {
+   "trees": {
+    "drawn": 9,
+    "gamePlaced": 8,
+    "count": 1,
+    "byAsset": {
+     "tree_pine_b": 1
+    },
+    "moments": {
+     "sx": -7.8711,
+     "sz": -2.1524,
+     "ss": 1.0039,
+     "sc": -0.5609,
+     "sn": 0.8279
+    }
+   },
+   "shrubs": {
+    "drawn": 34,
+    "gamePlaced": 8,
+    "count": 26,
+    "byAsset": {
+     "shrub_mound": 13,
+     "shrub_low": 13
+    },
+    "moments": {
+     "sx": 9.6553,
+     "sz": -48.4832,
+     "ss": 20.73,
+     "sc": -3.6861,
+     "sn": -1.9864
+    }
+   },
+   "rocks": {
+    "drawn": 6,
+    "gamePlaced": 6,
+    "count": 0,
+    "byAsset": {},
+    "moments": {
+     "sx": 0,
+     "sz": 0,
+     "ss": 0,
+     "sc": 0,
+     "sn": 0
+    }
+   },
+   "flowers": {
+    "drawn": 21,
+    "gamePlaced": 0,
+    "count": 21,
+    "byAsset": {
+     "flower_daisy": 21
+    },
+    "moments": {
+     "sx": -56.077,
+     "sz": -77.436,
+     "ss": 21.655,
+     "sc": 1.5687,
+     "sn": 2.8829
+    }
+   },
+   "grass": {
+    "drawn": 287,
+    "gamePlaced": 0,
+    "count": 287,
+    "byAsset": {
+     "grass_short": 223,
+     "clover_patch": 64
+    },
+    "moments": {
+     "sx": 281.79,
+     "sz": 112.641,
+     "ss": 289.161,
+     "sc": 4.9713,
+     "sn": -9.868
+    }
+   },
+   "paths": {
+    "drawn": 9,
+    "points": 161,
+    "runs": [
+     [
+      15,
+      -1.9,
+      0.05,
+      -1.85,
+      2.75
+     ],
+     [
+      19,
+      -2.85,
+      -0.85,
+      0.2,
+      0.55
+     ],
+     [
+      16,
+      1.2,
+      5.1,
+      3.406,
+      7.801
+     ],
+     [
+      33,
+      -2.75,
+      -0.75,
+      -4.026,
+      -7.305
+     ],
+     [
+      17,
+      6.15,
+      -0.98,
+      9.15,
+      -3.199
+     ],
+     [
+      18,
+      -5.25,
+      0.05,
+      -8.945,
+      0.415
+     ],
+     [
+      6,
+      -8.2,
+      0.35,
+      -8.566,
+      1.505
+     ],
+     [
+      23,
+      0.85,
+      -4.3,
+      2.874,
+      -8.491
+     ],
+     [
+      14,
+      7.2,
+      -2,
+      8.635,
+      -4.725
+     ]
+    ]
+   }
+  },
+  "meadow": {
+   "trees": {
+    "drawn": 61,
+    "gamePlaced": 0,
+    "count": 61,
+    "byAsset": {
+     "tree_beech_autumn": 3,
+     "tree_round_b": 10,
+     "tree_spread": 8,
+     "tree_round_a": 7,
+     "tree_sapling": 6,
+     "tree_pine_a": 10,
+     "tree_pine_b": 15,
+     "tree_birch": 1,
+     "tree_oak_autumn": 1
+    },
+    "moments": {
+     "sx": 118.3011,
+     "sz": 138.7554,
+     "ss": 48.3225,
+     "sc": -4.8392,
+     "sn": -6.1076
+    }
+   },
+   "shrubs": {
+    "drawn": 99,
+    "gamePlaced": 0,
+    "count": 99,
+    "byAsset": {
+     "shrub_mound": 73,
+     "shrub_low": 17,
+     "bush_a": 3,
+     "bush_flowering": 5,
+     "bush_berry": 1
+    },
+    "moments": {
+     "sx": 143.7234,
+     "sz": 212.3936,
+     "ss": 92.3224,
+     "sc": 12.2814,
+     "sn": -2.9562
+    }
+   },
+   "rocks": {
+    "drawn": 4,
+    "gamePlaced": 0,
+    "count": 4,
+    "byAsset": {
+     "rock_a": 1,
+     "rock_b": 2,
+     "rock_c": 1
+    },
+    "moments": {
+     "sx": 21.6253,
+     "sz": 7.6821,
+     "ss": 2.326,
+     "sc": 0.1507,
+     "sn": -2.0089
+    }
+   },
+   "flowers": {
+    "drawn": 530,
+    "gamePlaced": 0,
+    "count": 530,
+    "byAsset": {
+     "flower_poppy": 105,
+     "flower_cornflower": 199,
+     "flower_buttercup": 36,
+     "perennial_lavender": 34,
+     "flower_daisy": 52,
+     "fern_clump": 104
+    },
+    "moments": {
+     "sx": 565.602,
+     "sz": -405.595,
+     "ss": 531.568,
+     "sc": -2.524,
+     "sn": -12.6852
+    }
+   },
+   "grass": {
+    "drawn": 757,
+    "gamePlaced": 0,
+    "count": 757,
+    "byAsset": {
+     "grass_tall": 314,
+     "grass_short": 229,
+     "grass_seedhead": 65,
+     "clover_patch": 149
+    },
+    "moments": {
+     "sx": -951.628,
+     "sz": -1057.016,
+     "ss": 771.606,
+     "sc": -30.0777,
+     "sn": -11.5092
+    }
+   },
+   "paths": {
+    "drawn": 4,
+    "points": 135,
+    "runs": [
+     [
+      35,
+      -7.494,
+      -3.899,
+      -0.5,
+      0
+     ],
+     [
+      34,
+      -2.3,
+      -0.1,
+      4.1,
+      -5.1
+     ],
+     [
+      29,
+      -6.7,
+      -2.8,
+      -10.723,
+      2.628
+     ],
+     [
+      37,
+      7.711,
+      -9.791,
+      4.1,
+      -5.1
+     ]
+    ]
+   }
+  },
+  "wetland": {
+   "trees": {
+    "drawn": 158,
+    "gamePlaced": 0,
+    "count": 158,
+    "byAsset": {
+     "tree_birch": 36,
+     "tree_sapling": 4,
+     "tree_round_b": 13,
+     "tree_pine_a": 26,
+     "tree_pine_b": 67,
+     "tree_round_a": 8,
+     "tree_spread": 1,
+     "tree_birch_autumn": 1,
+     "tree_beech_autumn": 1,
+     "tree_oak_autumn": 1
+    },
+    "moments": {
+     "sx": 248.2723,
+     "sz": 372.4737,
+     "ss": 131.346,
+     "sc": 0.6613,
+     "sn": 15.0954
+    }
+   },
+   "shrubs": {
+    "drawn": 130,
+    "gamePlaced": 0,
+    "count": 130,
+    "byAsset": {
+     "shrub_mound": 99,
+     "shrub_low": 15,
+     "bush_flowering": 6,
+     "bush_a": 6,
+     "bush_berry": 4
+    },
+    "moments": {
+     "sx": 276.419,
+     "sz": 193.8501,
+     "ss": 123.9745,
+     "sc": 13.6183,
+     "sn": -13.3562
+    }
+   },
+   "rocks": {
+    "drawn": 39,
+    "gamePlaced": 0,
+    "count": 39,
+    "byAsset": {
+     "rock_a": 14,
+     "rock_b": 16,
+     "rock_c": 9
+    },
+    "moments": {
+     "sx": 183.794,
+     "sz": 167.8022,
+     "ss": 21.1152,
+     "sc": -1.4748,
+     "sn": -2.1067
+    }
+   },
+   "flowers": {
+    "drawn": 470,
+    "gamePlaced": 0,
+    "count": 470,
+    "byAsset": {
+     "flower_buttercup": 72,
+     "flower_cornflower": 49,
+     "flower_poppy": 47,
+     "flower_daisy": 100,
+     "perennial_oxeye": 30,
+     "fern_clump": 172
+    },
+    "moments": {
+     "sx": 897.112,
+     "sz": 415.532,
+     "ss": 475.222,
+     "sc": -14.4606,
+     "sn": -6.5228
+    }
+   },
+   "grass": {
+    "drawn": 637,
+    "gamePlaced": 0,
+    "count": 637,
+    "byAsset": {
+     "clover_patch": 115,
+     "grass_tall": 315,
+     "grass_short": 173,
+     "grass_seedhead": 34
+    },
+    "moments": {
+     "sx": 1311.385,
+     "sz": 1299.659,
+     "ss": 650.897,
+     "sc": 5.4884,
+     "sn": -17.3275
+    }
+   },
+   "paths": {
+    "drawn": 2,
+    "points": 62,
+    "runs": [
+     [
+      50,
+      3.352,
+      -7.995,
+      1,
+      3.2
+     ],
+     [
+      12,
+      12.777,
+      2.928,
+      10.6,
+      4.2
+     ]
+    ]
+   }
+  },
+  "cottage": {
+   "trees": {
+    "drawn": 72,
+    "gamePlaced": 0,
+    "count": 72,
+    "byAsset": {
+     "tree_round_a": 6,
+     "tree_pine_b": 29,
+     "tree_pine_a": 24,
+     "tree_sapling": 3,
+     "tree_birch": 2,
+     "tree_oak_autumn": 1,
+     "tree_round_b": 5,
+     "tree_spread": 2
+    },
+    "moments": {
+     "sx": 43.0217,
+     "sz": -42.3521,
+     "ss": 62.5764,
+     "sc": -11.1776,
+     "sn": -0.2182
+    }
+   },
+   "shrubs": {
+    "drawn": 81,
+    "gamePlaced": 0,
+    "count": 81,
+    "byAsset": {
+     "shrub_mound": 58,
+     "shrub_low": 14,
+     "bush_a": 5,
+     "bush_flowering": 4
+    },
+    "moments": {
+     "sx": 61.3735,
+     "sz": -53.7889,
+     "ss": 73.4815,
+     "sc": -0.6141,
+     "sn": -2.9215
+    }
+   },
+   "rocks": {
+    "drawn": 7,
+    "gamePlaced": 0,
+    "count": 7,
+    "byAsset": {
+     "rock_a": 1,
+     "rock_b": 4,
+     "rock_c": 2
+    },
+    "moments": {
+     "sx": -33.6474,
+     "sz": -20.4495,
+     "ss": 4.0274,
+     "sc": 4.6048,
+     "sn": 0.2939
+    }
+   },
+   "flowers": {
+    "drawn": 219,
+    "gamePlaced": 0,
+    "count": 219,
+    "byAsset": {
+     "flower_daisy": 50,
+     "flower_buttercup": 12,
+     "flower_cornflower": 30,
+     "perennial_lavender": 15,
+     "flower_poppy": 12,
+     "fern_clump": 100
+    },
+    "moments": {
+     "sx": 316.616,
+     "sz": -175.282,
+     "ss": 223.985,
+     "sc": -16.5653,
+     "sn": 11.9079
+    }
+   },
+   "grass": {
+    "drawn": 379,
+    "gamePlaced": 0,
+    "count": 379,
+    "byAsset": {
+     "grass_short": 86,
+     "grass_tall": 230,
+     "grass_seedhead": 42,
+     "clover_patch": 21
+    },
+    "moments": {
+     "sx": 573.817,
+     "sz": -2.118,
+     "ss": 379.777,
+     "sc": -7.2851,
+     "sn": -14.096
+    }
+   },
+   "paths": {
+    "drawn": 2,
+    "points": 45,
+    "runs": [
+     [
+      35,
+      10.525,
+      -0.605,
+      2.07,
+      0.03
+     ],
+     [
+      10,
+      10.904,
+      0.485,
+      10.222,
+      2.385
+     ]
+    ]
+   }
+  },
+  "highland": {
+   "trees": {
+    "drawn": 165,
+    "gamePlaced": 0,
+    "count": 165,
+    "byAsset": {
+     "tree_pine_b": 77,
+     "tree_pine_a": 73,
+     "tree_birch": 12,
+     "tree_birch_autumn": 3
+    },
+    "moments": {
+     "sx": 480.5181,
+     "sz": 363.9469,
+     "ss": 140.9482,
+     "sc": -4.8615,
+     "sn": 1.7126
+    }
+   },
+   "shrubs": {
+    "drawn": 229,
+    "gamePlaced": 0,
+    "count": 229,
+    "byAsset": {
+     "shrub_heather": 220,
+     "bush_berry": 6,
+     "bush_a": 3
+    },
+    "moments": {
+     "sx": 880.37,
+     "sz": 658.607,
+     "ss": 205.4247,
+     "sc": -12.1496,
+     "sn": 11.0209
+    }
+   },
+   "rocks": {
+    "drawn": 50,
+    "gamePlaced": 0,
+    "count": 50,
+    "byAsset": {
+     "rock_a": 13,
+     "rock_b": 15,
+     "rock_c": 22
+    },
+    "moments": {
+     "sx": 197.1428,
+     "sz": 145.6148,
+     "ss": 28.9491,
+     "sc": -0.9802,
+     "sn": 4.595
+    }
+   },
+   "flowers": {
+    "drawn": 756,
+    "gamePlaced": 0,
+    "count": 756,
+    "byAsset": {
+     "flower_poppy": 96,
+     "flower_cornflower": 110,
+     "flower_daisy": 134,
+     "flower_buttercup": 103,
+     "perennial_oxeye": 20,
+     "perennial_lavender": 27,
+     "perennial_foxglove": 15,
+     "fern_clump": 251
+    },
+    "moments": {
+     "sx": 3551.901,
+     "sz": 2428.617,
+     "ss": 766.571,
+     "sc": -22.7108,
+     "sn": -2.0753
+    }
+   },
+   "grass": {
+    "drawn": 774,
+    "gamePlaced": 0,
+    "count": 774,
+    "byAsset": {
+     "grass_tall": 336,
+     "grass_short": 258,
+     "clover_patch": 119,
+     "grass_seedhead": 61
+    },
+    "moments": {
+     "sx": 3018.69,
+     "sz": 2637.783,
+     "ss": 788.26,
+     "sc": 7.011,
+     "sn": -5.5763
+    }
+   },
+   "paths": {
+    "drawn": 3,
+    "points": 121,
+    "runs": [
+     [
+      75,
+      12.344,
+      10.245,
+      0.77,
+      0.05
+     ],
+     [
+      20,
+      11.77,
+      9.15,
+      15.279,
+      6.206
+     ],
+     [
+      26,
+      0.77,
+      0.05,
+      -1.23,
+      -3.05
+     ]
+    ]
+   }
+  },
+  "orchard": {
+   "trees": {
+    "drawn": 74,
+    "gamePlaced": 0,
+    "count": 74,
+    "byAsset": {
+     "tree_pine_b": 28,
+     "tree_pine_a": 29,
+     "tree_round_b": 12,
+     "tree_spread": 2,
+     "tree_beech_autumn": 2,
+     "tree_sapling": 1
+    },
+    "moments": {
+     "sx": -54.844,
+     "sz": -264.2759,
+     "ss": 65.826,
+     "sc": 1.1508,
+     "sn": -0.7041
+    }
+   },
+   "shrubs": {
+    "drawn": 69,
+    "gamePlaced": 0,
+    "count": 69,
+    "byAsset": {
+     "shrub_mound": 48,
+     "shrub_low": 14,
+     "bush_berry": 3,
+     "bush_a": 4
+    },
+    "moments": {
+     "sx": 76.4195,
+     "sz": -110.8904,
+     "ss": 63.4185,
+     "sc": 5.3194,
+     "sn": -0.5352
+    }
+   },
+   "rocks": {
+    "drawn": 0,
+    "gamePlaced": 0,
+    "count": 0,
+    "byAsset": {},
+    "moments": {
+     "sx": 0,
+     "sz": 0,
+     "ss": 0,
+     "sc": 0,
+     "sn": 0
+    }
+   },
+   "flowers": {
+    "drawn": 250,
+    "gamePlaced": 0,
+    "count": 250,
+    "byAsset": {
+     "flower_cornflower": 31,
+     "flower_poppy": 32,
+     "perennial_lavender": 12,
+     "flower_buttercup": 27,
+     "flower_daisy": 44,
+     "fern_clump": 104
+    },
+    "moments": {
+     "sx": -46.07,
+     "sz": -638.741,
+     "ss": 254.216,
+     "sc": 9.3673,
+     "sn": 31.1826
+    }
+   },
+   "grass": {
+    "drawn": 288,
+    "gamePlaced": 0,
+    "count": 288,
+    "byAsset": {
+     "grass_short": 102,
+     "clover_patch": 35,
+     "grass_tall": 130,
+     "grass_seedhead": 21
+    },
+    "moments": {
+     "sx": 161.753,
+     "sz": -713.166,
+     "ss": 288.007,
+     "sc": -8.0658,
+     "sn": 15.6284
+    }
+   },
+   "paths": {
+    "drawn": 3,
+    "points": 54,
+    "runs": [
+     [
+      25,
+      0.074,
+      7.309,
+      0.1,
+      1.6
+     ],
+     [
+      18,
+      -3.891,
+      4.456,
+      -0.9,
+      1.7
+     ],
+     [
+      11,
+      1.6,
+      0.6,
+      3.938,
+      1.459
+     ]
+    ]
+   }
+  },
+  "grove": {
+   "trees": {
+    "drawn": 105,
+    "gamePlaced": 0,
+    "count": 105,
+    "byAsset": {
+     "tree_pine_a": 42,
+     "tree_pine_b": 34,
+     "tree_round_b": 10,
+     "tree_sapling": 5,
+     "tree_round_a": 12,
+     "tree_oak_autumn": 1,
+     "tree_beech_autumn": 1
+    },
+    "moments": {
+     "sx": 130.5451,
+     "sz": -128.2475,
+     "ss": 94.2103,
+     "sc": -1.2173,
+     "sn": -8.3046
+    }
+   },
+   "shrubs": {
+    "drawn": 71,
+    "gamePlaced": 0,
+    "count": 71,
+    "byAsset": {
+     "shrub_mound": 47,
+     "shrub_low": 6,
+     "bush_berry": 6,
+     "bush_a": 9,
+     "bush_flowering": 3
+    },
+    "moments": {
+     "sx": 61.8085,
+     "sz": -76.4878,
+     "ss": 66.501,
+     "sc": 7.0799,
+     "sn": -3.519
+    }
+   },
+   "rocks": {
+    "drawn": 10,
+    "gamePlaced": 0,
+    "count": 10,
+    "byAsset": {
+     "rock_a": 4,
+     "rock_b": 5,
+     "rock_c": 1
+    },
+    "moments": {
+     "sx": 56.5184,
+     "sz": -40.6747,
+     "ss": 6.5967,
+     "sc": 0.8634,
+     "sn": 2.2385
+    }
+   },
+   "flowers": {
+    "drawn": 247,
+    "gamePlaced": 0,
+    "count": 247,
+    "byAsset": {
+     "flower_daisy": 37,
+     "flower_buttercup": 29,
+     "flower_cornflower": 21,
+     "flower_poppy": 46,
+     "perennial_oxeye": 20,
+     "fern_clump": 94
+    },
+    "moments": {
+     "sx": 323.527,
+     "sz": -83.619,
+     "ss": 249.827,
+     "sc": -11.1005,
+     "sn": 13.0168
+    }
+   },
+   "grass": {
+    "drawn": 296,
+    "gamePlaced": 0,
+    "count": 296,
+    "byAsset": {
+     "grass_tall": 130,
+     "grass_short": 93,
+     "grass_seedhead": 38,
+     "clover_patch": 35
+    },
+    "moments": {
+     "sx": 373.471,
+     "sz": -440.157,
+     "ss": 297.649,
+     "sc": -5.0079,
+     "sn": 15.0525
+    }
+   },
+   "paths": {
+    "drawn": 2,
+    "points": 36,
+    "runs": [
+     [
+      23,
+      -2.278,
+      7.415,
+      -0.3,
+      2.3
+     ],
+     [
+      13,
+      -4.262,
+      -2.041,
+      -2,
+      -0.6
+     ]
+    ]
+   }
+  },
+  "islet": {
+   "trees": {
+    "drawn": 20,
+    "gamePlaced": 0,
+    "count": 20,
+    "byAsset": {
+     "tree_pine_a": 3,
+     "tree_pine_b": 10,
+     "tree_round_a": 3,
+     "tree_oak_autumn": 1,
+     "tree_sapling": 1,
+     "tree_spread": 2
+    },
+    "moments": {
+     "sx": -20.2847,
+     "sz": -5.7602,
+     "ss": 17.1977,
+     "sc": 5.7601,
+     "sn": -4.5186
+    }
+   },
+   "shrubs": {
+    "drawn": 64,
+    "gamePlaced": 0,
+    "count": 64,
+    "byAsset": {
+     "shrub_mound": 33,
+     "shrub_low": 25,
+     "bush_a": 3,
+     "bush_berry": 3
+    },
+    "moments": {
+     "sx": -47.2813,
+     "sz": 49.5385,
+     "ss": 53.7843,
+     "sc": 2.423,
+     "sn": 0.9654
+    }
+   },
+   "rocks": {
+    "drawn": 54,
+    "gamePlaced": 0,
+    "count": 54,
+    "byAsset": {
+     "rock_a": 22,
+     "rock_b": 16,
+     "rock_c": 16
+    },
+    "moments": {
+     "sx": 107.3528,
+     "sz": -31.3315,
+     "ss": 31.5517,
+     "sc": -1.0759,
+     "sn": 4.7387
+    }
+   },
+   "flowers": {
+    "drawn": 212,
+    "gamePlaced": 0,
+    "count": 212,
+    "byAsset": {
+     "flower_poppy": 34,
+     "flower_daisy": 19,
+     "flower_cornflower": 58,
+     "flower_buttercup": 17,
+     "perennial_lavender": 33,
+     "fern_clump": 51
+    },
+    "moments": {
+     "sx": -161.081,
+     "sz": -1.94,
+     "ss": 215.475,
+     "sc": -13.799,
+     "sn": 5.2685
+    }
+   },
+   "grass": {
+    "drawn": 398,
+    "gamePlaced": 0,
+    "count": 398,
+    "byAsset": {
+     "grass_short": 86,
+     "grass_tall": 245,
+     "grass_seedhead": 34,
+     "clover_patch": 33
+    },
+    "moments": {
+     "sx": -214.685,
+     "sz": 348.371,
+     "ss": 401.96,
+     "sc": 17.3459,
+     "sn": -2.8232
+    }
+   },
+   "paths": {
+    "drawn": 3,
+    "points": 101,
+    "runs": [
+     [
+      64,
+      -9.65,
+      1.001,
+      5.81,
+      -1.13
+     ],
+     [
+      3,
+      -10.165,
+      -0.525,
+      -10.078,
+      -0.685
+     ],
+     [
+      34,
+      -5.3,
+      -0.2,
+      -0.189,
+      6.109
+     ]
+    ]
+   }
+  }
+ }
+}

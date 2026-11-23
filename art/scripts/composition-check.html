@@ -1,0 +1,172 @@
+<!doctype html>
+<!-- composition-check.html -- a GAME-STYLE render of config/composition.pieces.json, for side-by-side sheets against the proof
+     (composition-check.mjs --sheets). three r186 (the game's), the full-res pieces (buildBlueprint + islandAdapter, painted with
+     the V21 grass / stone like the baked pieces) or, with ?pieces=baked, the BAKED piece GLBs + their height grids (what the game
+     loads), the plant GLBs from public/models drawn as InstancedMesh straight from the JSON (tints on the Canopy mesh only), the
+     path ribbons paths_<id>.glb added to their piece groups as is (?paths=0 hides them; they fit the baked top),
+     (no proof shader: MeshStandardMaterial as GLTFLoader builds it), the game's lights (DayCycle.tsx / skyPalette.ts at
+     ?hour=, default 14.5 = the game's 'afternoon'), NoToneMapping + sRGB output (<Canvas flat>), PCF shadows, the game's fog.
+     Context the game places itself (?context=0 hides it): the farm props, the layout.ts trees / bushes / rocks, the sheep and the
+     Meshy set pieces, from the proof's own model files (?proof=<dir>, default ../../proof/), plus flat placeholder water.
+     window.__shot(cam) -> PNG data URL; cam = a world.config camera ({ mode, az, el, dist | 'frame', tgt, w, h }). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composition check</title>
+<style>html, body { margin: 0; height: 100%; overflow: hidden; background: #cfe0e4; } canvas { display: block; }</style>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/" } }</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import GT from './lib/terrain.mjs';
+import { pieceGroup } from './lib/islandAdapter.mjs';
+import L from '../config/look.config.mjs';
+import W3 from '../config/world.config.mjs';
+
+const QS = new URLSearchParams(location.search), A = W3.archipelago, DEG = Math.PI / 180;
+const MODELS = QS.get('models') || '../../public/models/', PROOF = QS.get('proof') || '../../proof/', CONTEXT = QS.get('context') !== '0';
+const [C, LP] = await Promise.all([fetch('../config/composition.pieces.json').then((r) => r.json()), fetch('../config/lookPresets.json').then((r) => r.json())]);
+// every composition asset from public/models (ours + the models-PR rocks), exactly as the game will load them
+const FILE = (id) => MODELS + C.assets[id].file;
+
+// ---- the game's light at an hour (skyPalette.ts skyAt, via lookPresets.json dayCycle = its verbatim table) ----
+function skyAt(hour) {
+  const DC = LP.dayCycle, keys = DC.keys.map(([h, k]) => [h, k === 'night' ? DC.night : k]), h = ((hour % 24) + 24) % 24; let i = 0;
+  while (i < keys.length - 2 && keys[i + 1][0] <= h) i++;
+  const [h0, a] = keys[i], [h1, b] = keys[i + 1], raw = h1 > h0 ? (h - h0) / (h1 - h0) : 0, t = raw * raw * (3 - 2 * raw);
+  const mix = (k) => new THREE.Color(a[k]).lerp(new THREE.Color(b[k]), t), num = (k) => a[k] + (b[k] - a[k]) * t;
+  const day = Math.min(1, Math.max(0, (h - 6) / 14)), night = h < 5.6 || h > 21, az = night ? 0.9 : -1.05 + day * 3.5, el = night ? 0.95 : 0.28 + Math.sin(Math.PI * day) * 0.85;
+  return { top: mix('top'), mid: mix('mid'), bottom: mix('bottom'), fog: mix('fog'), sun: mix('sun'), sunI: num('sunI'), hemiSky: mix('hemiSky'), hemiGround: mix('hemiGround'), hemiI: num('hemiI'),
+    dir: new THREE.Vector3(Math.cos(az) * Math.cos(el), Math.sin(el), Math.sin(az) * Math.cos(el)) };
+}
+const K = skyAt(parseFloat(QS.get('hour') || '14.5'));
+document.body.style.background = `linear-gradient(#${K.top.getHexString(THREE.SRGBColorSpace)}, #${K.mid.getHexString(THREE.SRGBColorSpace)} 55%, #${K.bottom.getHexString(THREE.SRGBColorSpace)})`;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(innerWidth, innerHeight); renderer.toneMapping = THREE.NoToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap; renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(K.fog, 100, 300);
+scene.add(new THREE.HemisphereLight(K.hemiSky, K.hemiGround, K.hemiI));
+const sun = new THREE.DirectionalLight(K.sun, K.sunI); sun.position.copy(K.dir).multiplyScalar(60); sun.castShadow = true;
+Object.assign(sun.shadow.camera, { left: -34, right: 34, top: 34, bottom: -34, near: 1, far: 140 }); sun.shadow.mapSize.set(4096, 4096); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.035;
+scene.add(sun, sun.target);
+
+// ---- pieces: full res, painted like the proof's V21 terrain, or (?pieces=baked) the baked GLBs + height grids ----
+const loader = new GLTFLoader(), cache = {};
+const BP = GT.buildBlueprint(A, L, { seed: A.seeds.default >>> 0 }), COMP = GT.composeBlueprint(BP, L), BAKED = QS.get('pieces') === 'baked', PG = {}, PC = {};
+if (BAKED) {
+  const MF = await fetch(MODELS + 'manifest.json').then((r) => r.json());
+  for (const id of BP.order) {
+    const e = MF.assets['piece_' + id], H = e.height, grid = new Float32Array(await fetch(MODELS + H.file).then((r) => r.arrayBuffer())), [nx, nz] = H.size, [x0, z0] = H.origin, sp = H.spacing;
+    // BLUEPRINT.md "Height grid": bilinear, NaN corners dropped and the weights renormalised
+    const height = (x, z) => { const fx = (x - x0) / sp, fz = (z - z0) / sp, i = Math.floor(fx), j = Math.floor(fz), u = fx - i, v = fz - j; let s = 0, w = 0;
+      for (const [di, dj, wt] of [[0, 0, (1 - u) * (1 - v)], [1, 0, u * (1 - v)], [0, 1, (1 - u) * v], [1, 1, u * v]]) { const ii = i + di, jj = j + dj;
+        if (ii < 0 || jj < 0 || ii >= nx || jj >= nz) continue; const h = grid[jj * nx + ii]; if (Number.isNaN(h)) continue; s += h * wt; w += wt; }
+      return w > 1e-9 ? s / w : 0; };
+    const g = new THREE.Group(), pv = BP.pieces[id].pivot; g.position.set(pv[0], pv[1], pv[2]);
+    const m = (await loader.loadAsync(MODELS + e.file)).scene; m.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } }); g.add(m);
+    scene.add(g); PG[id] = g; PC[id] = { height, pivot: pv };
+  }
+} else {
+  const look = LP.presets[C.source.look], paint = GT.paintBlueprint(BP, COMP, look, L), islandMat = new THREE.MeshLambertMaterial({ vertexColors: true });
+  for (const id of BP.order) { const pc = BP.pieces[id], { group, mesh } = pieceGroup(THREE, pc, islandMat); mesh.geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(paint[id]), 3)); scene.add(group); PG[id] = group; PC[id] = pc; }
+}
+
+// ---- GLB cache + instancing straight from the JSON ----
+const GAIN = parseFloat(QS.get('crownGain') || '1');   // A/B only: scale the crowns' vertex colours (a stand-in for the proof's canopy lift)
+const load = (url) => (cache[url] = cache[url] || loader.loadAsync(url).then((g) => {
+  // (per vertex through the accessors: the GLB attributes are interleaved, so .array is the whole vertex buffer)
+  if (GAIN !== 1 && url.startsWith(MODELS)) g.scene.traverse((o) => { const c = o.isMesh && (o.name === 'Canopy' || /^shrub_/.test(o.name)) && o.geometry.attributes.color;
+    if (c) for (let i = 0; i < c.count; i++) c.setXYZ(i, Math.min(1, c.getX(i) * GAIN), Math.min(1, c.getY(i) * GAIN), Math.min(1, c.getZ(i) * GAIN)); });
+  return g.scene; }));
+const _m = new THREE.Matrix4(), _q = new THREE.Quaternion(), _p = new THREE.Vector3(), _s = new THREE.Vector3(), _y = new THREE.Vector3(0, 1, 0), _c = new THREE.Color();
+// items [{ x, z, rotY, scale, scaleY?, yOff, tint?, color? }] in the piece's local frame -> one InstancedMesh per mesh node
+async function instance(group, pc, url, items, opts = {}) {
+  if (!items.length) return 0; const src = await load(url); src.updateMatrixWorld(true); const inv = src.matrixWorld.clone().invert(); let n = 0, hasCanopy = false;
+  src.traverse((o) => { if (o.name === 'Canopy') hasCanopy = true; });
+  src.traverse((o) => { if (!o.isMesh) return; const rel = new THREE.Matrix4().multiplyMatrices(inv, o.matrixWorld), im = new THREE.InstancedMesh(o.geometry, o.material, items.length);
+    const tintable = !hasCanopy || o.name === 'Canopy';   // trees: the canopy instances take the tint, the trunk ones stay untinted
+    items.forEach((it, i) => { _p.set(it.x, pc.height(it.x, it.z) + (it.yOff || 0), it.z); _q.setFromAxisAngle(_y, it.rotY || 0); _s.set(it.scale * (it.sx || 1), it.scaleY != null ? it.scaleY : it.scale * (it.sy || 1), it.scale * (it.sz || 1));
+      im.setMatrixAt(i, _m.compose(_p, _q, _s).multiply(rel));
+      if (!tintable) return;
+      if (it.tint) im.setColorAt(i, _c.setRGB(it.tint[0], it.tint[1], it.tint[2])); else if (it.color) im.setColorAt(i, _c.set(it.color)); else if (opts.colours) im.setColorAt(i, _c.setRGB(1, 1, 1)); });
+    im.castShadow = !!opts.cast; im.receiveShadow = true; im.frustumCulled = false; im.name = opts.name || ''; group.add(im); n += items.length; });
+  return items.length;
+}
+const counts = {};
+const jobs = [];
+for (const id of BP.order) { const pc = PC[id], P = C.pieces[id]; counts[id] = {};
+  for (const cat of C.categories) { const by = {}; for (const it of P[cat]) (by[it.asset] = by[it.asset] || []).push({ ...it, yOff: C.assets[it.asset].yOffset });
+    counts[id][cat] = P[cat].length;
+    for (const [asset, list] of Object.entries(by)) jobs.push(instance(PG[id], pc, FILE(asset), list, { cast: cat === 'trees', colours: list.some((q) => q.tint || q.color), name: `${cat}:${asset}:${id}` })); } }
+
+// ---- context the game places itself (approximation, from the proof's model files) ----
+if (CONTEXT) {
+  const G = A.game, VA = { oak: 'tree_round_a', ovate: 'tree_round_b', fir: 'tree_pine_a', pine: 'tree_pine_b', spread: 'tree_spread', sapling: 'tree_sapling' };
+  const hash01 = (x, z) => GT.hash3(Math.round(x * 100), Math.round(z * 100), 77), main = PC.main, M = COMP.pieces.main, loc = (pc, x, z) => [x - pc.pivot[0], z - pc.pivot[2]];
+  const heroT = M.trees.filter((t) => t.layout).sort((a, b) => Math.hypot(a.x + 6.4, a.z + 3.6) - Math.hypot(b.x + 6.4, b.z + 3.6))[0];
+  for (const t of M.trees.filter((q) => q.layout && q !== heroT)) jobs.push(instance(PG.main, main, MODELS + VA[t.variant] + '.glb', [{ x: t.x, z: t.z, rotY: t.rot + (t.vyaw || 0), scale: t.scale * (t.vscale || 1) }], { cast: true }));
+  for (const b of M.bushes) jobs.push(instance(PG.main, main, MODELS + b.kind + '.glb', [{ x: b.x, z: b.z, rotY: b.rot, scale: b.scale }]));
+  for (const r of M.rocks) { const c = hash01(r.x + 0.37, r.z - 0.11) < 0.34; jobs.push(instance(PG.main, main, PROOF + (c ? 'boulder_c' : r.kind) + '.wasm', [{ x: r.x, z: r.z, rotY: r.rot, scale: r.scale, yOff: c ? -0.02 : -0.04 }])); }
+  // (no fences: the game removed them)
+  for (const p of M.props.filter((q) => q.asset !== 'fence')) jobs.push(instance(PG.main, main, PROOF + p.asset + '.wasm', [{ x: p.x, z: p.z, rotY: p.rot, scale: p.scale, sz: p.scaleZ || 1, sy: p.scaleY ? p.scaleY / p.scale : 1 }], { cast: p.asset === 'farmhouse' }));
+  for (const s of COMP.pieces.meadow.sheep) { const pc = PC.meadow, [x, z] = loc(pc, s.x, s.z); jobs.push(instance(PG.meadow, pc, PROOF + 'sheep.wasm', [{ x, z, rotY: s.rot, scale: s.scale }], { cast: true })); }
+  // the Meshy set pieces (arch-scene MESHY_SET; base on the lowest ground under the footprint, like footSink)
+  const Z = A.blueprint.zones, at = (v) => (Array.isArray(v) ? v : [v.x, v.z]);
+  const SET = [['hero_tree', 'main', [heroT.x, heroT.z], Math.PI / 4, 1, [3.4, 2.4]], ['windmill', 'main', at(G.WINDMILL), 0.124, 1, [2.4, 2.4]], ['well', 'main', at(G.WELL), Math.PI / 4, 1, [1.15, 1.15]],
+    ['bench', 'main', at(G.BENCH), G.BENCH.rot || 0, 1, [1.15, 0.62]], ['haystack', 'meadow', Z.meadow.find((q) => q.id === 'haystack_a').at, 0.35, 1, [1.2, 1.2]], ['haystack', 'meadow', Z.meadow.find((q) => q.id === 'haystack_b').at, 2.2, 1, [1.2, 1.2]],
+    ['cart', 'meadow', [5.75, 12.25], 2.5, 1, [1.0, 1.45]], ['outcrop_a', 'highland', [-6.39, -15.81], 0.384, 1, [2.0, 1.8]], ['outcrop_b', 'highland', [-13.03, -10.18], 2.48, 0.85, [2.4, 3.2]], ['outcrop_a', 'islet', [24.28, 0.0], 1.571, 0.9, [1.8, 1.6]]];
+  for (const [id, piece, [wx, wz], rot, s, [rx, rz]] of SET) { const pc = PC[piece], [x, z] = loc(pc, wx, wz), g0 = pc.height(x, z); let lo = 0;
+    for (const f of [0.5, 1]) for (let k = 0; k < 16; k++) { const t = k / 16 * Math.PI * 2, lx = Math.cos(t) * rx * 0.42 * f, lz = Math.sin(t) * rz * 0.42 * f; lo = Math.min(lo, pc.height(x + lx * Math.cos(rot) + lz * Math.sin(rot), z - lx * Math.sin(rot) + lz * Math.cos(rot)) - g0); }
+    jobs.push(instance(PG[piece], pc, PROOF + id + '.wasm', [{ x, z, rotY: rot, scale: s, yOff: Math.max(-0.6, lo) - 0.01 }], { cast: true })); }
+  // flat placeholder water (the game draws its own)
+  const wm = new THREE.MeshLambertMaterial({ color: '#7FB0C4', transparent: true, opacity: 0.88 }), J = COMP.water;
+  const poly = (piece, pts, level) => { const pc = BP.pieces[piece], sh = new THREE.Shape(pts.map(([x, z]) => new THREE.Vector2(x - pc.pivot[0], -(z - pc.pivot[2])))), m = new THREE.Mesh(new THREE.ShapeGeometry(sh), wm);
+    m.rotation.x = -Math.PI / 2; m.position.y = level - pc.pivot[1]; PG[piece].add(m); };
+  const ribbon = (piece, pts) => { const pc = BP.pieces[piece], pos = [], idx = []; pts.forEach((p, i) => { const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], tl = Math.hypot(b.x - a.x, b.z - a.z) || 1, tx = (b.x - a.x) / tl, tz = (b.z - a.z) / tl, hw = p.width / 2;
+    pos.push(p.x - tz * hw - pc.pivot[0], p.level - pc.pivot[1], p.z + tx * hw - pc.pivot[2], p.x + tz * hw - pc.pivot[0], p.level - pc.pivot[1], p.z - tx * hw - pc.pivot[2]); if (i) idx.push(2 * i - 2, 2 * i, 2 * i - 1, 2 * i - 1, 2 * i, 2 * i + 1); });
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals(); const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: '#7FB0C4', side: THREE.DoubleSide })); PG[piece].add(m); };
+  // (water rev 1: the farm pond = its art-owned teardrop outline, the farm stream = its dense line)
+  const pond = []; if (J.main.pond.r == null) pond.push(...J.main.pond.outline); else for (let i = 0; i < 40; i++) { const t = i / 40 * Math.PI * 2; pond.push([J.main.pond.at[0] + Math.cos(t) * J.main.pond.r, J.main.pond.at[1] + Math.sin(t) * J.main.pond.r]); }
+  poly('main', pond, J.main.pond.level); poly('wetland', J.wetland.lake.outline, J.wetland.lake.level); poly('highland', J.highland.tarn.outline, J.highland.tarn.level); poly('highland', J.highland.hotSpring.outline, J.highland.hotSpring.level);
+  ribbon('main', (J.main.stream.line || J.main.stream.points).map((p) => ({ x: p.x, z: p.z, width: p.width || 0.45, level: p.level }))); ribbon('wetland', J.wetland.river.points); ribbon('wetland', J.wetland.outflow.points.filter((p) => BP.dcAt(p.x, p.z) > 0.02));
+}
+// ---- path ribbons: added to the piece groups as is (piece-local, on the baked top + their lift); one node per run (path_<runId>),
+//      shown only once every piece in the run's `needs` is docked, as the game does ----
+const RUNS = [];
+if (QS.get('paths') !== '0') for (const [id, R] of Object.entries(C.paths.ribbons)) jobs.push(load(MODELS + R.file).then((src) => { const o = src.clone();
+  o.traverse((m) => { if (!m.isMesh) return; m.renderOrder = 2; m.receiveShadow = true; const q = C.pieces[id].paths.find((r) => 'path_' + r.id === m.name); RUNS.push({ piece: id, obj: m, needs: q ? q.needs : [] }); });
+  PG[id].add(o); }));
+await Promise.all(jobs);
+
+// ---- cameras (arch-scene placeCamera / frameDistance) + shots ----
+const RC = A.render.camera, VIEW = A.render.view, camera = new THREE.PerspectiveCamera(RC.fov, innerWidth / innerHeight, RC.near, RC.far);
+const frameDistance = (aspect) => { const t = Math.tan(RC.fov / 2 * DEG); return Math.min(VIEW.maxDistance, Math.max(VIEW.floor, (VIEW.mainFrame[0] / (2 * t * aspect)) * VIEW.fill, VIEW.mainFrame[1] / (2 * t))); };
+function place(c, w, h) {
+  const dist = c.dist === 'frame' ? frameDistance(w / h) : c.dist, e = c.el * DEG, a = c.az * DEG, T = c.tgt;
+  camera.position.set(T[0] + Math.cos(e) * Math.sin(a) * dist, T[1] + Math.sin(e) * dist, T[2] + Math.cos(e) * Math.cos(a) * dist); camera.lookAt(T[0], T[1], T[2]);
+  camera.aspect = w / h; camera.fov = RC.fov; camera.far = Math.max(RC.far, dist + 300); camera.updateProjectionMatrix(); scene.fog.near = dist + 40; scene.fog.far = dist + 230;   // DayCycle.tsx fog
+}
+// the screenshot: the sky gradient (the game's CSS backdrop) under the transparent canvas
+function shot(c) {
+  const U = !c.unlocked || c.unlocked === 'all' ? null : new Set(['main', ...c.unlocked.split(',')]);   // (cam.unlocked: 'main,meadow,...' docks only those)
+  for (const id of BP.order) PG[id].visible = !U || U.has(id);
+  for (const r of RUNS) r.obj.visible = !U || r.needs.every((p) => U.has(p));   // (a run waits for every piece it needs)
+  const w = c.w || 1600, h = c.h || 900; renderer.setSize(w, h, false); place(c, w, h); renderer.render(scene, camera);
+  for (const id of BP.order) PG[id].visible = true; for (const r of RUNS) r.obj.visible = true;
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h; const g = cv.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, h);
+  gr.addColorStop(0, '#' + K.top.getHexString(THREE.SRGBColorSpace)); gr.addColorStop(0.55, '#' + K.mid.getHexString(THREE.SRGBColorSpace)); gr.addColorStop(1, '#' + K.bottom.getHexString(THREE.SRGBColorSpace));
+  g.fillStyle = gr; g.fillRect(0, 0, w, h); g.drawImage(renderer.domElement, 0, 0); return cv.toDataURL('image/png');
+}
+window.__shot = shot;
+window.__check = { pieces: BAKED ? 'baked' : 'full', ribbons: QS.get('paths') !== '0' ? Object.keys(C.paths.ribbons).length : 0, counts, items: Object.values(counts).reduce((s, o) => s + Object.values(o).reduce((a, b) => a + b, 0), 0), three: THREE.REVISION, light: { hour: QS.get('hour') || '14.5', sunI: K.sunI, hemiI: K.hemiI } };
+place(A.cameras.default_desktop, innerWidth, innerHeight); renderer.render(scene, camera);
+window.__ready = true;
+</script>
+</body>
+</html>

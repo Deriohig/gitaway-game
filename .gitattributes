@@ -1,0 +1,5 @@
+# Scripts that run as they are keep Unix line endings in every checkout: a
+# carriage return after `#!/bin/sh` breaks the pre-push hook.
+.githooks/* text eol=lf
+*.sh text eol=lf
+*.mjs text eol=lf

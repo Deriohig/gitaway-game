@@ -1,0 +1,1 @@
+--height 0.3 --lower 0.05 --tex 512 --compact

@@ -1,0 +1,6 @@
+# Review sheets and captures are large (tens of MB) and stay out of git. The art session keeps them locally
+# and publishes them in the proof artifact.
+screenshots/
+
+# build.mjs procedural GLBs (the proof copies them from here; --publish-procedural writes public/models instead)
+scripts/.build/

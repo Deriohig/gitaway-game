@@ -1,0 +1,519 @@
+{
+  "animals": {
+    "cat_sleeping": {
+      "bones": [
+        "root",
+        "spine",
+        "chest",
+        "neck",
+        "head",
+        "ear_L",
+        "ear_R",
+        "tail_1",
+        "tail_2",
+        "tail_3"
+      ],
+      "clips": {
+        "EarTwitch": {
+          "duration": 0.6,
+          "type": "once"
+        },
+        "Peek": {
+          "duration": 3,
+          "type": "once"
+        },
+        "Sleep": {
+          "duration": 4,
+          "type": "loop"
+        },
+        "TailFlick": {
+          "duration": 1,
+          "type": "once"
+        }
+      },
+      "facing": "+X",
+      "file": "cat_sleeping_rig.glb",
+      "lids": [],
+      "live": [
+        "head",
+        "neck",
+        "ear_L",
+        "ear_R",
+        "tail_1",
+        "tail_2",
+        "tail_3"
+      ],
+      "look": {
+        "bones": [
+          "head"
+        ],
+        "pitch": 15,
+        "yaw": 30
+      },
+      "restChanged": [],
+      "source": "cat_sleeping.glb"
+    },
+    "chicken": {
+      "bones": [
+        "root",
+        "hips",
+        "neck",
+        "head",
+        "lid_L",
+        "lid_R",
+        "tail_1",
+        "wing_L",
+        "wing_R",
+        "leg_L_1",
+        "leg_L_2",
+        "leg_R_1",
+        "leg_R_2"
+      ],
+      "clips": {
+        "Flap": {
+          "duration": 0.8,
+          "type": "once"
+        },
+        "Fluff": {
+          "duration": 1,
+          "type": "once"
+        },
+        "Idle": {
+          "duration": 2.4,
+          "type": "loop"
+        },
+        "Peck": {
+          "duration": 0.9,
+          "type": "once"
+        },
+        "Scratch": {
+          "duration": 1.2,
+          "type": "once"
+        },
+        "Walk": {
+          "duration": 0.5,
+          "stride": 0.104,
+          "type": "loop"
+        }
+      },
+      "facing": "+Z",
+      "file": "chicken_rig.glb",
+      "lids": [
+        "lid_L",
+        "lid_R"
+      ],
+      "live": [
+        "head",
+        "lid_L",
+        "lid_R",
+        "tail_1"
+      ],
+      "look": {
+        "bones": [
+          "head"
+        ],
+        "pitch": 10,
+        "yaw": 30
+      },
+      "restChanged": [],
+      "source": "chicken.glb"
+    },
+    "dog": {
+      "bones": [
+        "root",
+        "hips",
+        "spine",
+        "chest",
+        "neck",
+        "head",
+        "jaw",
+        "ear_L",
+        "ear_R",
+        "lid_L",
+        "lid_R",
+        "tail_1",
+        "tail_2",
+        "tail_3",
+        "tail_4",
+        "leg_FL_1",
+        "leg_FL_2",
+        "leg_FR_1",
+        "leg_FR_2",
+        "leg_BL_1",
+        "leg_BL_2",
+        "leg_BR_1",
+        "leg_BR_2"
+      ],
+      "clips": {
+        "Happy": {
+          "duration": 1.2,
+          "type": "once"
+        },
+        "Idle": {
+          "duration": 3,
+          "type": "loop"
+        },
+        "Lie": {
+          "duration": 0.8,
+          "type": "hold"
+        },
+        "PlayBow": {
+          "duration": 1.4,
+          "type": "once"
+        },
+        "Scratch": {
+          "duration": 1.6,
+          "type": "once"
+        },
+        "Sit": {
+          "duration": 0.6,
+          "type": "hold"
+        },
+        "Sleep": {
+          "duration": 4,
+          "type": "loop"
+        },
+        "Sniff": {
+          "duration": 2,
+          "type": "loop"
+        },
+        "Walk": {
+          "duration": 0.6,
+          "stride": 0.1825,
+          "type": "loop"
+        }
+      },
+      "facing": "+Z",
+      "file": "dog_rig.glb",
+      "lids": [
+        "lid_L",
+        "lid_R"
+      ],
+      "live": [
+        "head",
+        "neck",
+        "lid_L",
+        "lid_R",
+        "ear_L",
+        "ear_R",
+        "tail_1",
+        "tail_2",
+        "tail_3",
+        "tail_4"
+      ],
+      "look": {
+        "bones": [
+          "neck",
+          "head"
+        ],
+        "pitch": 45,
+        "yaw": 45
+      },
+      "restChanged": [
+        "neck",
+        "head",
+        "jaw",
+        "ear_L",
+        "ear_R",
+        "lid_L",
+        "lid_R"
+      ],
+      "source": "dog.glb"
+    },
+    "duck": {
+      "bones": [
+        "root",
+        "hips",
+        "neck",
+        "head",
+        "lid_L",
+        "lid_R",
+        "tail_1",
+        "wing_L",
+        "wing_R"
+      ],
+      "clips": {
+        "Dabble": {
+          "duration": 2.2,
+          "type": "once"
+        },
+        "Idle": {
+          "duration": 3,
+          "type": "loop"
+        },
+        "Paddle": {
+          "duration": 1,
+          "type": "loop"
+        },
+        "Preen": {
+          "duration": 2,
+          "type": "once"
+        },
+        "Shake": {
+          "duration": 0.8,
+          "type": "once"
+        }
+      },
+      "facing": "+Z",
+      "file": "duck_rig.glb",
+      "lids": [
+        "lid_L",
+        "lid_R"
+      ],
+      "live": [
+        "head",
+        "neck",
+        "lid_L",
+        "lid_R",
+        "tail_1"
+      ],
+      "look": {
+        "bones": [
+          "neck",
+          "head"
+        ],
+        "pitch": 55,
+        "yaw": 60
+      },
+      "restChanged": [],
+      "source": "duck.glb"
+    },
+    "goat": {
+      "bones": [
+        "root",
+        "hips",
+        "spine",
+        "neck",
+        "head",
+        "jaw",
+        "ear_L",
+        "ear_R",
+        "lid_L",
+        "lid_R",
+        "tail_1",
+        "leg_FL_1",
+        "leg_FL_2",
+        "leg_FR_1",
+        "leg_FR_2",
+        "leg_BL_1",
+        "leg_BL_2",
+        "leg_BR_1",
+        "leg_BR_2"
+      ],
+      "clips": {
+        "Chew": {
+          "duration": 1.2,
+          "type": "loop"
+        },
+        "Graze": {
+          "duration": 2.4,
+          "type": "loop"
+        },
+        "HeadShake": {
+          "duration": 0.8,
+          "type": "once"
+        },
+        "Hop": {
+          "duration": 0.9,
+          "type": "once"
+        },
+        "Idle": {
+          "duration": 3,
+          "type": "loop"
+        },
+        "Walk": {
+          "duration": 0.8,
+          "stride": 0.2124,
+          "type": "loop"
+        }
+      },
+      "facing": "+Z",
+      "file": "goat_rig.glb",
+      "lids": [
+        "lid_L",
+        "lid_R"
+      ],
+      "live": [
+        "head",
+        "neck",
+        "lid_L",
+        "lid_R",
+        "ear_L",
+        "ear_R",
+        "tail_1"
+      ],
+      "look": {
+        "bones": [
+          "neck",
+          "head"
+        ],
+        "pitch": 45,
+        "yaw": 60
+      },
+      "restChanged": [
+        "neck",
+        "head",
+        "jaw",
+        "ear_L",
+        "ear_R",
+        "lid_L",
+        "lid_R"
+      ],
+      "source": "goat.glb"
+    },
+    "hare": {
+      "bones": [
+        "root",
+        "hips",
+        "spine",
+        "neck",
+        "head",
+        "ear_L_1",
+        "ear_L_2",
+        "ear_R_1",
+        "ear_R_2",
+        "lid_L",
+        "lid_R",
+        "leg_FL_1",
+        "leg_FL_2",
+        "leg_FR_1",
+        "leg_FR_2",
+        "leg_BL_1",
+        "leg_BL_2",
+        "leg_BR_1",
+        "leg_BR_2",
+        "tail_1"
+      ],
+      "clips": {
+        "Alert": {
+          "duration": 1.4,
+          "type": "once"
+        },
+        "EarTwitch": {
+          "duration": 0.6,
+          "type": "once"
+        },
+        "Groom": {
+          "duration": 2.2,
+          "type": "once"
+        },
+        "Hop": {
+          "duration": 0.9,
+          "type": "once"
+        },
+        "Idle": {
+          "duration": 3,
+          "type": "loop"
+        },
+        "Look": {
+          "duration": 1.6,
+          "type": "once"
+        }
+      },
+      "facing": "+Z",
+      "file": "hare_rig.glb",
+      "lids": [
+        "lid_L",
+        "lid_R"
+      ],
+      "live": [
+        "head",
+        "neck",
+        "lid_L",
+        "lid_R",
+        "ear_L_1",
+        "ear_R_1"
+      ],
+      "look": {
+        "bones": [
+          "neck",
+          "head"
+        ],
+        "pitch": 40,
+        "yaw": 60
+      },
+      "restChanged": [],
+      "source": "visitor_hare.glb"
+    },
+    "sheep": {
+      "bones": [
+        "root",
+        "hips",
+        "spine",
+        "neck",
+        "head",
+        "jaw",
+        "ear_L",
+        "ear_R",
+        "lid_L",
+        "lid_R",
+        "tail_1",
+        "leg_FL_1",
+        "leg_FL_2",
+        "leg_FR_1",
+        "leg_FR_2",
+        "leg_BL_1",
+        "leg_BL_2",
+        "leg_BR_1",
+        "leg_BR_2"
+      ],
+      "clips": {
+        "Bleat": {
+          "duration": 1.2,
+          "type": "once"
+        },
+        "Graze": {
+          "duration": 2.4,
+          "type": "loop"
+        },
+        "Hop": {
+          "duration": 0.8,
+          "type": "once"
+        },
+        "Idle": {
+          "duration": 3,
+          "type": "loop"
+        },
+        "Walk": {
+          "duration": 0.9,
+          "stride": 0.1843,
+          "type": "loop"
+        }
+      },
+      "facing": "+Z",
+      "file": "sheep_rig.glb",
+      "lids": [
+        "lid_L",
+        "lid_R"
+      ],
+      "live": [
+        "head",
+        "neck",
+        "lid_L",
+        "lid_R",
+        "ear_L",
+        "ear_R",
+        "tail_1"
+      ],
+      "look": {
+        "bones": [
+          "neck",
+          "head"
+        ],
+        "pitch": 25,
+        "yaw": 25
+      },
+      "restChanged": [
+        "neck",
+        "head",
+        "jaw",
+        "ear_L",
+        "ear_R",
+        "lid_L",
+        "lid_R"
+      ],
+      "source": "sheep_meshy_sized.glb"
+    }
+  },
+  "version": 1
+}

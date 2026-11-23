@@ -1,0 +1,183 @@
+/* Welcome-back recap (A1): one calm card, centred over the island, and the
+   note for next time on the session card. */
+
+.recap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(380px, calc(100vw - 32px));
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  padding: 20px 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: recap-in 0.6s var(--ease);
+  z-index: 5;
+  pointer-events: auto;
+  background:
+    radial-gradient(120% 70% at 0% 0%, rgba(232, 189, 114, 0.22), transparent 60%),
+    radial-gradient(90% 60% at 100% 100%, rgba(156, 175, 136, 0.2), transparent 65%),
+    var(--panel);
+}
+/* The card takes focus when it opens, quietly: it's somewhere to rest, not a control. */
+.recap:focus-visible {
+  outline: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.recap__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.recap__badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff3d9, #f0d9a8);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.06), 0 0 0 4px rgba(255, 248, 236, 0.7);
+}
+.recap__farm {
+  color: var(--forest);
+}
+.recap__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.15;
+}
+.recap__note {
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(232, 189, 114, 0.2);
+  font-size: 13.5px;
+  overflow-wrap: anywhere;
+}
+.recap__note svg {
+  flex: none;
+  margin-top: 2px;
+}
+.recap__note-label {
+  color: #6c5126;
+  font-weight: 600;
+}
+.recap__lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13.5px;
+}
+.recap__line {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.recap__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--panel-sunk);
+}
+/* A repository name can be one long word: let it wrap anywhere rather than stick out. */
+.recap__text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.recap__line--garden .recap__icon {
+  background: rgba(156, 175, 136, 0.28);
+}
+.recap__line--git .recap__icon {
+  background: rgba(145, 183, 200, 0.3);
+}
+.recap__more {
+  margin: -2px 0 0 36px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.recap .btn-row {
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+@keyframes recap-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 10px));
+  }
+}
+
+/* Note for next time: the field while working, and the reminder when idle. */
+
+.next-note-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.next-note-field label {
+  font-weight: 600;
+}
+/* On the folded card: the note's mark beside the chevron that opens it. */
+.session__expand--note {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px 0 7px;
+  color: #6c5126;
+  background: rgba(232, 189, 114, 0.22);
+}
+.next-note-field__optional {
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+.next-note-field input {
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-solid);
+  font-size: 13px;
+}
+.next-note-field input::placeholder {
+  color: var(--ink-faint);
+}
+.last-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 4px 7px 10px;
+  border-radius: 10px;
+  background: rgba(232, 189, 114, 0.18);
+  font-size: 12.5px;
+}
+.last-note > svg {
+  flex: none;
+  margin-top: 1px;
+}
+.last-note p {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.last-note__label {
+  color: #6c5126;
+  font-weight: 600;
+}
+.last-note .icon-btn {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}

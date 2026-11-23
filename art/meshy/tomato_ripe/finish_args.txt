@@ -1,0 +1,1 @@
+--id crop_tomato_3 --rotY 45 --height 0.8 --tex 512 --q 85 --compact

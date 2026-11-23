@@ -1,0 +1,268 @@
+{
+  "default_mobile": {
+    "sheet": "2a390fa4-image.png",
+    "rect": [
+      416,
+      527,
+      355,
+      180
+    ],
+    "panel": "5. Farm Layout (3D Close-up Reference)",
+    "size": [
+      355,
+      180
+    ]
+  },
+  "default_desktop": {
+    "sheet": "2a390fa4-image.png",
+    "rect": [
+      721,
+      823,
+      136,
+      152
+    ],
+    "panel": "9. Camera Reference Views - Default View (Main)",
+    "size": [
+      136,
+      152
+    ]
+  },
+  "farm_to_meadow": {
+    "sheet": "f17d005d-image.png",
+    "rect": [
+      336,
+      550,
+      294,
+      200
+    ],
+    "panel": "2. Farm Clearing -> Meadow (Transition)",
+    "size": [
+      294,
+      200
+    ]
+  },
+  "rocky_ledge": {
+    "sheet": "f17d005d-image.png",
+    "rect": [
+      639,
+      550,
+      285,
+      200
+    ],
+    "panel": "3. Rocky Ledge Example",
+    "size": [
+      285,
+      200
+    ]
+  },
+  "plateau": {
+    "sheet": "303fcd96-image.png",
+    "rect": [
+      392,
+      820,
+      372,
+      108
+    ],
+    "panel": "F. Upper Plateau (Procedural)",
+    "size": [
+      372,
+      108
+    ]
+  },
+  "world_edge": {
+    "sheet": "303fcd96-image.png",
+    "rect": [
+      1157,
+      820,
+      371,
+      108
+    ],
+    "panel": "H. World Edge (Procedural)",
+    "size": [
+      371,
+      108
+    ]
+  },
+  "wide_island": {
+    "sheet": "f17d005d-image.png",
+    "rect": [
+      0,
+      88,
+      798,
+      398
+    ],
+    "panel": "World Layout (Perspective View) - main island view",
+    "size": [
+      798,
+      398
+    ]
+  },
+  "orbit_ne": {
+    "sheet": "2a390fa4-image.png",
+    "rect": [
+      0,
+      100,
+      780,
+      392
+    ],
+    "panel": "World Layout Specification - main island view",
+    "size": [
+      780,
+      392
+    ]
+  },
+  "orbit_sw": {
+    "sheet": "2a390fa4-image.png",
+    "rect": [
+      0,
+      100,
+      780,
+      392
+    ],
+    "panel": "World Layout Specification - main island view",
+    "size": [
+      780,
+      392
+    ]
+  },
+  "orbit_back": {
+    "sheet": "2a390fa4-image.png",
+    "rect": [
+      0,
+      100,
+      780,
+      392
+    ],
+    "panel": "World Layout Specification - main island view",
+    "size": [
+      780,
+      392
+    ]
+  },
+  "max_zoom_all": {
+    "sheet": "2a390fa4-image.png",
+    "rect": [
+      0,
+      100,
+      780,
+      392
+    ],
+    "panel": "World Layout Specification - the whole island",
+    "size": [
+      780,
+      392
+    ]
+  },
+  "max_zoom_portrait": {
+    "sheet": "2a390fa4-image.png",
+    "rect": [
+      190,
+      100,
+      420,
+      392
+    ],
+    "panel": "World Layout Specification - island (portrait cut)",
+    "size": [
+      420,
+      392
+    ]
+  },
+  "island_wide": {
+    "sheet": "f17d005d-image.png",
+    "rect": [
+      0,
+      88,
+      798,
+      398
+    ],
+    "panel": "World Layout (Perspective View) - joined island",
+    "size": [
+      798,
+      398
+    ]
+  },
+  "highland": {
+    "sheet": "303fcd96-image.png",
+    "rect": [
+      392,
+      820,
+      372,
+      108
+    ],
+    "panel": "F. Upper Plateau (Procedural)",
+    "size": [
+      372,
+      108
+    ]
+  },
+  "islet": {
+    "sheet": "f17d005d-image.png",
+    "rect": [
+      639,
+      550,
+      285,
+      200
+    ],
+    "panel": "3. Rocky Ledge Example (rocky coast)",
+    "size": [
+      285,
+      200
+    ]
+  },
+  "grove": {
+    "sheet": "f17d005d-image.png",
+    "rect": [
+      1232,
+      550,
+      302,
+      200
+    ],
+    "panel": "5. Woodland Grove Example",
+    "size": [
+      302,
+      200
+    ]
+  },
+  "meadow": {
+    "sheet": "303fcd96-image.png",
+    "rect": [
+      775,
+      586,
+      370,
+      132
+    ],
+    "panel": "C. Meadow (Procedural)",
+    "size": [
+      370,
+      132
+    ]
+  },
+  "wetland_edge": {
+    "sheet": "f17d005d-image.png",
+    "rect": [
+      932,
+      550,
+      290,
+      200
+    ],
+    "panel": "4. Lake Area Example",
+    "size": [
+      290,
+      200
+    ]
+  },
+  "rim_edge": {
+    "sheet": "303fcd96-image.png",
+    "rect": [
+      1157,
+      820,
+      371,
+      108
+    ],
+    "panel": "H. World Edge (Procedural)",
+    "size": [
+      371,
+      108
+    ]
+  }
+}

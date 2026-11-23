@@ -1,0 +1,18 @@
+# Brown hare concepts (visitor_hare), made with: meshy image-to-image create --ai-model gpt-image-2
+# --reference-image-urls <oak concept: gitaway-assets art/meshy/hero_tree/source/concept_1.png>,<cottage concept: gitaway-art-meshy2 art/meshy/farmhouse/source/concept_gpt.png>
+# Each call sends: RUNTIME PREFIX (R10) + body + one POSE line + style/background. Variants differ in pose only.
+
+## Runtime prefix (R10, verbatim as for the trees and crops)
+The first image (an old oak tree) and the second image (a cottage) are references for the painted art style, colours, brushwork and finish ONLY: do not copy their objects. Paint this new object in exactly that style: 
+
+## Shared body
+A single ordinary European brown hare sitting up on its haunches, the whole animal visible from the tips of its ears to its feet. It is a plain, true-to-life wild brown hare, charming but not fantastical: a lean, slightly long-bodied animal with a rounded back, long hind legs folded under it and two slim front legs held down in front of its chest, big dark round eyes with a soft highlight, a small dark nose, a soft cream muzzle and long, tall, upright ears with fine black tips. Its coat is warm golden-brown, like toasted honey-brown (about hex B98A63), with soft hand-painted variation: slightly darker brown along the back and the top of the head and ears, lighter warm tan on the cheeks and flanks, and a clean cream-white belly, chest and underside, with a small short tail that is dark on top and cream beneath. The fur is painted in soft chunky tufts, never photographic. No glow, no sparkle, no magical or fantasy features, no unusual colours, no clothing, no jewellery, no accessories, nothing that makes it look special: it is simply a wild hare. Side three-quarter view from the front-left, slightly elevated, the hare facing to the left of the picture. 
+
+## Variant A (ears straight up)
+Pose A: it sits fully upright and alert, both ears straight up and tall, side by side and parallel, the head level and looking ahead. 
+
+## Variant B (one ear slightly turned)
+Pose B: it sits just as upright and alert, but one ear is slightly turned and tilted outward as if listening, the other ear still tall and straight, the head very slightly turned. 
+
+## Shared style and background
+Stylized 3D game asset in a handcrafted fantasy-miniature diorama style: hand-painted stylized game model, soft chunky forms, gently bevelled and slightly rounded edges, subtly wonky hand-made proportions, warm and charming, same art style as a cozy storybook countryside cottage. Painted textures with soft hand-painted colour variation, no photographic detail, no outlines. Even soft neutral lighting with no strong cast shadows. The whole object visible and centred, isolated on a plain light grey background, no ground plane, no grass, no scenery, no text.

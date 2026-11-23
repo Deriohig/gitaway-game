@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Gitaway Dev",
+  "mainBinaryName": "gitaway-dev",
+  "identifier": "dev.gitaway.desktop.devtools",
+  "build": {
+    "beforeBuildCommand": "npm run build:devtools"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Gitaway (dev tools)",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 600
+      }
+    ]
+  }
+}

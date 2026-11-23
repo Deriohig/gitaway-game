@@ -1,0 +1,404 @@
+{
+ "format": "gitaway.water/1",
+ "about": "Water revamp bake (art/scripts/bake-water.mjs; spec art/specs/2026-10-23-water-revamp-design.md). Piece-local; the game reads only this file and the files it names.",
+ "encoding": {
+  "type": "RGBA8",
+  "order": "row-major, x fastest; row j = local z",
+  "texelCentre": "origin + (i + 0.5, j + 0.5) * texel",
+  "r": {
+   "meaning": "depth below the level (u)",
+   "decode": "R / 255"
+  },
+  "g": {
+   "meaning": "signed shore distance, + in the water (u)",
+   "decode": "(G - 128) / 127",
+   "zero": 128
+  },
+  "b": {
+   "meaning": "flow x (u/s)",
+   "decode": "(B - 128) / 255",
+   "zero": 128
+  },
+  "a": {
+   "meaning": "flow z (u/s)",
+   "decode": "(A - 128) / 255",
+   "zero": 128
+  }
+ },
+ "noise": {
+  "file": "water_noise.bin",
+  "size": [
+   128,
+   128
+  ],
+  "format": "RG8",
+  "wrap": "repeat",
+  "cell": 1.8,
+  "cellsAcross": 8
+ },
+ "pieces": {
+  "main": {
+   "pivot": [
+    0,
+    0,
+    0
+   ],
+   "glb": "water_main.glb",
+   "map": {
+    "file": "water_main.map.bin",
+    "origin": [
+     -8.525,
+     1.975
+    ],
+    "texel": 0.05,
+    "size": [
+     192,
+     128
+    ],
+    "encoding": "RGBA8 (see encoding)"
+   },
+   "bodies": [
+    {
+     "node": "water_pond",
+     "kind": "still",
+     "palette": "pond",
+     "level": 0.06,
+     "virtual": true,
+     "flow": true,
+     "uStart": 0,
+     "length": 3.4457,
+     "fillFrom": null,
+     "join": {
+      "u0": 1.3788,
+      "ramp": 1.5,
+      "uEnd": 3.4457,
+      "handover": 1,
+      "to": "river"
+     },
+     "ripples": {
+      "density": 0.42,
+      "shore": 0,
+      "chevrons": true
+     },
+     "note": "the farm pond AND its stream: one surface (spec Revision 1 R1.3); uv = (stream arc length, 0 / 1 across) on the ribbon, (join.u0, 0.5) on the polygon"
+    },
+    {
+     "node": "water_fall",
+     "kind": "fall",
+     "palette": "fall",
+     "level": null,
+     "virtual": false,
+     "flow": false,
+     "uStart": 3.4457,
+     "length": 10.6759,
+     "dissolveFrom": 0.55,
+     "brink": {
+      "start": 0.075,
+      "len": 0.16,
+      "to": "river"
+     },
+     "fillFrom": {
+      "shownWhile": "wetland undocked",
+      "retreat": 1
+     }
+    },
+    {
+     "node": "water_fall_skirt",
+     "kind": "skirt",
+     "palette": null,
+     "level": null,
+     "virtual": false,
+     "flow": false,
+     "fillFrom": {
+      "shownWhile": "wetland undocked",
+      "retreat": 1
+     },
+     "note": "depth only, no colour: from the fall's top row (on the brink) down the cliff face, hugging the rock (inside it or within 0.03 u), so the depth surface turns down at the brink like the cliff edge and no skirt edge stands proud of the rock (outline / ink passes)"
+    },
+    {
+     "node": "mist_fall",
+     "kind": "mist",
+     "palette": "fall"
+    }
+   ]
+  },
+  "wetland": {
+   "pivot": [
+    -12.6,
+    0,
+    11.4
+   ],
+   "glb": "water_wetland.glb",
+   "map": {
+    "file": "water_wetland.map.bin",
+    "origin": [
+     -0.025,
+     -7.775
+    ],
+    "texel": 0.05,
+    "size": [
+     224,
+     464
+    ],
+    "encoding": "RGBA8 (see encoding)"
+   },
+   "bodies": [
+    {
+     "node": "water_lake",
+     "kind": "still",
+     "palette": "lake",
+     "level": -0.32,
+     "virtual": false,
+     "flow": true,
+     "length": null,
+     "fillFrom": null,
+     "ripples": {
+      "density": 0.55,
+      "shore": 1,
+      "chevrons": false
+     }
+    },
+    {
+     "node": "water_river",
+     "kind": "ribbon",
+     "palette": "river",
+     "level": null,
+     "virtual": false,
+     "flow": false,
+     "uStart": 3.4457,
+     "length": 7.9566,
+     "ripples": {
+      "density": 0,
+      "shore": 0,
+      "chevrons": true
+     },
+     "vhead": [
+      3.6457,
+      5.0457
+     ],
+     "fillFrom": {
+      "after": "dock",
+      "from": "u start (the MAIN seam)",
+      "seconds": 2.5
+     }
+    },
+    {
+     "node": "water_outflow",
+     "kind": "ribbon",
+     "palette": "river",
+     "level": null,
+     "virtual": false,
+     "flow": false,
+     "uStart": 11.4023,
+     "length": 4.1278,
+     "ripples": {
+      "density": 0,
+      "shore": 0,
+      "chevrons": true
+     },
+     "fillFrom": {
+      "after": "water_river",
+      "seconds": 1
+     }
+    },
+    {
+     "node": "water_fall",
+     "kind": "fall",
+     "palette": "fall",
+     "level": null,
+     "virtual": false,
+     "flow": false,
+     "uStart": 15.5301,
+     "length": 10.6758,
+     "dissolveFrom": 0.55,
+     "brink": {
+      "start": 0.075,
+      "len": 0.16,
+      "to": "river"
+     },
+     "fillFrom": {
+      "after": "water_outflow",
+      "seconds": 1
+     }
+    },
+    {
+     "node": "water_fall_skirt",
+     "kind": "skirt",
+     "palette": null,
+     "level": null,
+     "virtual": false,
+     "flow": false,
+     "fillFrom": {
+      "after": "water_outflow",
+      "seconds": 1
+     },
+     "note": "depth only, no colour: from the fall's top row (on the brink) down the cliff face, hugging the rock (inside it or within 0.03 u), so the depth surface turns down at the brink like the cliff edge and no skirt edge stands proud of the rock (outline / ink passes)"
+    },
+    {
+     "node": "mist_fall",
+     "kind": "mist",
+     "palette": "fall"
+    }
+   ]
+  },
+  "highland": {
+   "pivot": [
+    -16.37,
+    3,
+    -17.55
+   ],
+   "glb": "water_highland.glb",
+   "map": {
+    "file": "water_highland.map.bin",
+    "origin": [
+     -6.775,
+     -4.775
+    ],
+    "texel": 0.05,
+    "size": [
+     264,
+     120
+    ],
+    "encoding": "RGBA8 (see encoding)"
+   },
+   "bodies": [
+    {
+     "node": "water_tarn",
+     "kind": "still",
+     "palette": "tarn",
+     "level": -0.2,
+     "virtual": false,
+     "flow": false,
+     "length": null,
+     "fillFrom": null,
+     "ripples": {
+      "density": 0.16,
+      "shore": 0,
+      "chevrons": false
+     }
+    },
+    {
+     "node": "water_spring",
+     "kind": "still",
+     "palette": "spring",
+     "level": -0.0685,
+     "virtual": false,
+     "flow": true,
+     "length": null,
+     "fillFrom": null,
+     "ripples": null
+    },
+    {
+     "node": "steam_spring",
+     "kind": "steam",
+     "palette": "spring"
+    }
+   ]
+  }
+ },
+ "palettes": {
+  "pond": {
+   "shallow": "#93BCAE",
+   "mid": "#7CA7A6",
+   "deep": "#43726E",
+   "foam": "#F4F4EB",
+   "bed": "#8E8B79"
+  },
+  "lake": {
+   "shallow": "#86B0A2",
+   "mid": "#75A7A0",
+   "deep": "#4E7A77",
+   "foam": "#EEF2EA",
+   "bed": "#6D7F6C"
+  },
+  "river": {
+   "shallow": "#B4D4CE",
+   "mid": "#82ACB0",
+   "deep": "#5F93A2",
+   "foam": "#F6F6EE",
+   "bed": "#8E8B79"
+  },
+  "tarn": {
+   "shallow": "#9BB0B8",
+   "mid": "#7A9EBD",
+   "deep": "#4C6275",
+   "foam": "#EDF1F4",
+   "bed": "#6F7A80"
+  },
+  "spring": {
+   "shallow": "#BEDFD2",
+   "mid": "#7FC4BE",
+   "deep": "#4FA7B0",
+   "foam": "#F6F2EA",
+   "bed": "#E3D2B4"
+  },
+  "fall": {
+   "shallow": "#82ACB0",
+   "mid": "#B4D4CE",
+   "deep": "#5F93A2",
+   "foam": "#F6F6EE",
+   "bed": "#FBF5EA"
+  }
+ },
+ "tiers": {
+  "phone": {
+   "scrolls": 1,
+   "flowAdvect": false,
+   "foamBands": 1,
+   "riffles": false,
+   "glints": false,
+   "caustics": false,
+   "lapping": false,
+   "wake": false,
+   "shadows": false,
+   "fallLayers": 1,
+   "mistPuffs": 3,
+   "steamPuffs": 3
+  },
+  "mid": {
+   "scrolls": 2,
+   "flowAdvect": true,
+   "foamBands": 2,
+   "riffles": true,
+   "glints": true,
+   "caustics": true,
+   "lapping": true,
+   "wake": true,
+   "shadows": true,
+   "fallLayers": 2,
+   "mistPuffs": 6,
+   "steamPuffs": 5
+  }
+ },
+ "ripple": {
+  "cellA": 1.5,
+  "cellB": 0.927051,
+  "periodA": 3.4,
+  "periodB": 5.5013,
+  "epochs": 251,
+  "radius": 0.22,
+  "width": 0.06,
+  "chevron": 1.1,
+  "chevronCells": 100,
+  "chevronWidth": 0.055,
+  "chevronMin": 0.02,
+  "chevronArm": 0.2,
+  "chevronBend": 1.2,
+  "chevronSpan": 0.7,
+  "chevronShare": 0.65,
+  "streakWidth": 0.03,
+  "streakMin": 0.01,
+  "strength": 0.32,
+  "hooks": 4,
+  "hookClock": 64
+ },
+ "layers": {
+  "bands": [
+   0.08,
+   0.22
+  ],
+  "bandSoft": 0.015,
+  "noiseCell": 1.8,
+  "phi": 1.618034
+ }
+}

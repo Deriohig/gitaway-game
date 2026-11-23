@@ -1,0 +1,129 @@
+/* Attention dial (A6): quiet mode, the compact HUD and window layouts. */
+
+/* ------------------------------------------------------------ compact HUD */
+
+/* One bar along the top for small windows (see COMPACT_QUERY in Hud.tsx), with the newest note under it,
+   above an open panel. */
+.hud__compact {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.compact-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 46px;
+  padding: 4px 6px;
+  border-radius: 14px;
+}
+.compact-bar__coins {
+  padding: 2px 8px 2px 4px;
+  font-size: 14px;
+}
+.compact-bar__session {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 4px;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.compact-bar__timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+.compact-bar__tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.compact-bar__btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--ink-soft);
+}
+.compact-bar__btn:hover {
+  background: rgba(64, 61, 53, 0.07);
+  color: var(--ink);
+}
+.compact-bar__btn.is-active {
+  background: var(--panel-sunk);
+  color: var(--ink);
+}
+.compact-bar__start {
+  background: var(--forest);
+  color: var(--cream);
+}
+.compact-bar__start:hover {
+  background: var(--forest-deep);
+  color: var(--cream);
+}
+.compact-bar__stop {
+  color: var(--terracotta-deep);
+}
+.compact-bar__badge {
+  top: -2px;
+  right: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+.toasts--compact {
+  width: min(312px, 100%);
+  align-self: flex-end;
+}
+.toasts--compact .toast {
+  padding: 6px 6px 6px 8px;
+}
+.toasts--compact .toast__icon {
+  width: 26px;
+  height: 26px;
+}
+/* An open panel takes the room under the bar, and a note waits in the journal. A warning, which
+   answers a click (and is all quiet mode shows), still shows, over the panel. */
+.hud--compact:has(.panel) .toasts--compact .toast:not(.toast--warn) {
+  display: none;
+}
+
+/* Panels open under the bar, over the island; in a wide strip they keep to the right. */
+.hud--compact .panel {
+  top: 62px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  width: auto;
+  max-height: none;
+}
+@media (min-width: 560px) {
+  .hud--compact .panel {
+    left: auto;
+    width: min(384px, calc(100% - 16px));
+  }
+}
+.hud--compact .panel__head {
+  padding: 8px 10px 8px 14px;
+}
+.hud--compact .panel__head h2 {
+  font-size: 17px;
+}
+.hud--compact .panel__body {
+  padding: 10px 12px 14px;
+}

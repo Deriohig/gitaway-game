@@ -1,0 +1,1 @@
+--rotY 90 --fit 2.05x1.7x1.48 --axis 0.45,0.95 --fillBlack --tex 512 --q 64 --compact

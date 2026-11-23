@@ -1,0 +1,190 @@
+/* Visitors (B1): the "Here now" list, visitor cards and the label over a visitor in the world. */
+
+.vis-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/*
+ * The quieter words here (headings, hints, the seen line) use --ink-soft, not
+ * --ink-faint: small text on the sunk panel needs 4.5:1, and --ink-faint gives
+ * about 3:1 there.
+ */
+.vis-heading {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.vis-here {
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--panel-sunk);
+}
+.vis-here__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vis-here__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+}
+.vis-here__art {
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.vis-here__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+.vis-here__text span {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+.vis-empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.vis-thanks {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--forest);
+  font-weight: 600;
+}
+.vis-thanks:empty {
+  display: none;
+}
+
+.vis-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.vis-card {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+}
+.vis-card--unseen {
+  background: transparent;
+  border-style: dashed;
+}
+.vis-card--unseen .vis-card__art svg {
+  filter: brightness(0) opacity(0.35);
+}
+.vis-card__art {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--panel-sunk);
+}
+.vis-card__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.vis-card__name {
+  font-size: 13px;
+  color: var(--ink);
+}
+.vis-card__keepsake {
+  color: var(--ink);
+}
+
+/* The soft label floating in the world (WorldLabel.tsx): over a visitor, or over something ready to collect. */
+.world-label {
+  /* Down `--row` label heights (its line, its padding and a 4px gap), clear of a neighbour's label. */
+  position: relative;
+  top: calc(var(--row, 0) * (1.3em + 14px));
+  pointer-events: none;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 99px;
+  background: rgba(255, 248, 236, 0.92);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  font: 600 12.5px/1.3 var(--font-ui);
+  text-align: center;
+}
+.world-label span {
+  display: block;
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+/*
+ * A line a character says when tapped (Barnaby's, Síofra's), up to 80 characters: it wraps within a narrow
+ * block, centred over them, so it stays on a phone's screen. Names and other short labels stay on one line.
+ * WorldLabel centres a label on its point, over their head; a line of two or three rows is lifted by half its
+ * height, so its bottom edge sits on that point and it never covers them, however tall it grows. The lift is
+ * `translate`, apart from `transform`, which the label's easing in animates.
+ */
+.world-label--says {
+  white-space: normal;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  width: max-content;
+  max-width: min(240px, 70vw);
+  padding: 6px 12px;
+  border-radius: 14px;
+  translate: 0 -50%;
+}
+/* Movement is opted into by the label, which leaves these off in the game's Still mode. */
+.world-label--in {
+  animation: world-label-in 0.25s var(--ease);
+}
+.world-label--out {
+  animation: world-label-out 3.6s var(--ease) forwards;
+}
+@keyframes world-label-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes world-label-out {
+  0%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-label--in,
+  .world-label--out {
+    animation: none;
+  }
+}

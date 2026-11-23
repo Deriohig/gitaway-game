@@ -1,0 +1,1 @@
+--id crop_radish_3 --rotY 45 --fit 0.92x1.2x0.92 --lower 0.12 --sat 55,175,0.93 --terra 1 --tex 512 --q 85 --compact --pad --maxKB 200

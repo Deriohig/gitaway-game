@@ -1,0 +1,17 @@
+#!/bin/sh
+# Before a push that changes the game, make sure the code being pushed has
+# passed `npm run check:push` (types, unit tests and e2e), and run it if not.
+# Pushes of docs, art or Markdown alone go straight through. The work is in
+# scripts/pre-push.mjs. `npm install` turns this hook on, with
+# `git config core.hooksPath .githooks`.
+
+# Git clients started outside a shell may not have Node on their PATH.
+if ! command -v node >/dev/null 2>&1 && [ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]; then
+  . "${NVM_DIR:-$HOME/.nvm}/nvm.sh" >/dev/null 2>&1
+fi
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-push: Node isn't on the PATH, so the push checks can't run. Make Node 22 available (nvm use) and push again." >&2
+  exit 1
+fi
+
+exec node "$(git rev-parse --show-toplevel)/scripts/pre-push.mjs" "$@"

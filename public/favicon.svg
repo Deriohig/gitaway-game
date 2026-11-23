@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="c"><circle cx="32" cy="32" r="30"/></clipPath>
+    <linearGradient id="s" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#BFD7DE"/>
+      <stop offset="1" stop-color="#F5E3C4"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#c)">
+    <rect width="64" height="64" fill="url(#s)"/>
+    <circle cx="45" cy="21" r="6" fill="#E8BD72"/>
+    <path d="M0 38 C14 30 28 31 40 35 S58 36 64 33 V64 H0 Z" fill="#9CAF88"/>
+    <path d="M0 46 C16 40 30 42 44 45 S60 44 64 42 V64 H0 Z" fill="#7D9B70"/>
+    <path d="M33 64 C33 56 28 52 29 46 C30 42 27 40 26 37" fill="none" stroke="#F1E2C6" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M32 57 C40 54 41 49 36 45 C33 43 30 43 29 44" fill="none" stroke="#F1E2C6" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="32" cy="57" r="1.9" fill="#FFF8EC" stroke="#526E58" stroke-width="1.1"/>
+    <circle cx="29" cy="44" r="1.9" fill="#FFF8EC" stroke="#526E58" stroke-width="1.1"/>
+    <rect x="20" y="29" width="11" height="8" rx="1" fill="#FFF8EC"/>
+    <path d="M18.5 30 L25.5 23.5 L32.5 30 Z" fill="#C98268"/>
+    <rect x="24.2" y="32" width="2.6" height="5" fill="#A9825D"/>
+  </g>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#526E58" stroke-opacity="0.25" stroke-width="1.5"/>
+</svg>

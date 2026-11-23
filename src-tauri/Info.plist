@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>NSDocumentsFolderUsageDescription</key>
+  <string>Gitaway counts your own commits in the Git repositories you pick. It never reads your code, diffs or commit messages.</string>
+  <key>NSDesktopFolderUsageDescription</key>
+  <string>Gitaway counts your own commits in the Git repositories you pick. It never reads your code, diffs or commit messages.</string>
+  <key>NSDownloadsFolderUsageDescription</key>
+  <string>Gitaway counts your own commits in the Git repositories you pick. It never reads your code, diffs or commit messages.</string>
+</dict>
+</plist>

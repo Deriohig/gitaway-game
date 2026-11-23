@@ -1,0 +1,1 @@
+--id sheep --rotY 45 --stretch 0.49x0.72x0.84 --tex 512 --q 85 --compact --part Head:-0.25,0.26,0.39,0.8,0.05,0.5:0,0.6,0.21 --cut Head:0.62,0.3,0.72 --cut Head:0,1,0:0,0.39,0
