@@ -1,4 +1,5 @@
 # Gitaway
+[![ci](https://github.com/Deriohig/gitaway-game/actions/workflows/ci.yml/badge.svg)](https://github.com/Deriohig/gitaway-game/actions/workflows/ci.yml)
 
 **Commit code. Escape to the countryside.**
 
@@ -57,7 +58,7 @@ Development builds (`npm run dev`, `npm run desktop:dev`) have a small **Dev** t
 
 Working alongside the farm pays about 2.5 times what the farm makes by itself, and a worker with two hours of sessions and four tasks a weekday owns the whole island in about two weeks. A player who doesn't work gets there too, in six or seven weeks. The numbers are tuned with a local simulator, `npm run balance` (see [the idle economy spec](docs/superpowers/specs/2026-10-22-idle-economy-design.md)).
 
-Keyboard: the number keys open the tools in toolbar order (`1`–`5`: Farm, Garden, Shop, Inventory and Progress). `Esc` closes a panel. Drag to turn the island, and scroll to zoom.
+Keyboard: the number keys open the tools in toolbar order (`1`–`6`: Farm, Garden, Shop, Inventory, Journal and Progress). `Esc` closes a panel. Drag to turn the island, and scroll to zoom.
 
 The idle loop ([`docs/idle-loop.md`](docs/idle-loop.md)) arrives one feature at a time. Each has a switch in [`src/game/features.ts`](src/game/features.ts); while it's off, nothing of that feature shows.
 
@@ -156,7 +157,7 @@ src/
   game/          Pure, deterministic game rules: economy config, sessions, tasks,
                  crops, building, levels, save migration. Fully unit-tested.
   store/         Zustand store: applies game actions at the current time, toasts,
-                 debounced saving, and cross-tab sync.
+                 saving on every change, and cross-tab sync.
   world/         The 3D island. Procedural low-poly terrain and props, crops,
                  animals, water shaders, clouds, the day cycle, and the painted sky.
   ui/            HUD, panels, welcome, tour, illustrated icons.
