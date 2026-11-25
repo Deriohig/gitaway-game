@@ -6,9 +6,9 @@ Gitaway is an ambient farming game for developers. A small island floats above a
 
 It's meant to sit beside your workday, and it's happy to be ignored for hours.
 
-![A fully grown island in the afternoon: farmhouse, windmill, greenhouse, garden, pond and animals, with the work-session panel and toolbar](docs/screenshots/gitaway-island.png)
+![A fully grown island in the afternoon: farmhouse, windmill, greenhouse, garden, pond and animals, with the work-session panel and toolbar](https://raw.githubusercontent.com/Deriohig/gitaway-game/main/docs/screenshots/gitaway-island.png)
 
-![The Progress panel on a level 19 farm, with milestones and lifetime totals](docs/screenshots/gitaway-ui.png)
+![The Progress panel on a level 19 farm, with milestones and lifetime totals](https://raw.githubusercontent.com/Deriohig/gitaway-game/main/docs/screenshots/gitaway-ui.png)
 
 ## Run it
 
