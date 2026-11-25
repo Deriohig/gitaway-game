@@ -4,7 +4,7 @@
 
 Gitaway is an ambient farming game for developers. A small island floats above a sea of clouds, and your real work slowly turns it into the farm you keep promising to retire to. Work sessions earn coins, finished tasks earn small bonuses, crops grow while you work (and while the game is closed), and the island fills up with gardens, animals, buildings and eventually neighbouring islands.
 
-It is meant to sit beside a workday: quiet, slow, and happy to be ignored for hours.
+It's meant to sit beside your workday, and it's happy to be ignored for hours.
 
 ![A fully grown island in the afternoon: farmhouse, windmill, greenhouse, garden, pond and animals, with the work-session panel and toolbar](docs/screenshots/gitaway-island.png)
 
@@ -51,7 +51,7 @@ Development builds (`npm run dev`, `npm run desktop:dev`) have a small **Dev** t
 1. **Clock in.** Start a work session when you start working. It earns 10 coins and 1 XP a minute, plus a piece of wood every 10 minutes. End the session to collect.
 2. **Log tasks.** When you finish something, type it into the session card for a small bonus: 40 coins, 5 XP and 2 wood. Each task pays once a day.
 3. **Garden.** Buy seeds in the shop and plant them from the garden panel, or click a plot on the island. Crops ripen on real time, even while the game is closed, and each suits a different time away: radishes in 5 minutes, cranberries in 4 hours, blueberries in 5 hours (plant before lunch, pick before home time), lavender in 10 hours, overnight. A crop that differs from the one its plot last grew sells for 25% more: fresh soil. Repeating a crop just pays its normal price.
-4. **Collect.** The farm makes things on its own: hens and ducks lay, sheep grow fleeces, goats give milk, bees fill jars, fruit trees drop fruit, the wetland lands fish, and the woodshed (50 coins) stacks wood, twice as much once you own the forest grove. Each kind fills for up to 3 days' worth and then simply stops filling; **Collect all** brings it in as coins, a little XP and wood.
+4. **Collect.** The farm makes things on its own: hens and ducks lay, sheep grow fleeces, goats give milk, bees fill jars, fruit trees drop fruit, the wetland lands fish, and the woodshed (50 coins) stacks wood, twice as much once you own the forest grove. Each kind fills for up to 3 days' worth and then stops filling; **Collect all** brings it in as coins, a little XP and wood.
 5. **Build.** Spend coins and wood on flower beds, lanterns, animals, a windmill, a greenhouse, and seven pieces of land, which rise out of the clouds when you claim them. Land opens in any order at one price that rises with each piece you own: the first is 100 coins and 8 wood, the seventh 2,872 coins and 120 wood. Everything you buy appears on the island.
 6. **Level up.** Sessions, tasks, harvests, collecting and building earn XP. Every level from 2 to 12 unlocks a crop, an animal or something to build. A cat moves in at level 2, and a dog wanders up at level 5.
 
@@ -63,7 +63,7 @@ The idle loop ([`docs/idle-loop.md`](docs/idle-loop.md)) arrives one feature at 
 
 ### Fair by design
 
-- A single session earns for at most 4 hours, and credited focus time caps at 8 hours per day. Beyond that a session still runs, but just for the joy of it.
+- A single session earns for at most 4 hours, and credited focus time caps at 8 hours per day. After that the session keeps running but earns nothing more.
 - Each task title pays once per day, up to 12 tasks, and the desktop app counts up to 20 commits a day (merges are ignored). A repeated title or a task over the limit pays nothing, wood included.
 - Ending a session twice, or clicking repeatedly, can't pay twice: every action is a pure state transition that refuses invalid moves.
 - A session whose clock runs backwards earns nothing, and sessions shorter than a minute earn nothing.
@@ -84,7 +84,7 @@ Manual sessions and tasks are the core of the game, and they always work.
 
 [`src/integrations/sources.ts`](src/integrations/sources.ts) defines the boundary for other activity sources. They can only ever report counts and timestamps, never code, diffs, commit messages, file names or credentials. In the Settings panel:
 
-- **Local Git activity** works in the desktop app, on Windows and macOS (see below). In a browser it says *Desktop app only*, because a web page can't read local repositories, so it stays off rather than pretending.
+- **Local Git activity** works in the desktop app, on Windows and macOS (see below). In a browser it says *Desktop app only*, because a web page can't read local repositories, so it stays off.
 - **GitHub and GitLab** say *Not available yet*. When they're built, they should use each provider's official app or OAuth flow with read-only scopes and disconnect controls, never personal access tokens.
 
 Nothing in the UI shows a fake connection.
@@ -122,7 +122,7 @@ How it works: `npm run build:devtools` is `vite build --mode devtools`, which se
 
 #### The Mac apps: Apple Silicon and Intel
 
-A second workflow, **desktop (macOS)** ([`.github/workflows/desktop-macos.yml`](.github/workflows/desktop-macos.yml)), builds Gitaway and Gitaway Dev for Macs, as disk images. GitHub charges ten times as much for a macOS runner minute as for a Linux one on a private repository, so this workflow never starts by itself: it runs only when you start it. To get Mac apps of the current code:
+A second workflow, **desktop (macOS)** ([`.github/workflows/desktop-macos.yml`](.github/workflows/desktop-macos.yml)), builds Gitaway and Gitaway Dev for Macs, as disk images. It never starts by itself, only when you run it. To get Mac apps of the current code:
 
 1. On GitHub, open the repository's **Actions** tab, pick **desktop (macOS)** in the list of workflows, then **Run workflow**, choose the branch, and run it.
 2. When it has finished, download the artifact for your Mac from the bottom of the run (each is a zip, kept for 14 days). Apple menu → **About This Mac** tells you which Mac you have: a **Chip** called Apple M1, M2, M3 or later is Apple Silicon; a **Processor** called Intel is Intel.
@@ -173,7 +173,7 @@ public/models/   Exported .glb models and their manifest.
 
 Rendering notes:
 
-- The island, cliffs, plants and buildings are generated from code, so there are no image assets. Faces are flat-shaded and coloured per face for a painterly low-poly look.
+- The islands, cliffs, water, clouds and sky are drawn from code. Buildings, animals, trees, crops and props are low-poly `.glb` models in `public/models/`. The game loads a model once the manifest marks it ready, and draws a procedural stand-in until then.
 - The camera looks down on the island and never sees the horizon. The distant mountains, sun, moon and stars are therefore painted into a CSS layer behind a transparent canvas, and their colours follow the time of day.
 - Frames are drawn at about 30 fps (Lively), 15 fps (Calm), or only when something changes (Still, which is also what a reduced-motion preference gets). The world stops drawing entirely when the tab is hidden.
 - Light follows the player's clock, from cool morning through warm afternoon and rosy evening to a blue night with lit windows and fireflies. It can be pinned to one time of day in Settings.
@@ -183,7 +183,7 @@ Rendering notes:
 - Placement is curated: each building or decoration has a designed spot (or a few). Free placement would be a bigger feature.
 - Several open tabs stay in step through a BroadcastChannel, but two tabs acting in the same instant could still race.
 - The game runs on the device's clock. Moving the clock forward can ripen crops early. Daily caps and the 4-hour session cap limit what that can earn.
-- Hand-modelled 3D assets are in progress (see `art/ASSETS.md`). The procedural stand-ins are what ship today.
+- Not every model is finished. Anything without a ready model in `public/models/manifest.json` still draws its procedural stand-in (see `art/ASSETS.md`).
 
 ## Licence and credits
 
